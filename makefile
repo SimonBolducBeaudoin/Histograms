@@ -1,74 +1,96 @@
-# All the external objects that the current submodule depends on
-# Those objects have to be up to date
-tempo2 = $(wildcard ../SM-Scoped_timer/obj/*.o)
-tempo3 = $(wildcard ../SM-Omp_extra/obj/*.o)
-tempo4 = $(wildcard ../SM-Moments_cumulants/obj/*.o)
-tempo5 = $(wildcard ../SM-Math_extra/*.o)
-EXTERNAL_OBJ = $(tempo1) $(tempo2) $(tempo3) $(tempo4) $(tempo5)
-
-TARGET_NAME = Histograms
-TARGET_STATIC = $(TARGET_NAME).a
+NAME = histograms
 PYLIB_EXT = $(if $(filter $(OS),Windows_NT),.pyd,.so)
-TARGET_PYLIB = ../Python/$(TARGET_NAME)$(PYLIB_EXT)
+TARGET_STATIC = lib$(NAME).a
+TARGET_PYLIB = ../Python/$(NAME)$(PYLIB_EXT)
 
-# standard subdirectories
+MULTI_ARRAY = ../Multi_array
+OMP_EXTRA = ../Omp_extra
+MOMENTS_CUMULANTS = ../Moments_cumulants
+MATH_EXTRA = ../Math_extra
+HISTOGRAMS = ../Histograms
+
 IDIR = includes
 ODIR = obj
 LDIR = lib
 SDIR = src
 
-# Lits of .c and corresponding .o and .h
+OMP_EXTRA_OBJ = $(wildcard $(OMP_EXTRA)/$(ODIR)/*.o)
+MATH_EXTRA_OBJ = $(wildcard $(MATH_EXTRA)/$(ODIR)/*.o)
+MOMENTS_CUMULANTS_OBJ = $(wildcard $(MOMENTS_CUMULANTS)/$(ODIR)/*.o)
+
+EXTERNAL_OBJ = $(OMP_EXTRA_OBJ) $(MATH_EXTRA_OBJ) 
+EXTERNAL_INCLUDES = -I$(MULTI_ARRAY)/$(IDIR) -I$(OMP_EXTRA)/$(IDIR) -I$(MATH_EXTRA)/$(IDIR) -I$(MOMENTS_CUMULANTS)/$(IDIR) -I$(HISTOGRAMS)/$(IDIR)
+
 SRC  = $(wildcard $(SDIR)/*.cpp)
 OBJ  = $(patsubst $(SDIR)/%.cpp,$(ODIR)/%.o,$(SRC))
+OBJ_PY  = $(filter %_py.o,$(OBJ)) 
+ASS  = $(patsubst $(SDIR)/%.cpp,$(ODIR)/%.s,$(SRC))
 DEPS = $(OBJ:.o=.d)
 
-# Toolchain, using mingw on windows
-CC = $(OS:Windows_NT=x86_64-w64-mingw32-)g++
+CXX = $(OS:Windows_NT=x86_64-w64-mingw32-)g++
+OPTIMIZATION = -O3 -march=native
+CPP_STD = -std=c++14
+WARNINGS = -Wall
+MINGW_COMPATIBLE = $(OS:Windows_NT=-DMS_WIN64 -D_hypot=hypot)
+DEPS_FLAG = -MMD -MP
 
-# flags
-CFLAGS = -Ofast -march=native -std=c++14 -MMD -MP -Wall $(OS:Windows_NT=-DMS_WIN64 -D_hypot=hypot)
-OMPFLAGS = -fopenmp -fopenmp-simd
-FFTWFLAGS = -lfftw3
-MATHFLAGS = -lm
-SHRFLAGS = -fPIC -shared
+POSITION_INDEP = -fPIC
+SHARED = -shared
 
-# Python directories
+OMP = -fopenmp -fopenmp-simd
+FFTW= -lfftw3
+MATH = -lm
+
 PY = $(OS:Windows_NT=/c/Anaconda2/)python
-ifeq ($(USERNAME),simon)
-    PY = $(OS:Windows_NT=/cygdrive/c/Anaconda2/)python
-endif
-ifeq ($(USERNAME),Sous-sol)
-    PY = $(OS:Windows_NT=/cygdrive/c/ProgramData/Anaconda2/)python
-endif
 
-# includes
-PYINCL := $(shell $(PY) -m pybind11 --includes)
+PY_INCL := $(shell $(PY) -m pybind11 --includes)
 ifneq ($(OS),Windows_NT)
-    PYINCL += -I /usr/include/python2.7/
+    PY_INCL += -I /usr/include/python2.7/
 endif
 
-# libraries
-PYLIBS = $(OS:Windows_NT=-L /c/Anaconda2/libs/ -l python27) $(PYINCL)
-ifeq ($(USERNAME),simon)
-    PYLIBS = $(OS:Windows_NT=-L /cygdrive/c/Anaconda2/libs/ -l python27) $(PYINCL)
-endif
-ifeq ($(USERNAME),Sous-sol)
-    PYLIBS = $(OS:Windows_NT=-L /cygdrive/c/ProgramData/Anaconda2/libs/ -l python27) $(PYINCL) 
-endif
+PY_LINKS = $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
 
-$(TARGET_PYLIB): $(OBJ)
-	@ echo " "
+LINKS =  $(OMP) $(PY_LINKS)
+LINKING = $(CXX) $(OPTIMIZATION) $(POSITION_INDEP) $(SHARED) -o $(TARGET_PYLIB) $(OBJ_PY) $(LINKS) $(EXTERNAL_OBJ) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+STATIC_LIB = ar cr $(TARGET_STATIC) $(OBJ) 
+
+INCLUDES = $(OMP) $(PY_INCL) $(EXTERNAL_INCLUDES)
+COMPILE = $(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) -c -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+ASSEMBLY = $(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) -S -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+
+python_debug_library : $(TARGET_PYLIB)
+
+compile_objects : $(OBJ)
+
+assembly : $(ASS)
+
+all : $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS)
+
+static_library : $(TARGET_STATIC)
+
+$(TARGET_PYLIB): $(OBJ_PY)
+	@ echo " $(OBJ_PY) "
 	@ echo "---------Compile library $(TARGET_PYLIB)---------"
-	$(CC) $(SHRFLAGS) -o $(TARGET_PYLIB) $(OBJ) $(EXTERNAL_OBJ) $(CFLAGS) $(OMPFLAGS) $(FFTWFLAGS) $(MATHFLAGS) $(PYLIBS)
+	$(LINKING)
+
+$(TARGET_STATIC) : $(OBJ)
+	@ echo " "
+	@ echo "---------Compiling static library $(TARGET_STATIC)---------"
+	$(STATIC_LIB)
 	
 $(ODIR)/%.o : $(SDIR)/%.cpp
 	@ echo " "
 	@ echo "---------Compile object $@ from $<--------"
-	$(CC) $(SHRFLAGS) -c -Wall -o $@ $< $(CFLAGS) $(FFTWFLAGS) $(MATHFLAGS) $(OMPFLAGS) $(PYLIBS) 
-
+	$(COMPILE)
+	
+$(ODIR)/%.s : $(SDIR)/%.cpp
+	@ echo " "
+	@ echo "---------Assembly $@ from $<--------"
+	$(ASSEMBLY)
+	
 -include $(DEPS)
 
 clean:
-	@rm -f $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ)
+	@rm -f $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS) $(DEPS)
 	 	 
-.PHONY: clean, dummy
+.PHONY: all , clean , python_debug_library , compile_objects , static_library , assembly 

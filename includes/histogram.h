@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../../SM-Multi_array/Multi_array.h"
-#include "../../SM-Moments_cumulants/includes/moments_cumulants.h"
-#include "../../SM-Omp_extra/includes/omp_extra.h"
+#include <omp_extra.h>
+#include <Multi_array.h>
+#include <moments_cumulants.h>
+#include <type_traits>
 
 /*
 	TODOS
@@ -22,73 +23,96 @@ https://en.cppreference.com/w/cpp/language/template_specialization
 https://en.cppreference.com/w/cpp/language/member_template#Member_function_templates
 */
 
-template < class BinType >
+template < class BinType , class DataType >
 class Histogram
-{
+{		
 	public : 
+		template
+		<
+			class ConstructorType = DataType, 
+			class Enable = typename std::enable_if_t< std::is_floating_point<ConstructorType>::value >
+		>/*double, float*/
+		Histogram( uint nofbins , int n_threads ,  ConstructorType max );
 		
-		Histogram( uint64_t nofbins = 0 , int n_threads = 2  );
-		~Histogram();
+		template
+		<	/*uint8_t, int8_t, uint16_t, int16_t*/
+			class ConstructorType = DataType, 
+			class Enable = typename std::enable_if_t< std::is_integral<ConstructorType>::value>
+		>
+		Histogram( int n_threads );
 		
+		template
+		<	/*uint8_t, int8_t, uint16_t, int16_t*/
+			class ConstructorType = DataType, 
+			class Enable = typename std::enable_if_t< std::is_integral<ConstructorType>::value>
+		>
+		Histogram( int n_threads , uint bit );
+        
 		// C++ INTERFACE
             // Core functions
-		void accumulate(  double* data,  uint64_t L_data, double max ) ;
-		void accumulate(  float* data,  uint64_t L_data, float max ) ;
-		void accumulate(  uint8_t* data,  uint64_t L_data ) ;
-		void accumulate(  uint16_t* data,  uint64_t L_data, int b ) ;
-		// Did not implement methods for int8 and int16
+		template<class AccumulateType=DataType>
+		void accumulate( AccumulateType* data, uint64_t L_data ) ;
         
             // Sets and gets
-        BinType* get_pointer(){return histogram ;};
-		uint64_t get_nofbins(){return nofbins ;};
+		uint get_nofbins(){return nofbins ;};
         
             // Histogram properties
-        /*
-        moment_k calls directly the function moment_k from SM-Moment_cumulants
-            and uses Histogram's meta-infos.
-        moment_k_float calls the same function but is used when working with a histogram of floating point
-            centered around zero and upperbounded by max.
-        */
-        double moment_k( uint k = 1, double first_bin_center = 0 , double bin_width = 1.0);
-        double moment_k_float( uint k = 1, double max = 1.0 );
+		template<class AbscisseType=DataType>
+        double moment( AbscisseType* bins , uint exp , int n_threads = 6 );
+		template<class AbscisseType=DataType>
+        double moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads = 6 );
         
-        double centered_moment_k( uint k = 2, double first_bin_center = 0 , double bin_width = 1.0);
-        double centered_moment_k_float( uint k = 2, double max = 1.0 );
-        
-        double cumulant_k( uint k = 1, double first_bin_center = 0 , double bin_width = 1.0);
-        double cumulant_k_float( uint k = 1, double max = 1.0);
-		
-        // Python interface
-            
+        template<class AbscisseType=DataType>
+        double moment_no_clip( AbscisseType* bins , uint exp , int n_threads = 6 );
+		template<class AbscisseType=DataType>
+        double moment_no_clip( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads = 6 );
+        		
+        // Python interface         
             // Core functions
-        template<class DataType>
-		void accumulate_float_py(  py::array_t<DataType> data, DataType max ) ;
-        
-		void accumulate_int_py(  py::array_t<uint8_t> data ) ;
-		void accumulate_int_py(  py::array_t<uint16_t> data, int b ) ;
-        
-            // Sets and gets
-		py::array_t<BinType> get_py();
-        py::array_t<double> abscisse_float_py( double max );
+        template<class AccumulateType=DataType>
+		void accumulate_py( py::array_t<AccumulateType> data ) ;
 		
-            // Uncomment to benchmark
-        // uint64_t accumulate_timer ;
+		template
+		<	/*uint8_t, int8_t, uint16_t, int16_t*/
+			class UnsignedType = DataType, 
+			class Enable = typename std::enable_if_t<std::is_integral<UnsignedType>::value>
+		>
+		void swap();
         
+        uint64_t how_much_clip();
+        
+		template<class AbscisseType=DataType>
+		double moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads );
+		template<class AbscisseType=DataType>
+        double moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads );
+        
+        template<class AbscisseType=DataType>
+		double moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp , int n_threads );
+		template<class AbscisseType=DataType>
+        double moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads );
+		
+            // Sets and gets
+		py::array_t<BinType> share_py(){ return histogram.share_py(); };
+        py::array_t<double> abscisse_py( double max );
+		
 	protected :
-		uint64_t nofbins ;
+		uint nofbins ;
 		int n_threads ;
-		BinType* histogram ;
-        
-        Multi_array<double,1> data ;
+		
+		Multi_array<BinType,1> histogram ;
+		
+		DataType max ; // Defines the window for accumulation of floats (used only when DataType = floats)
+		uint bit ; // The bitshift that is made on data when accumulating uint16_t DataType (used only when DataType = uint16_t)
 		
 		// Checks
-		void Check_parity() ;
+		void Checks() ;
 		void Check_n_threads() ;
         
         // C++ INTERFACE
             // Core functions
 		template<class FloatType>
-		void float_to_hist(FloatType data, BinType* histogram , FloatType max , FloatType bin_width );
-        
-     	
+		void float_to_hist(FloatType data, BinType* histogram , FloatType max , FloatType bin_width );		
+		
 };
+
+#include "../src/histogram.tpp"

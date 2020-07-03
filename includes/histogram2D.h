@@ -1,8 +1,11 @@
 #pragma once
 
-#include "../../SM-Omp_extra/includes/omp_extra.h"
-#include "../../SM-Math_extra/math_extra.h"
-#include "../../SM-Moments_cumulants/includes/moments_cumulants.h"
+#include <omp_extra.h>
+#include <Multi_array.h>
+// #include <math_extra.h>
+#include <moments_cumulants.h>
+#include <type_traits>
+
 
 /*
 # Uncomment to benchmark
@@ -15,70 +18,93 @@ https://en.cppreference.com/w/cpp/language/member_template#Member_function_templ
 */
 
 
-template < class BinType >
+template < class BinType , class DataType = uint >
 class Histogram2D
 {
 	public : 
 		
-		Histogram2D( uint64_t nofbins = 0 , int n_threads = 2  );
+		template
+		<
+			class ConstructorType = DataType, 
+			class Enable = typename std::enable_if_t<std::is_floating_point<ConstructorType>::value >
+		>/*double, float*/
+		Histogram2D( uint nofbins , int n_threads ,  ConstructorType max );
+		
+		template
+		<	/*uint8_t, int8_t, uint16_t, int16_t*/
+			class ConstructorType = DataType, 
+			class Enable = typename std::enable_if_t<std::is_integral<ConstructorType>::value>
+		>
+		Histogram2D( int n_threads );
+		
+		template
+		<	/*uint8_t, int8_t, uint16_t, int16_t*/
+			class ConstructorType = DataType, 
+			class Enable = typename std::enable_if_t<std::is_integral<ConstructorType>::value>
+		>
+		Histogram2D( int n_threads , uint bit );
+		
 		~Histogram2D();
 		
         // C++ INTERFACE
             // Core functions
-		void accumulate(  double* data_1, double* data_2,  uint64_t L_data, double max ) ;
-		void accumulate(  float* data_1, float* data_2,  uint64_t L_data, float max ) ;
-		void accumulate(  uint8_t* data_1, uint8_t* data_2,  uint64_t L_data ) ;
-		void accumulate(  uint16_t* data_1, uint16_t* data_2,  uint64_t L_data, int b ) ;
+		template<class AccumulateType=DataType>
+		void accumulate(  AccumulateType* data_1 , AccumulateType* data_2 , uint64_t L_data ) ;
 		// Did not implement methods for int8 and int16
             // Sets and gets
-         BinType* get_pointer(){return histogram ;};
 		uint64_t get_nofbins(){return nofbins ;};
         
             // Histogram properties
-        /*
-        moment_k calls directly the function moment_k from SM-Moment_cumulants
-            and uses Histogram's meta-infos.
-        moment_k_float calls the same function but is used when working with a histogram of floating point
-            centered around zero and upperbounded by max.
-        */
-            
-        double moment2D( uint exp_x = 0 , uint exp_y = 0  , double first_bin_center = 0 , double bin_width = 1.0);
-        double moment2D_float( uint exp_x = 0 , uint exp_y = 0 , double max = 1.0 );
-		
-		double cumulant_ii( double first_bin_center = 0 , double bin_width = 1.0);
-        double cumulant_ii_float( double max = 1.0 );
-        
-		double cumulant_jj( double first_bin_center = 0 , double bin_width = 1.0);
-        double cumulant_jj_float( double max = 1.0 );
-		
-		double cumulant_iijj( double first_bin_center = 0 , double bin_width = 1.0);
-        double cumulant_iijj_float( double max = 1.0 );
-        
+		template<class AbscisseType=DataType>
+        double moment( AbscisseType* bins , uint exp_x  , uint exp_y , int n_threads = 6 );
+		template<class AbscisseType=DataType>
+        double moment( AbscisseType* bins , uint exp_x  , uint exp_y  , uint64_t n_total , int n_threads = 6 );
+       
+        template<class AbscisseType=DataType>
+        double moment_no_clip( AbscisseType* bins , uint exp_x  , uint exp_y , int n_threads = 6 );
+		template<class AbscisseType=DataType>
+        double moment_no_clip( AbscisseType* bins , uint exp_x  , uint exp_y  , uint64_t n_total , int n_threads = 6 );
 		
         //  Python interface
             // Core functions
-		template<class FloatType>
-		void accumulate_float_py(  py::array_t<FloatType> data_1, py::array_t<FloatType> data_2, FloatType max ) ;
-	
-		void accumulate_int_py(  py::array_t<uint8_t> data_1, py::array_t<uint8_t> data_2 );
-		void accumulate_int_py(  py::array_t<uint16_t> data_1, py::array_t<uint16_t> data_2 , int b);
+		template<class AccumulateType=DataType>
+		void accumulate_py(  py::array_t<AccumulateType> data_1, py::array_t<AccumulateType> data_2 ) ;
 		
-            // Sets and gets
-		py::array_t<BinType> get_py();
-
-        py::array_t<double> abscisse_float_py( double max );
+		template
+		<	/*uint8_t, int8_t, uint16_t, int16_t*/
+			class UnsignedType = DataType, 
+			class Enable = typename std::enable_if_t< std::is_integral<UnsignedType>::value>
+		>
+		void swap();
+		
+        uint64_t how_much_clip();
         
-        // Uncomment to benchmark
-        uint64_t accumulate_timer ;
-	
+		template<class AbscisseType=DataType>
+		double moment_py( py::array_t<AbscisseType> bins , uint exp_x  , uint exp_y , int n_threads );
+		template<class AbscisseType=DataType>
+        double moment_py( py::array_t<AbscisseType> bins , uint exp_x  , uint exp_y , uint64_t n_total , int n_threads  );
+		
+        template<class AbscisseType=DataType>
+		double moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp_x  , uint exp_y , int n_threads );
+		template<class AbscisseType=DataType>
+        double moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp_x  , uint exp_y , uint64_t n_total , int n_threads  );
+        
+            // Sets and gets
+		py::array_t<BinType> share_py(){ return histogram.share_py(); };
+
+        py::array_t<double> abscisse_py( double max );
+        
 	protected :
-		uint64_t nofbins ;
+		uint nofbins ;
 		int n_threads ;
-		BinType* histogram ;
+		Multi_array<BinType,2> histogram ;
 		uint8_t** hs ;
 		
+		DataType max ; // Defines the window for accumulation of floats (used only when DataType = floats)
+		int bit ; // The bitshift that is made on data when accumulating uint16_t DataType (used only when DataType = uint16_t)
+		
 		// Checks
-		void Check_parity() ;
+		void Checks() ;
 		void Check_n_threads() ;
 
         // C++ INTERFACE
@@ -92,3 +118,5 @@ class Histogram2D
 		template<class FloatType>
 		void what_bin_float( FloatType data_1 , FloatType data_2, FloatType max, FloatType bin_width, uint16_t* binx, uint16_t* biny) ;
 };
+
+#include "../src/histogram2D.tpp"
