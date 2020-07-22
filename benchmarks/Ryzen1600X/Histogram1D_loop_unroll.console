@@ -1,0 +1,39 @@
+07/14/20 21:56:59
+Running C:\Users\Sous-sol\Desktop\CODES\Time_domain\Histograms\benchmark.exe
+Run on (12 X 3593 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x6)
+  L1 Instruction 64 KiB (x6)
+  L2 Unified 512 KiB (x6)
+  L3 Unified 8192 KiB (x2)
+----------------------------------------------------------------------------------------------------------------------------------
+Benchmark                                                                        Time             CPU   Iterations UserCounters...
+----------------------------------------------------------------------------------------------------------------------------------
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456/real_time    88019729 ns     87890625 ns            8 Sa/Sec=3.04972G/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456/real_time    88160247 ns     87890625 ns            8 Sa/Sec=3.04486G/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456/real_time    88143766 ns     89843750 ns            8 Sa/Sec=3.04543G/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456/real_time    89200139 ns     89843750 ns            8 Sa/Sec=3.00936G/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456/real_time    44315055 ns     43945312 ns           16 Sa/Sec=6.05743G/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456/real_time    44259369 ns     43945312 ns           16 Sa/Sec=6.06505G/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456/real_time    44185947 ns     44117647 ns           17 Sa/Sec=6.07513G/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456/real_time    44126809 ns     43945312 ns           16 Sa/Sec=6.08327G/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456/real_time    22872066 ns     22916667 ns           30 Sa/Sec=11.7364G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456/real_time    23305202 ns     22395833 ns           30 Sa/Sec=11.5183G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456/real_time    22747040 ns     21673387 ns           31 Sa/Sec=11.8009G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456/real_time    23233867 ns     22395833 ns           30 Sa/Sec=11.5536G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456/real_time    17956194 ns     16741071 ns           42 Sa/Sec=14.9495G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456/real_time    16075004 ns     15625000 ns           42 Sa/Sec=16.6989G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456/real_time    19216355 ns     15625000 ns           34 Sa/Sec=13.9691G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456/real_time    16786150 ns     15285326 ns           46 Sa/Sec=15.9915G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456/real_time    19804675 ns     15625000 ns           35 Sa/Sec=13.5541G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456/real_time    19629578 ns     13454861 ns           36 Sa/Sec=13.675G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456/real_time    19659492 ns     16517857 ns           35 Sa/Sec=13.6542G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456/real_time    19198497 ns     17361111 ns           36 Sa/Sec=13.9821G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456/real_time   16026112 ns     13849432 ns           44 Sa/Sec=16.7499G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456/real_time   15980116 ns     14534884 ns           43 Sa/Sec=16.7981G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456/real_time   16022048 ns     14559659 ns           44 Sa/Sec=16.7541G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456/real_time   16099426 ns     15269886 ns           44 Sa/Sec=16.6736G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456/real_time   14513706 ns     13297872 ns           47 Sa/Sec=18.4953G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456/real_time   14323201 ns     12187500 ns           50 Sa/Sec=18.7413G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456/real_time   16963539 ns     11875000 ns           50 Sa/Sec=15.8243G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456/real_time   16197897 ns     12576220 ns           41 Sa/Sec=16.5722G/s l_data [Sa]=268.435M n_threads=12

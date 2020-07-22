@@ -8,7 +8,6 @@
 /*
 	TODOS
 	- Quality of life : add a function that recovers 1D histograms from 2D histogram ?
-	- integrate Multi_array into histogram classes for better memory locality
 	- Modify Multi_array for custom memory organisation (optimal for centered biased histograms)
 */
 
@@ -28,7 +27,7 @@ class Histogram
 {		
 	public : 
 		template
-		<
+		<	/*float double*/
 			class ConstructorType = DataType, 
 			class Enable = typename std::enable_if_t< std::is_floating_point<ConstructorType>::value >
 		>/*double, float*/
@@ -53,6 +52,8 @@ class Histogram
 		template<class AccumulateType=DataType>
 		void accumulate( AccumulateType* data, uint64_t L_data ) ;
         
+		void reset();
+		
             // Sets and gets
 		uint get_nofbins(){return nofbins ;};
         
@@ -95,6 +96,8 @@ class Histogram
 		py::array_t<BinType> share_py(){ return histogram.share_py(); };
         py::array_t<double> abscisse_py( double max );
 		
+		uint64_t get_alloc_memory_size(){return histogram.get_alloc_memory_size();};
+		
 	protected :
 		uint nofbins ;
 		int n_threads ;
@@ -102,16 +105,12 @@ class Histogram
 		Multi_array<BinType,1> histogram ;
 		
 		DataType max ; // Defines the window for accumulation of floats (used only when DataType = floats)
-		uint bit ; // The bitshift that is made on data when accumulating uint16_t DataType (used only when DataType = uint16_t)
+		uint bit ; // The number of bit for the abscisse of the integer histogram
 		
-		// Checks
-		void Checks() ;
-		void Check_n_threads() ;
-        
         // C++ INTERFACE
             // Core functions
 		template<class FloatType>
-		void float_to_hist(FloatType data, BinType* histogram , FloatType max , FloatType bin_width );		
+		void float_to_hist(FloatType data, BinType* histogram , FloatType max , FloatType bin_width );
 		
 };
 

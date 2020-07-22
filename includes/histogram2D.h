@@ -17,7 +17,6 @@ https://en.cppreference.com/w/cpp/language/template_specialization
 https://en.cppreference.com/w/cpp/language/member_template#Member_function_templates
 */
 
-
 template < class BinType , class DataType = uint >
 class Histogram2D
 {
@@ -26,7 +25,7 @@ class Histogram2D
 		template
 		<
 			class ConstructorType = DataType, 
-			class Enable = typename std::enable_if_t<std::is_floating_point<ConstructorType>::value >
+			class Enable = typename std::enable_if_t<std::is_floating_point<ConstructorType>::value>
 		>/*double, float*/
 		Histogram2D( uint nofbins , int n_threads ,  ConstructorType max );
 		
@@ -44,13 +43,13 @@ class Histogram2D
 		>
 		Histogram2D( int n_threads , uint bit );
 		
-		~Histogram2D();
-		
         // C++ INTERFACE
             // Core functions
 		template<class AccumulateType=DataType>
-		void accumulate(  AccumulateType* data_1 , AccumulateType* data_2 , uint64_t L_data ) ;
-		// Did not implement methods for int8 and int16
+		void accumulate( AccumulateType* data_1 , AccumulateType* data_2 , uint64_t L_data ) ;
+		
+		void reset();
+		
             // Sets and gets
 		uint64_t get_nofbins(){return nofbins ;};
         
@@ -93,30 +92,29 @@ class Histogram2D
 		py::array_t<BinType> share_py(){ return histogram.share_py(); };
 
         py::array_t<double> abscisse_py( double max );
+		
+		uint64_t get_alloc_memory_size(){return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size();};
         
 	protected :
 		uint nofbins ;
 		int n_threads ;
 		Multi_array<BinType,2> histogram ;
-		uint8_t** hs ;
+		Multi_array<uint8_t,3> hs ;
 		
 		DataType max ; // Defines the window for accumulation of floats (used only when DataType = floats)
 		int bit ; // The bitshift that is made on data when accumulating uint16_t DataType (used only when DataType = uint16_t)
 		
-		// Checks
-		void Checks() ;
-		void Check_n_threads() ;
-
         // C++ INTERFACE
-		void Allocate_all_heap();
-		void Free_all_heap();
 	
             // Core functions
-		void to_hist_middleman_pragma( int this_thread , uint32_t bin );
-		void reduction_and_reset();
-		
 		template<class FloatType>
-		void what_bin_float( FloatType data_1 , FloatType data_2, FloatType max, FloatType bin_width, uint16_t* binx, uint16_t* biny) ;
+		void compute_bins(FloatType data_1,FloatType data_2,FloatType max,FloatType bin_width,uint& biny,uint& binx) ;
+		void to_middleman(int this_thread,uint biny,uint binx);
+		template<class FloatType>
+		void to_hs(FloatType data_y,FloatType data_x,FloatType max,FloatType bin_width,int this_thread) ;
+	
+		void reduction_and_reset_threads();
+		void reset_threads();
 };
 
 #include "../src/histogram2D.tpp"

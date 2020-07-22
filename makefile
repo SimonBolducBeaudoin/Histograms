@@ -8,6 +8,7 @@ OMP_EXTRA = ../Omp_extra
 MOMENTS_CUMULANTS = ../Moments_cumulants
 MATH_EXTRA = ../Math_extra
 HISTOGRAMS = ../Histograms
+LIBS = ../libs
 
 IDIR = includes
 ODIR = obj
@@ -48,15 +49,45 @@ ifneq ($(OS),Windows_NT)
     PY_INCL += -I /usr/include/python2.7/
 endif
 
-PY_LINKS = $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
+PY_LINKS 	= 	$(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
 
-LINKS =  $(OMP) $(PY_LINKS)
-LINKING = $(CXX) $(OPTIMIZATION) $(POSITION_INDEP) $(SHARED) -o $(TARGET_PYLIB) $(OBJ_PY) $(LINKS) $(EXTERNAL_OBJ) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
-STATIC_LIB = ar cr $(TARGET_STATIC) $(OBJ) 
+LINKS 		= 	$(OMP) $(PY_LINKS)
+LINKING 	= 	$(CXX) $(OPTIMIZATION) $(POSITION_INDEP) $(SHARED) -o $(TARGET_PYLIB) \
+				$(OBJ_PY) $(LINKS) $(EXTERNAL_OBJ) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+STATIC_LIB 	= 	ar cr $(TARGET_STATIC) $(OBJ) 
 
-INCLUDES = $(OMP) $(PY_INCL) $(EXTERNAL_INCLUDES)
-COMPILE = $(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) -c -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
-ASSEMBLY = $(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) -S -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+INCLUDES 	= 	$(OMP) $(PY_INCL) $(EXTERNAL_INCLUDES)
+COMPILE  	= 	$(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) \
+				-c -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+ASSEMBLY 	= 	$(CXX) $(CPP_STD) $(OPTIMIZATION) $(POSITION_INDEP) $(WARNINGS) \
+				-S -o $@ $< $(INCLUDES) $(DEPS_FLAG) $(MINGW_COMPATIBLE)
+
+LINK_BENCHMARK_CUSTOM = $(OMP) 
+
+LINK_BENCHMARK = \
+	-L$(LIBS)/benchmark/build/src -lbenchmark -lpthread -lshlwapi \
+	$(LINK_BENCHMARK_CUSTOM)
+
+LINKING_BENCHMARK_OBJ = $(EXTERNAL_OBJ) \
+
+LINKING_BENCHMARK = \
+	$(CXX) $< \
+	$(LINKING_BENCHMARK_OBJ)\
+	-O3 -march=native \
+	-static \
+	$(LINK_BENCHMARK)\
+	$(DEPS_FLAG) $(MINGW_COMPATIBLE) \
+	-o $@ \
+	
+INCLUDES_BENCHMARK = \
+	-I $(LIBS)/benchmark/include \
+	$(INCLUDES)
+	
+COMPILE_BENCHMARK = \
+	$(CXX) $(CPP_STD) $< -O3 -march=native \
+	$(INCLUDES_BENCHMARK) \
+	$(DEPS_FLAG) $(MINGW_COMPATIBLE) \
+	-c -o $@
 
 python_debug_library : $(TARGET_PYLIB)
 
@@ -67,6 +98,18 @@ assembly : $(ASS)
 all : $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS)
 
 static_library : $(TARGET_STATIC)
+
+benchmark : benchmark.exe
+
+benchmark.exe : benchmark.o
+	@ echo " "
+	@ echo "---------Compile $@ ---------"
+	$(LINKING_BENCHMARK)
+
+benchmark.o : benchmark.cpp
+	@ echo " "
+	@ echo "---------Compile $@ from $< ---------"
+	$(COMPILE_BENCHMARK)	
 
 $(TARGET_PYLIB): $(OBJ_PY)
 	@ echo " $(OBJ_PY) "
@@ -91,6 +134,6 @@ $(ODIR)/%.s : $(SDIR)/%.cpp
 -include $(DEPS)
 
 clean:
-	@rm -f $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ) $(ASS) $(DEPS)
+	@rm -f $(TARGET_PYLIB) $(TARGET_STATIC) $(OBJ)  $(OBJ_PY) $(ASS) $(DEPS)
 	 	 
-.PHONY: all , clean , python_debug_library , compile_objects , static_library , assembly 
+.PHONY: all , clean , python_debug_library , compile_objects , static_library , assembly , benchmark

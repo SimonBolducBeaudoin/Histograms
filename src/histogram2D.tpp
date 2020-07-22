@@ -5,11 +5,12 @@ Histogram2D<BinType,DataType>::Histogram2D( uint nofbins , int n_threads , Const
 	nofbins(nofbins) ,
 	n_threads(n_threads),
 	histogram(Multi_array<BinType,2> (nofbins,nofbins)),
+	hs(Multi_array<uint8_t,3>(n_threads,nofbins,nofbins)),
 	max(max), bit(0)
 {
-	Checks() ;
 	omp_set_num_threads(n_threads);
-	Allocate_all_heap();
+	reset();
+	reset_threads();
 }
 
 template<class BinType , class DataType>
@@ -18,198 +19,189 @@ Histogram2D<BinType,DataType>::Histogram2D( int n_threads )
 :
 	nofbins( 1<<(8*sizeof(ConstructorType)) ) ,
 	n_threads(n_threads),
-	histogram( Multi_array<BinType,2>( 1<<(8*sizeof(ConstructorType)) , 1<<(8*sizeof(ConstructorType)) )),
+	histogram( Multi_array<BinType,2>( 	1<<(8*sizeof(ConstructorType)),1<<(8*sizeof(ConstructorType)) )),
+	hs( Multi_array<uint8_t,3>(n_threads,1<<(8*sizeof(ConstructorType)),1<<(8*sizeof(ConstructorType)) ) ),
 	max(1.0), bit(8)
 {	
-	Checks() ;
 	omp_set_num_threads(n_threads);
-	Allocate_all_heap();
+	reset();
+	reset_threads();
 }
 
 template<class BinType , class DataType>
 template<class ConstructorType,class Enable>
 Histogram2D<BinType,DataType>::Histogram2D( int n_threads , uint bit )
 :
-	nofbins( 1<<(bit*sizeof(ConstructorType)) ) ,
+	nofbins( 1<<bit ) ,
 	n_threads(n_threads),
-	histogram(Multi_array<BinType,2> (1<<bit,1<<bit)),
+	histogram( Multi_array<BinType,2>(1<<bit,1<<bit) ),
+	hs(Multi_array<uint8_t,3>(n_threads,1<<bit,1<<bit)),
 	max(1.0), bit(bit)
 {	
-	Checks() ;
 	omp_set_num_threads(n_threads);
-	Allocate_all_heap();
+	reset();
+	reset_threads();
 }
-
-template < class BinType, class DataType >
-void Histogram2D<BinType,DataType>::Checks()
-{
-	Check_n_threads();
-}
-
-template < class BinType, class DataType >
-void Histogram2D<BinType,DataType>::Check_n_threads()
-{
-	if ( n_threads <= 0 )
-	{
-		throw std::runtime_error(" n_threads <= 0 dont expect this to work... ");
-	}
-	else if ( n_threads > physical_n_threads() )
-	{
-		printf("Warning : The wanted number of thread (%d) is higher than the number of physical threads (%d) in this computer. n_thread was replaced by physical_n_threads. \n", n_threads, physical_n_threads() );
-		n_threads = physical_n_threads();
-	}
-}
-
-template < class BinType, class DataType >
-void Histogram2D<BinType,DataType>::Allocate_all_heap()
-{
-	hs = (uint8_t**) malloc(n_threads* sizeof(uint8_t*));
-	#pragma omp parallel
-	{
-		manage_thread_affinity();
-		hs[omp_get_thread_num()]  = (uint8_t* ) calloc( nofbins*nofbins, sizeof(uint8_t));
-	}
-};
-
-template < class BinType, class DataType >
-void Histogram2D<BinType,DataType>::Free_all_heap()
-{
-	#pragma omp parallel
-	{ 
-		free(hs[omp_get_thread_num()]) ; 
-		hs[omp_get_thread_num()] = NULL ;
-	}
-	free(hs) ; 	hs = NULL;
-};
-
-template < class BinType, class DataType >
-Histogram2D<BinType,DataType>::~Histogram2D()
-{	
-	Free_all_heap();
-} 
 
 ///////////////////////
 ///// METHODS : HISTOGRAMS OF FLOATING POINTS
 
-// Warning ! this function can only be used inside a parralel process 
 template < class BinType, class DataType >
-inline void Histogram2D<BinType,DataType>::to_hist_middleman_pragma( int this_thread , uint32_t bin )
+template<class FloatType>
+inline void Histogram2D<BinType,DataType>::to_hs(FloatType data_y,FloatType data_x,FloatType max,FloatType bin_width,int this_thread)
 { 	
-	if (hs[this_thread][bin]==255)
+	uint binx ;
+	uint biny ;
+	compute_bins( data_y , data_x , max , bin_width, biny, binx) ; \
+	to_middleman(this_thread,biny,binx);\
+}
+
+template < class BinType, class DataType >
+inline void Histogram2D<BinType,DataType>::to_middleman(int this_thread,uint biny,uint binx)
+{ 	
+	if (hs(this_thread,biny,binx)==255)
 	{
 		_Pragma("omp atomic update")
-		histogram.get_ptr()[bin]+=(1<<8);
+		histogram(biny,binx)+=(1<<8);
 	}
-	hs[this_thread][bin]++;
+	hs(this_thread,biny,binx)++;
 }
 
 template < class BinType, class DataType >
 template <class FloatType>
-inline void Histogram2D<BinType,DataType>::what_bin_float( FloatType data_1 , FloatType data_2, FloatType max, FloatType bin_width, uint16_t* binx, uint16_t* biny )
+inline void Histogram2D<BinType,DataType>::compute_bins(FloatType data_2,FloatType data_1,FloatType max,FloatType bin_width,uint& biny,uint& binx)
 { 	
-    /*
-    Possible optimisation could use ternary operator 
-    */ 
-	if (data_1 >= max)
-	{
-		// clipping
-		*binx = nofbins-1;	
-	}
-	else if (data_1 < -(max))
-	{
-		// clipping
-		// add one to first bin
-		*binx = 0;
-	}
-	else
-	{
-	*binx = (uint16_t)((data_1+max)/(bin_width));
-	}
-	if (data_2 >= max)
-	{
-		// clipping
-		*biny = nofbins-1;	
-	}
-	else if (data_2 < -(max))
-	{
-		// clipping
-		// add one to first bin
-		*biny = 0;
-	}
-	else
-	{
-	*biny = (uint16_t)((data_2+max)/(bin_width));
-	}
+	/*
+		Two simplifications where made :
+			- A conditionnal was removed by stacking all clipping in the first bin
+				- This indice a very sligh error due to <= instead of < for the negative cliping
+	*/
+    binx = std::abs(data_1) >= max ? 0 : (unsigned int)((data_1+max)/(bin_width)) ;
+	biny = std::abs(data_2) >= max ? 0 : (unsigned int)((data_2+max)/(bin_width)) ;
 }
 
 template < class BinType, class DataType >
-inline void Histogram2D<BinType,DataType>::reduction_and_reset()
+inline void Histogram2D<BinType,DataType>::reduction_and_reset_threads()
 {	
-    for (int j =0; j < n_threads; j++)
+    for (int thread =0; thread < n_threads; thread++)
     {
         #pragma omp parallel
         {
             manage_thread_affinity();	
-            # pragma omp for
-            for (uint64_t i=0; i<(nofbins*nofbins); i++)
-            {
-                # pragma omp atomic update
-                histogram.get_ptr()[i]+=hs[j][i];
-                hs[j][i] = 0;
-            }
+            # pragma omp for collapse(2)
+			for (uint j = 0; j<nofbins;j++)
+			{
+				for (uint i=0; i<nofbins; i++)
+				{
+					histogram(j,i)+=hs(thread,j,i);
+					hs(thread,j,i) = 0;
+				}
+			}
         }
     }	
 }
 
-
 //////////////////////////
 // ACCUMULATE METHODS
+#define _PRAGMA_(x) _Pragma (#x)
+#define PRAGMA_GCC_UNROLL(x) _PRAGMA_(GCC unroll x)
 		
-#define ACCUMULATE_FLOAT(BIN_TYPE,FLOAT_TYPE)\
+#define ACCUMULATE_DOUBLE(BIN_TYPE,UNROLL)\
 template<> \
 template<> \
-void Histogram2D<BIN_TYPE,FLOAT_TYPE>::accumulate(  FLOAT_TYPE* data_1, FLOAT_TYPE* data_2,  uint64_t L_data ) \
+void Histogram2D<BIN_TYPE,double>::accumulate(  double* data_1, double* data_2,  uint64_t L_data )\
 {\
-	FLOAT_TYPE bin_width = 2.0*max/( nofbins );\
+	double bin_width = 2.0*max/( nofbins );\
 	_Pragma("omp parallel")\
 	{\
 		manage_thread_affinity(); \
-		uint16_t binx = 0;\
-		uint16_t biny = 0;\
-		uint32_t bin;\
 		int this_thread = omp_get_thread_num();\
 		_Pragma("omp for")\
-		for (uint64_t i=0; i<L_data; i++)\
+		for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)\
 		{\
-			what_bin_float( data_1[i] ,  data_2[i] , max , bin_width, &binx, &biny) ; \
-			bin =  (binx * nofbins) + biny ;  \
-			to_hist_middleman_pragma( this_thread, bin );\
+			PRAGMA_GCC_UNROLL(UNROLL)\
+			for (uint64_t j=0; j<UNROLL; j++) \
+			{\
+				to_hs(data_2[i+j],data_1[i+j],max,bin_width,this_thread);\
+			}\
+		}\
+		for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
+		{\
+			to_hs(data_2[i],data_1[i],max,bin_width,0);\
 		}\
 	}\
-	reduction_and_reset();\
+	reduction_and_reset_threads();\
 }
 
-#define ACCUMULATE_UINT(BIN_TYPE)\
+#define ACCUMULATE_FLOAT(BIN_TYPE,UNROLL)\
+template<> \
+template<> \
+void Histogram2D<BIN_TYPE,float>::accumulate(  float* data_1, float* data_2,  uint64_t L_data ) \
+{\
+	float bin_width = 2.0*max/( nofbins );\
+	_Pragma("omp parallel")\
+	{\
+		manage_thread_affinity(); \
+		int this_thread = omp_get_thread_num();\
+		_Pragma("omp for")\
+		for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)\
+		{\
+			PRAGMA_GCC_UNROLL(UNROLL)\
+			for (uint64_t j=0; j<UNROLL; j++) \
+			{\
+				to_hs(data_2[i+j],data_1[i+j],max,bin_width,this_thread);\
+			}\
+		}\
+		for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
+		{\
+			to_hs(data_2[i],data_1[i],max,bin_width,0);\
+		}\
+	}\
+	reduction_and_reset_threads();\
+}
+
+#define ACCUMULATE_UINT8(BIN_TYPE,UNROLL)\
 template<> \
 template<> \
 void Histogram2D<BIN_TYPE,uint8_t>::accumulate( uint8_t* data_1, uint8_t* data_2,  uint64_t L_data )\
 {\
+	BIN_TYPE* histogram_local = histogram.get_ptr();\
     _Pragma("omp parallel")\
+    {\
+        manage_thread_affinity(); \
+		_Pragma("omp for reduction(+:histogram_local[:1<<16])")\
+		for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)\
+		{\
+			PRAGMA_GCC_UNROLL(UNROLL)\
+			for (uint64_t j=0; j<UNROLL; j++) \
+			{\
+				histogram_local[nofbins*data_2[i+j]+data_1[i+j]]++;\
+			}\
+		}\
+		for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
+		{\
+			histogram(data_2[i],data_1[i])++;\
+		}\
+    }\
+	/*\
+	_Pragma("omp parallel")\
     {\
         manage_thread_affinity(); \
 		int this_thread = omp_get_thread_num();\
 		_Pragma("omp for")\
 		for (uint64_t i=0; i<L_data; i++) \
 		{\
-			to_hist_middleman_pragma( this_thread , (data_1[i]<<8) + data_2[i] ) ; \
+			to_middleman( this_thread ,  data_2[i] , data_1[i] ) ; \
 		}\
     }\
-	reduction_and_reset();\
-}\
-\
+	reduction_and_reset_threads();\
+	*/\
+}
+
+#define ACCUMULATE_UINT16(BIN_TYPE,UNROLL)\
 template<> \
 template<> \
-void Histogram2D<BIN_TYPE,uint16_t>::accumulate(  uint16_t* data_1, uint16_t* data_2,  uint64_t L_data )\
+void Histogram2D<BIN_TYPE,uint16_t>::accumulate( uint16_t* data_1, uint16_t* data_2,  uint64_t L_data )\
 {\
 	int b = bit;\
 	int tail = 16-b;\
@@ -218,34 +210,51 @@ void Histogram2D<BIN_TYPE,uint16_t>::accumulate(  uint16_t* data_1, uint16_t* da
 		manage_thread_affinity(); \
 		int this_thread = omp_get_thread_num();	\
 		_Pragma("omp for")\
-		for (uint64_t i=0 ; i<L_data ; i++)\
+		for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)\
 		{\
-			to_hist_middleman_pragma( this_thread , ((data_1[i]>>tail)<< b) + (data_2[i]>>tail) );\
+			PRAGMA_GCC_UNROLL(UNROLL)\
+			for (uint64_t j=0; j<UNROLL; j++) \
+			{\
+				to_middleman( this_thread , data_2[i+j]>>tail  , data_1[i+j]>>tail );\
+			}\
+		}\
+		for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
+		{\
+			histogram(data_2[i],data_1[i])++;\
 		}\
 	}\
-	reduction_and_reset();\
+	reduction_and_reset_threads();\
 }
 
-#define ACCUMULATE_INT(BIN_TYPE)\
+#define ACCUMULATE_INT8(BIN_TYPE,UNROLL)\
 template<> \
 template<> \
 void Histogram2D<BIN_TYPE,int8_t>::accumulate( int8_t* data_1, int8_t* data_2,  uint64_t L_data )\
 {\
+	BIN_TYPE* histogram_local = histogram.get_ptr();\
 	uint8_t* data_1_unsigned = (uint8_t *) data_1;\
 	uint8_t* data_2_unsigned = (uint8_t *) data_2;\
     _Pragma("omp parallel")\
     {\
         manage_thread_affinity(); \
-		int this_thread = omp_get_thread_num();\
-		_Pragma("omp for")\
-		for (uint64_t i=0; i<L_data; i++) \
+		_Pragma("omp for reduction(+:histogram_local[:1<<16])")\
+		for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)\
 		{\
-			to_hist_middleman_pragma( this_thread , (data_1_unsigned[i]<<8) + data_2_unsigned[i] ) ; \
+			PRAGMA_GCC_UNROLL(UNROLL)\
+			for (uint64_t j=0; j<UNROLL; j++) \
+			{\
+				histogram_local[nofbins*data_2_unsigned[i+j]+data_1_unsigned[i+j]]++;\
+			}\
+		}\
+		for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
+		{\
+			histogram(data_2_unsigned[i],data_1_unsigned[i])++;\
 		}\
     }\
-	reduction_and_reset();\
+	reduction_and_reset_threads();\
 }\
-\
+
+#define ACCUMULATE_INT16(BIN_TYPE,UNROLL)\
 template<> \
 template<> \
 void Histogram2D<BIN_TYPE,int16_t>::accumulate( int16_t* data_1, int16_t* data_2,  uint64_t L_data )\
@@ -259,27 +268,71 @@ void Histogram2D<BIN_TYPE,int16_t>::accumulate( int16_t* data_1, int16_t* data_2
 		manage_thread_affinity(); \
 		int this_thread = omp_get_thread_num();	\
 		_Pragma("omp for")\
-		for (uint64_t i=0 ; i<L_data ; i++)\
+		for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)\
 		{\
-			to_hist_middleman_pragma( this_thread , ((data_1_unsigned[i]>>tail)<< b) + (data_2_unsigned[i]>>tail) );\
+			PRAGMA_GCC_UNROLL(UNROLL)\
+			for (uint64_t j=0; j<UNROLL; j++) \
+			{\
+				to_middleman( this_thread , data_2_unsigned[i+j]>>tail  , data_1_unsigned[i+j]>>tail );\
+			}\
+		}\
+		for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
+		{\
+			histogram(data_2_unsigned[i],data_1_unsigned[i])++;\
 		}\
 	}\
-	reduction_and_reset();\
+	reduction_and_reset_threads();\
 }
 
-
 #define ACCUMULATE(BIN_TYPE)\
-	ACCUMULATE_FLOAT(BIN_TYPE,double) ;\
-	ACCUMULATE_FLOAT(BIN_TYPE,float) ;\
-	ACCUMULATE_UINT(BIN_TYPE) ;\
-	ACCUMULATE_INT(BIN_TYPE) ;
+	ACCUMULATE_DOUBLE(BIN_TYPE,8) ;\
+	ACCUMULATE_FLOAT(BIN_TYPE,8) ;\
+	ACCUMULATE_UINT8(BIN_TYPE,8) ;\
+	ACCUMULATE_UINT16(BIN_TYPE,4) ;\
+	ACCUMULATE_INT8(BIN_TYPE,8) ;\
+	ACCUMULATE_INT16(BIN_TYPE,4) ;
 
 ACCUMULATE(uint64_t);
 ACCUMULATE(uint32_t);
 
+#undef ACCUMULATE_DOUBLE
 #undef ACCUMULATE_FLOAT
-#undef ACCUMULATE_UINT
+#undef ACCUMULATE_UINT8
+#undef ACCUMULATE_UINT16
+#undef ACCUMULATE_INT8
+#undef ACCUMULATE_INT16
 #undef ACCUMULATE
+
+#undef _PRAGMA_
+#undef PRAGMA_GCC_UNROLL
+
+template<class BinType,class DataType>
+void Histogram2D<BinType,DataType>::reset()
+{
+	for (uint j=0; j<nofbins; j++)
+	{
+		for (uint i=0; i<nofbins; i++)
+		{
+			histogram(j,i) = 0 ;
+		}
+	}
+}
+
+template<class BinType,class DataType>
+void Histogram2D<BinType,DataType>::reset_threads()
+{
+	for (int k=0; k<n_threads; k++)
+	{
+		for (uint j=0; j<nofbins; j++)
+		{
+			for (uint i=0; i<nofbins; i++)
+			{
+				hs(k,j,i) = 0 ;
+			}
+		}
+	}
+}
+
 
 template<class BinType,class DataType>
 template<class UnsignedType,class Enable>

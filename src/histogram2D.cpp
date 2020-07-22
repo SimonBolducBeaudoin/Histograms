@@ -12,9 +12,9 @@ template class Histogram2D<BinType,uint8_t>;\
 template class Histogram2D<BinType,int16_t>;\
 template class Histogram2D<BinType,int8_t>;\
 
-// HISTOGRAM2D(uint64_t);
-// HISTOGRAM2D(uint32_t);
-// HISTOGRAM2D(uint16_t);
+HISTOGRAM2D(uint64_t);
+HISTOGRAM2D(uint32_t);
+HISTOGRAM2D(uint16_t);
 
 #undef PY_HISTOGRAM2D
 

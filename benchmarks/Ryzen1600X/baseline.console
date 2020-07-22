@@ -1,0 +1,403 @@
+07/13/20 21:28:20
+Running C:\Users\Sous-sol\Desktop\CODES\Time_domain\Histograms\benchmark.exe
+Run on (12 X 3593 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x6)
+  L1 Instruction 64 KiB (x6)
+  L2 Unified 512 KiB (x6)
+  L3 Unified 8192 KiB (x2)
+----------------------------------------------------------------------------------------------------------------------------
+Benchmark                                                                  Time             CPU   Iterations UserCounters...
+----------------------------------------------------------------------------------------------------------------------------
+Histogram1D_accumulate_l_data<uint64_t ,double>/1/268435456/256   1843876123 ns   1843750000 ns            1 Sa/Sec=145.592M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,double>/1/268435456/1024  1859496832 ns   1859375000 ns            1 Sa/Sec=144.369M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,double>/1/268435456/4096  1874982119 ns   1875000000 ns            1 Sa/Sec=143.166M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,double>/2/268435456/256    984445333 ns    984375000 ns            1 Sa/Sec=272.696M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,double>/2/268435456/1024   968839169 ns    968750000 ns            1 Sa/Sec=277.095M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,double>/2/268435456/4096   968837738 ns    968750000 ns            1 Sa/Sec=277.095M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,double>/4/268435456/256    515668869 ns    500000000 ns            1 Sa/Sec=536.871M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,double>/4/268435456/1024   515664101 ns    500000000 ns            1 Sa/Sec=536.871M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,double>/4/268435456/4096   515692949 ns    515625000 ns            1 Sa/Sec=520.602M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,double>/6/268435456/256    335952997 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,double>/6/268435456/1024   335957885 ns    328125000 ns            2 Sa/Sec=818.089M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,double>/6/268435456/4096   335959554 ns    328125000 ns            2 Sa/Sec=818.089M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,double>/8/268435456/256    255219698 ns    244791667 ns            3 Sa/Sec=1096.59M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,double>/8/268435456/1024   255219698 ns    250000000 ns            3 Sa/Sec=1073.74M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,double>/8/268435456/4096   250011444 ns    244791667 ns            3 Sa/Sec=1096.59M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,double>/10/268435456/256   203133663 ns    197916667 ns            3 Sa/Sec=1.35631G/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,double>/10/268435456/1024  203134060 ns    203125000 ns            3 Sa/Sec=1.32153G/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,double>/10/268435456/4096  203134537 ns    199218750 ns            4 Sa/Sec=1.34744G/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,double>/12/268435456/256   183607221 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,double>/12/268435456/1024  175788939 ns    167968750 ns            4 Sa/Sec=1.59813G/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,double>/12/268435456/4096  175763786 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,double>/1/268435456/256   1890752077 ns   1890625000 ns            1 Sa/Sec=141.982M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,double>/1/268435456/1024  1843881369 ns   1843750000 ns            1 Sa/Sec=145.592M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,double>/1/268435456/4096  1859551907 ns   1859375000 ns            1 Sa/Sec=144.369M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,double>/2/268435456/256    968815088 ns    968750000 ns            1 Sa/Sec=277.095M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,double>/2/268435456/1024   968817949 ns    968750000 ns            1 Sa/Sec=277.095M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,double>/2/268435456/4096   984294891 ns    984375000 ns            1 Sa/Sec=272.696M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,double>/4/268435456/256    500133991 ns    500000000 ns            1 Sa/Sec=536.871M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,double>/4/268435456/1024   515600920 ns    515625000 ns            1 Sa/Sec=520.602M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,double>/4/268435456/4096   515752077 ns    515625000 ns            1 Sa/Sec=520.602M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,double>/6/268435456/256    343770504 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,double>/6/268435456/1024   328147411 ns    328125000 ns            2 Sa/Sec=818.089M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,double>/6/268435456/4096   335951567 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,double>/8/268435456/256    255220016 ns    255208333 ns            3 Sa/Sec=1051.83M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,double>/8/268435456/1024   255225658 ns    250000000 ns            3 Sa/Sec=1073.74M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,double>/8/268435456/4096   250017722 ns    244791667 ns            3 Sa/Sec=1096.59M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,double>/10/268435456/256   203133583 ns    197916667 ns            3 Sa/Sec=1.35631G/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,double>/10/268435456/1024  203134616 ns    203125000 ns            3 Sa/Sec=1.32153G/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,double>/10/268435456/4096  203133742 ns    203125000 ns            3 Sa/Sec=1.32153G/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,double>/12/268435456/256   167976260 ns    167968750 ns            4 Sa/Sec=1.59813G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,double>/12/268435456/1024  171914518 ns    167968750 ns            4 Sa/Sec=1.59813G/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,double>/12/268435456/4096  179695725 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,float>/1/268435456/256    1953255892 ns   1953125000 ns            1 Sa/Sec=137.439M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,float>/1/268435456/1024   1953255892 ns   1953125000 ns            1 Sa/Sec=137.439M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,float>/1/268435456/4096   2000004053 ns   2000000000 ns            1 Sa/Sec=134.218M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,float>/2/268435456/256     984538078 ns    984375000 ns            1 Sa/Sec=272.696M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,float>/2/268435456/1024    984562159 ns    984375000 ns            1 Sa/Sec=272.696M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,float>/2/268435456/4096   1000066042 ns   1000000000 ns            1 Sa/Sec=268.435M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,float>/4/268435456/256     531271935 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,float>/4/268435456/1024    531270981 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,float>/4/268435456/4096    531276941 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,float>/6/268435456/256     351577997 ns    351562500 ns            2 Sa/Sec=763.55M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,float>/6/268435456/1024    351577997 ns    351562500 ns            2 Sa/Sec=763.55M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,float>/6/268435456/4096    351586461 ns    343750000 ns            2 Sa/Sec=780.903M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,float>/8/268435456/256     265637636 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,float>/8/268435456/1024    265643358 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,float>/8/268435456/4096    265637000 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,float>/10/268435456/256    213550727 ns    208333333 ns            3 Sa/Sec=1.28849G/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,float>/10/268435456/1024   213550329 ns    208333333 ns            3 Sa/Sec=1.28849G/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,float>/10/268435456/4096   218764385 ns    218750000 ns            3 Sa/Sec=1.22713G/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,float>/12/268435456/256    183601975 ns    179687500 ns            4 Sa/Sec=1.4939G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram1D_accumulate_l_data<uint64_t ,float>/12/268435456/1024   183577955 ns    175781250 ns            4 Sa/Sec=1.5271G/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram1D_accumulate_l_data<uint64_t ,float>/12/268435456/4096   187508583 ns    175781250 ns            4 Sa/Sec=1.5271G/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,float>/1/268435456/256    2000130892 ns   1968750000 ns            1 Sa/Sec=136.348M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,float>/1/268435456/1024   1968883991 ns   1968750000 ns            1 Sa/Sec=136.348M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,float>/1/268435456/4096   1984583378 ns   1984375000 ns            1 Sa/Sec=135.275M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,float>/2/268435456/256    1015712023 ns   1015625000 ns            1 Sa/Sec=264.306M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,float>/2/268435456/1024   1031305075 ns   1031250000 ns            1 Sa/Sec=260.301M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,float>/2/268435456/4096   1031311035 ns   1031250000 ns            1 Sa/Sec=260.301M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,float>/4/268435456/256     531285048 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,float>/4/268435456/1024    531180620 ns    515625000 ns            1 Sa/Sec=520.602M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,float>/4/268435456/4096    531270742 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,float>/6/268435456/256     351587534 ns    351562500 ns            2 Sa/Sec=763.55M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,float>/6/268435456/1024    351577997 ns    343750000 ns            2 Sa/Sec=780.903M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,float>/6/268435456/4096    359391570 ns    359375000 ns            2 Sa/Sec=746.951M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,float>/8/268435456/256     265636683 ns    260416667 ns            3 Sa/Sec=1030.79M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,float>/8/268435456/1024    265637398 ns    250000000 ns            3 Sa/Sec=1073.74M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,float>/8/268435456/4096    265636921 ns    255208333 ns            3 Sa/Sec=1051.83M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,float>/10/268435456/256    223977645 ns    218750000 ns            3 Sa/Sec=1.22713G/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,float>/10/268435456/1024   213556290 ns    213541667 ns            3 Sa/Sec=1.25706G/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,float>/10/268435456/4096   213550727 ns    208333333 ns            3 Sa/Sec=1.28849G/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint32_t ,float>/12/268435456/256    207045019 ns    175781250 ns            4 Sa/Sec=1.5271G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram1D_accumulate_l_data<uint32_t ,float>/12/268435456/1024   183605969 ns    175781250 ns            4 Sa/Sec=1.5271G/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram1D_accumulate_l_data<uint32_t ,float>/12/268435456/4096   183601975 ns    183593750 ns            4 Sa/Sec=1.46212G/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       531207085 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       531385899 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       531437159 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       531288147 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       270886421 ns    270833333 ns            3 Sa/Sec=991.146M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       276093562 ns    276041667 ns            3 Sa/Sec=972.445M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       270883004 ns    270833333 ns            3 Sa/Sec=991.146M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       273505449 ns    273437500 ns            2 Sa/Sec=981.707M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       143238147 ns    140625000 ns            6 Sa/Sec=1.90887G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       143760204 ns    137500000 ns            5 Sa/Sec=1.95226G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       140634537 ns    140625000 ns            5 Sa/Sec=1.90887G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       140633440 ns    140625000 ns            5 Sa/Sec=1.90887G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456        95986298 ns     93750000 ns            7 Sa/Sec=2.86331G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456        95986434 ns     91517857 ns            7 Sa/Sec=2.93315G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456        98218577 ns     95982143 ns            7 Sa/Sec=2.79672G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456        95986298 ns     93750000 ns            7 Sa/Sec=2.86331G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456        74655957 ns     67708333 ns            9 Sa/Sec=3.96459G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456        72904110 ns     64236111 ns            9 Sa/Sec=4.17889G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456        74656116 ns     67708333 ns            9 Sa/Sec=3.96459G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456        74656063 ns     71180556 ns            9 Sa/Sec=3.77119G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456       59661822 ns     56818182 ns           11 Sa/Sec=4.72446G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456       59377313 ns     57812500 ns           10 Sa/Sec=4.64321G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456       59661540 ns     55397727 ns           11 Sa/Sec=4.8456G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456       59661735 ns     56818182 ns           11 Sa/Sec=4.72446G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456       54162947 ns     50000000 ns           15 Sa/Sec=5.36871G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456       51044019 ns     47916667 ns           15 Sa/Sec=5.60213G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456       53556510 ns     46875000 ns           14 Sa/Sec=5.72662G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456       53312414 ns     48713235 ns           17 Sa/Sec=5.51052G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456       531286001 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456       531285048 ns    500000000 ns            1 Sa/Sec=536.871M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456       531268835 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456       531382084 ns    531250000 ns            1 Sa/Sec=505.29M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       273505569 ns    273437500 ns            2 Sa/Sec=981.707M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       276027600 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       270816326 ns    270833333 ns            3 Sa/Sec=991.146M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       276061932 ns    276041667 ns            3 Sa/Sec=972.445M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       143778419 ns    140625000 ns            5 Sa/Sec=1.90887G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       143759966 ns    140625000 ns            5 Sa/Sec=1.90887G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       143236160 ns    143229167 ns            6 Sa/Sec=1.87417G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       140631580 ns    137500000 ns            5 Sa/Sec=1.95226G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456        95986162 ns     93750000 ns            7 Sa/Sec=2.86331G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456        98233257 ns     95982143 ns            7 Sa/Sec=2.79672G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456        95965249 ns     93750000 ns            7 Sa/Sec=2.86331G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456        93756437 ns     89285714 ns            7 Sa/Sec=3.00648G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456        72446520 ns     65340909 ns           11 Sa/Sec=4.10823G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456        73867104 ns     68181818 ns           11 Sa/Sec=3.93705G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456        72919899 ns     71180556 ns            9 Sa/Sec=3.77119G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456        74681812 ns     72916667 ns            9 Sa/Sec=3.6814G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456       58240999 ns     55397727 ns           11 Sa/Sec=4.8456G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456       58241107 ns     53977273 ns           11 Sa/Sec=4.97312G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456       59377265 ns     50000000 ns           10 Sa/Sec=5.36871G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456       59379101 ns     50000000 ns           10 Sa/Sec=5.36871G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456       51466395 ns     46875000 ns           17 Sa/Sec=5.72662G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456       51467054 ns     46875000 ns           17 Sa/Sec=5.72662G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456       51044083 ns     45833333 ns           15 Sa/Sec=5.85677G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456       52086274 ns     44791667 ns           15 Sa/Sec=5.99298G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456      609418869 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456      609323978 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456      625041962 ns    625000000 ns            1 Sa/Sec=429.497M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456      609415054 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      320451975 ns    320312500 ns            2 Sa/Sec=838.042M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      320277929 ns    312500000 ns            2 Sa/Sec=858.993M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      320338488 ns    320312500 ns            2 Sa/Sec=838.042M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      320337057 ns    320312500 ns            2 Sa/Sec=838.042M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      164072931 ns    160156250 ns            4 Sa/Sec=1.67608G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      167918980 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      164070010 ns    160156250 ns            4 Sa/Sec=1.67608G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      164035022 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      109380126 ns    101562500 ns            6 Sa/Sec=2.64306G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      111984173 ns    111979167 ns            6 Sa/Sec=2.39719G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      111968994 ns    109375000 ns            6 Sa/Sec=2.45427G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      111984134 ns    109375000 ns            6 Sa/Sec=2.45427G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456       86811569 ns     81597222 ns            9 Sa/Sec=3.28976G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456       86809688 ns     79861111 ns            9 Sa/Sec=3.36128G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456       86809211 ns     83333333 ns            9 Sa/Sec=3.22123G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456       85073418 ns     78125000 ns            9 Sa/Sec=3.43597G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456      69605437 ns     68181818 ns           11 Sa/Sec=3.93705G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456      69605437 ns     68181818 ns           11 Sa/Sec=3.93705G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456      69447226 ns     67708333 ns            9 Sa/Sec=3.96459G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456      68752694 ns     68750000 ns           10 Sa/Sec=3.90452G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456      61081995 ns     56818182 ns           11 Sa/Sec=4.72446G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456      63924833 ns     59659091 ns           11 Sa/Sec=4.49949G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456      63923446 ns     56818182 ns           11 Sa/Sec=4.72446G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456      62512810 ns     55397727 ns           11 Sa/Sec=4.8456G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456      625044823 ns    625000000 ns            1 Sa/Sec=429.497M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456      609421253 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456      609414816 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456      609417915 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=1
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      304756999 ns    304687500 ns            2 Sa/Sec=881.019M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      304809093 ns    304687500 ns            2 Sa/Sec=881.019M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      304759026 ns    304687500 ns            2 Sa/Sec=881.019M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      304757476 ns    304687500 ns            2 Sa/Sec=881.019M/s l_data [Sa]=268.435M n_threads=2
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      164073527 ns    156250000 ns            4 Sa/Sec=1.71799G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      164072514 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      164072990 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      167978466 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=4
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      109379371 ns    106770833 ns            6 Sa/Sec=2.51413G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      111611673 ns     93750000 ns            7 Sa/Sec=2.86331G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      109379649 ns    109375000 ns            6 Sa/Sec=2.45427G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      109379848 ns    109375000 ns            6 Sa/Sec=2.45427G/s l_data [Sa]=268.435M n_threads=6
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456       85231261 ns     79545455 ns           11 Sa/Sec=3.37462G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456       85073551 ns     83333333 ns            9 Sa/Sec=3.22123G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456       84824426 ns     84821429 ns            7 Sa/Sec=3.16471G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456       85073445 ns     83333333 ns            9 Sa/Sec=3.22123G/s l_data [Sa]=268.435M n_threads=8
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456      69447438 ns     67708333 ns            9 Sa/Sec=3.96459G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456      69605437 ns     65340909 ns           11 Sa/Sec=4.10823G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456      69605459 ns     66761364 ns           11 Sa/Sec=4.02082G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456      68186175 ns     66761364 ns           11 Sa/Sec=4.02082G/s l_data [Sa]=268.435M n_threads=10
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456      58240804 ns     56818182 ns           11 Sa/Sec=4.72446G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456      59661735 ns     56818182 ns           11 Sa/Sec=4.72446G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456      61082341 ns     53977273 ns           11 Sa/Sec=4.97312G/s l_data [Sa]=268.435M n_threads=12
+Histogram1D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456      60939908 ns     57812500 ns           10 Sa/Sec=4.64321G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,double>/1/268435456/256   2437660217 ns   2437500000 ns            1 Sa/Sec=110.127M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,double>/1/268435456/1024  2609546900 ns   2609375000 ns            1 Sa/Sec=102.873M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,double>/1/268435456/4096  4812930822 ns   4812500000 ns            1 Sa/Sec=55.7788M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,double>/2/268435456/256   1218930960 ns   1218750000 ns            1 Sa/Sec=220.255M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,double>/2/268435456/1024  1281339884 ns   1281250000 ns            1 Sa/Sec=209.511M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,double>/2/268435456/4096  2750283003 ns   2734375000 ns            1 Sa/Sec=98.1707M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,double>/4/268435456/256    687299967 ns    656250000 ns            1 Sa/Sec=409.045M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,double>/4/268435456/1024   718800783 ns    718750000 ns            1 Sa/Sec=373.475M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,double>/4/268435456/4096  2515782118 ns   2500000000 ns            1 Sa/Sec=107.374M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,double>/6/268435456/256    437521577 ns    437500000 ns            2 Sa/Sec=613.567M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,double>/6/268435456/1024   484405518 ns    468750000 ns            2 Sa/Sec=572.662M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,double>/6/268435456/4096  2437670231 ns   2109375000 ns            1 Sa/Sec=127.258M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,double>/8/268435456/256    351577997 ns    351562500 ns            2 Sa/Sec=763.55M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,double>/8/268435456/1024   390651464 ns    367187500 ns            2 Sa/Sec=731.058M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,double>/8/268435456/4096  2312649965 ns   2312500000 ns            1 Sa/Sec=116.08M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,double>/10/268435456/256   281260967 ns    257812500 ns            2 Sa/Sec=1041.2M/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,double>/10/268435456/1024  335952044 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,double>/10/268435456/4096 2609549046 ns   2609375000 ns            1 Sa/Sec=102.873M/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,double>/12/268435456/256   239599387 ns    218750000 ns            3 Sa/Sec=1.22713G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,double>/12/268435456/1024  291681051 ns    286458333 ns            3 Sa/Sec=937.084M/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,double>/12/268435456/4096 2359568834 ns   2328125000 ns            1 Sa/Sec=115.301M/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,double>/1/268435456/256   2359530926 ns   2359375000 ns            1 Sa/Sec=113.774M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,double>/1/268435456/1024  2453286886 ns   2453125000 ns            1 Sa/Sec=109.426M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,double>/1/268435456/4096  4640939951 ns   4656250000 ns            1 Sa/Sec=57.6506M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,double>/2/268435456/256   1218847036 ns   1218750000 ns            1 Sa/Sec=220.255M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,double>/2/268435456/1024  1281434059 ns   1281250000 ns            1 Sa/Sec=209.511M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,double>/2/268435456/4096  3093950987 ns   3093750000 ns            1 Sa/Sec=86.767M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,double>/4/268435456/256    640667915 ns    640625000 ns            1 Sa/Sec=419.021M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,double>/4/268435456/1024   687529087 ns    687500000 ns            1 Sa/Sec=390.452M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,double>/4/268435456/4096  2437649965 ns   2390625000 ns            1 Sa/Sec=112.287M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,double>/6/268435456/256    429716945 ns    421875000 ns            2 Sa/Sec=636.291M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,double>/6/268435456/1024   492222905 ns    460937500 ns            2 Sa/Sec=582.368M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,double>/6/268435456/4096  2375147104 ns   2312500000 ns            1 Sa/Sec=116.08M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,double>/8/268435456/256    343765497 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,double>/8/268435456/1024   390642643 ns    367187500 ns            2 Sa/Sec=731.058M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,double>/8/268435456/4096  2312639952 ns   2296875000 ns            1 Sa/Sec=116.87M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,double>/10/268435456/256   281261086 ns    281250000 ns            2 Sa/Sec=954.437M/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,double>/10/268435456/1024  328139424 ns    320312500 ns            2 Sa/Sec=838.042M/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,double>/10/268435456/4096 2297020197 ns   2218750000 ns            1 Sa/Sec=120.985M/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,double>/12/268435456/256   244844675 ns    239583333 ns            3 Sa/Sec=1.12043G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,double>/12/268435456/1024  304710507 ns    289062500 ns            2 Sa/Sec=928.642M/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,double>/12/268435456/4096 2312677860 ns   2265625000 ns            1 Sa/Sec=118.482M/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,float>/1/268435456/256    2484539032 ns   2484375000 ns            1 Sa/Sec=108.049M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,float>/1/268435456/1024   2578299284 ns   2578125000 ns            1 Sa/Sec=104.12M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,float>/1/268435456/4096   4515830040 ns   4515625000 ns            1 Sa/Sec=59.4459M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,float>/2/268435456/256    1265707970 ns   1265625000 ns            1 Sa/Sec=212.097M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,float>/2/268435456/1024   1343751907 ns   1343750000 ns            1 Sa/Sec=199.766M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,float>/2/268435456/4096   3609635115 ns   3578125000 ns            1 Sa/Sec=75.0213M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,float>/4/268435456/256     672042131 ns    671875000 ns            1 Sa/Sec=399.532M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,float>/4/268435456/1024    718781948 ns    687500000 ns            1 Sa/Sec=390.452M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,float>/4/268435456/4096   2453278065 ns   2437500000 ns            1 Sa/Sec=110.127M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,float>/6/268435456/256     460969925 ns    445312500 ns            2 Sa/Sec=602.802M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,float>/6/268435456/1024    460970521 ns    453125000 ns            2 Sa/Sec=592.409M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,float>/6/268435456/4096   2156401873 ns   2125000000 ns            1 Sa/Sec=126.323M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,float>/8/268435456/256     359391451 ns    351562500 ns            2 Sa/Sec=763.55M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,float>/8/268435456/1024    375016451 ns    359375000 ns            2 Sa/Sec=746.951M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,float>/8/268435456/4096   2265764952 ns   2109375000 ns            1 Sa/Sec=127.258M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,float>/10/268435456/256    289073467 ns    281250000 ns            2 Sa/Sec=954.437M/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,float>/10/268435456/1024   312518001 ns    296875000 ns            2 Sa/Sec=904.204M/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,float>/10/268435456/4096  2265764236 ns   2234375000 ns            1 Sa/Sec=120.139M/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,float>/12/268435456/256    244813999 ns    192708333 ns            3 Sa/Sec=1.39296G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram2D_accumulate_l_data<uint64_t ,float>/12/268435456/1024   265643040 ns    255208333 ns            3 Sa/Sec=1051.83M/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram2D_accumulate_l_data<uint64_t ,float>/12/268435456/4096  2359564066 ns   2125000000 ns            1 Sa/Sec=126.323M/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,float>/1/268435456/256    2468919039 ns   2468750000 ns            1 Sa/Sec=108.733M/s l_data [Sa]=268.435M n_threads=1 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,float>/1/268435456/1024   2578482151 ns   2578125000 ns            1 Sa/Sec=104.12M/s l_data [Sa]=268.435M n_threads=1 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,float>/1/268435456/4096   4406540155 ns   4406250000 ns            1 Sa/Sec=60.9215M/s l_data [Sa]=268.435M n_threads=1 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,float>/2/268435456/256    1265716076 ns   1265625000 ns            1 Sa/Sec=212.097M/s l_data [Sa]=268.435M n_threads=2 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,float>/2/268435456/1024   1281342983 ns   1281250000 ns            1 Sa/Sec=209.511M/s l_data [Sa]=268.435M n_threads=2 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,float>/2/268435456/4096   2500288010 ns   2500000000 ns            1 Sa/Sec=107.374M/s l_data [Sa]=268.435M n_threads=2 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,float>/4/268435456/256     671918154 ns    671875000 ns            1 Sa/Sec=399.532M/s l_data [Sa]=268.435M n_threads=4 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,float>/4/268435456/1024    703155994 ns    703125000 ns            1 Sa/Sec=381.775M/s l_data [Sa]=268.435M n_threads=4 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,float>/4/268435456/4096   2328293085 ns   2234375000 ns            1 Sa/Sec=120.139M/s l_data [Sa]=268.435M n_threads=4 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,float>/6/268435456/256     468780518 ns    460937500 ns            2 Sa/Sec=582.368M/s l_data [Sa]=268.435M n_threads=6 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,float>/6/268435456/1024    476603866 ns    468750000 ns            2 Sa/Sec=572.662M/s l_data [Sa]=268.435M n_threads=6 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,float>/6/268435456/4096   2140756369 ns   2125000000 ns            1 Sa/Sec=126.323M/s l_data [Sa]=268.435M n_threads=6 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,float>/8/268435456/256     351577997 ns    328125000 ns            2 Sa/Sec=818.089M/s l_data [Sa]=268.435M n_threads=8 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,float>/8/268435456/1024    367213488 ns    351562500 ns            2 Sa/Sec=763.55M/s l_data [Sa]=268.435M n_threads=8 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,float>/8/268435456/4096   2218902111 ns   2140625000 ns            1 Sa/Sec=125.401M/s l_data [Sa]=268.435M n_threads=8 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,float>/10/268435456/256    281260967 ns    281250000 ns            2 Sa/Sec=954.437M/s l_data [Sa]=268.435M n_threads=10 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,float>/10/268435456/1024   307313363 ns    286458333 ns            3 Sa/Sec=937.084M/s l_data [Sa]=268.435M n_threads=10 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,float>/10/268435456/4096  2187636137 ns   2156250000 ns            1 Sa/Sec=124.492M/s l_data [Sa]=268.435M n_threads=10 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint32_t ,float>/12/268435456/256    244802952 ns    229166667 ns            3 Sa/Sec=1.17135G/s l_data [Sa]=268.435M n_threads=12 nofbins=256
+Histogram2D_accumulate_l_data<uint32_t ,float>/12/268435456/1024   265637398 ns    255208333 ns            3 Sa/Sec=1051.83M/s l_data [Sa]=268.435M n_threads=12 nofbins=1024
+Histogram2D_accumulate_l_data<uint32_t ,float>/12/268435456/4096  2234506845 ns   2203125000 ns            1 Sa/Sec=121.843M/s l_data [Sa]=268.435M n_threads=12 nofbins=4.096k
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       953190804 ns    953125000 ns            1 Sa/Sec=281.637M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       937563896 ns    937500000 ns            1 Sa/Sec=286.331M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       953187704 ns    937500000 ns            1 Sa/Sec=286.331M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/1/268435456       953190088 ns    953125000 ns            1 Sa/Sec=281.637M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       546911001 ns    546875000 ns            1 Sa/Sec=490.853M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       484407902 ns    468750000 ns            2 Sa/Sec=572.662M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       484469414 ns    484375000 ns            2 Sa/Sec=554.189M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/2/268435456       476651549 ns    476562500 ns            2 Sa/Sec=563.274M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       265642722 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       265642643 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       265676022 ns    255208333 ns            3 Sa/Sec=1051.83M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/4/268435456       265642643 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456       187508821 ns    179687500 ns            4 Sa/Sec=1.4939G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456       175793290 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456       175794005 ns    175781250 ns            4 Sa/Sec=1.5271G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/6/268435456       187555969 ns    183593750 ns            4 Sa/Sec=1.46212G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456       148443282 ns    144531250 ns            4 Sa/Sec=1.85728G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456       156260490 ns    148437500 ns            4 Sa/Sec=1.80841G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456       156260586 ns    143750000 ns            5 Sa/Sec=1.86738G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/8/268435456       148443401 ns    136718750 ns            4 Sa/Sec=1.96341G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456      127592643 ns    109375000 ns            6 Sa/Sec=2.45427G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456      125005523 ns    119791667 ns            6 Sa/Sec=2.24085G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456      130213817 ns    109375000 ns            6 Sa/Sec=2.45427G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/10/268435456      127615650 ns    106770833 ns            6 Sa/Sec=2.51413G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456      114589810 ns    104166667 ns            6 Sa/Sec=2.57698G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456      111984173 ns    109375000 ns            6 Sa/Sec=2.45427G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456      107163668 ns     98214286 ns            7 Sa/Sec=2.73316G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,uint8_t>/12/268435456      104915585 ns    100446429 ns            7 Sa/Sec=2.67242G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456       937561989 ns    937500000 ns            1 Sa/Sec=286.331M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456      1046944857 ns   1046875000 ns            1 Sa/Sec=256.416M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456       953191996 ns    953125000 ns            1 Sa/Sec=281.637M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/1/268435456      1046944857 ns   1046875000 ns            1 Sa/Sec=256.416M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       500035048 ns    500000000 ns            1 Sa/Sec=536.871M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       484481454 ns    484375000 ns            2 Sa/Sec=554.189M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       476645947 ns    476562500 ns            2 Sa/Sec=563.274M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/2/268435456       476646304 ns    476562500 ns            2 Sa/Sec=563.274M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       265642961 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       286471605 ns    265625000 ns            3 Sa/Sec=1010.58M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       281270027 ns    250000000 ns            3 Sa/Sec=1073.74M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/4/268435456       286478678 ns    255208333 ns            3 Sa/Sec=1051.83M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456       191409051 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456       187512755 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456       187536001 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/6/268435456       191414714 ns    175781250 ns            4 Sa/Sec=1.5271G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456       150010347 ns    137500000 ns            5 Sa/Sec=1.95226G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456       159386015 ns    137500000 ns            5 Sa/Sec=1.95226G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456       162511444 ns    150000000 ns            5 Sa/Sec=1.78957G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/8/268435456       156260252 ns    144531250 ns            4 Sa/Sec=1.85728G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456      135422866 ns    117187500 ns            6 Sa/Sec=2.29065G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456      122401158 ns    111979167 ns            6 Sa/Sec=2.39719G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456      122401516 ns    119791667 ns            6 Sa/Sec=2.24085G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/10/268435456      122401158 ns    111979167 ns            6 Sa/Sec=2.39719G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456      104171475 ns     98958333 ns            6 Sa/Sec=2.71261G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456      127238001 ns     89285714 ns            7 Sa/Sec=3.00648G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456      104915551 ns     98214286 ns            7 Sa/Sec=2.73316G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint8_t>/12/268435456      104915721 ns    100446429 ns            7 Sa/Sec=2.67242G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456     1312591791 ns   1312500000 ns            1 Sa/Sec=204.522M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456     1312592983 ns   1312500000 ns            1 Sa/Sec=204.522M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456     1312589884 ns   1312500000 ns            1 Sa/Sec=204.522M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/1/268435456     1250082731 ns   1250000000 ns            1 Sa/Sec=214.748M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      625037193 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      609579086 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      625046015 ns    625000000 ns            1 Sa/Sec=429.497M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/2/268435456      640768051 ns    640625000 ns            1 Sa/Sec=419.021M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      343775511 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      343777061 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      335952520 ns    312500000 ns            2 Sa/Sec=858.993M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/4/268435456      335953474 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      239593665 ns    239583333 ns            3 Sa/Sec=1.12043G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      223970334 ns    208333333 ns            3 Sa/Sec=1.28849G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      229179939 ns    229166667 ns            3 Sa/Sec=1.17135G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/6/268435456      234345754 ns    223958333 ns            3 Sa/Sec=1.1986G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456      207088292 ns    199218750 ns            4 Sa/Sec=1.34744G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456      213550011 ns    187500000 ns            3 Sa/Sec=1.43166G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456      213586410 ns    187500000 ns            3 Sa/Sec=1.43166G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/8/268435456      213549932 ns    192708333 ns            3 Sa/Sec=1.39296G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456     175787985 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456     179700255 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456     187508047 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/10/268435456     179723978 ns    167968750 ns            4 Sa/Sec=1.59813G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456     171882987 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456     167975008 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456     203138232 ns    144531250 ns            4 Sa/Sec=1.85728G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint64_t ,uint16_t>/12/268435456     179699500 ns    166666667 ns            6 Sa/Sec=1.61061G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456     1281334162 ns   1281250000 ns            1 Sa/Sec=209.511M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456     1296965837 ns   1296875000 ns            1 Sa/Sec=206.986M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456     1265693188 ns   1265625000 ns            1 Sa/Sec=212.097M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/1/268435456     1281333923 ns   1281250000 ns            1 Sa/Sec=209.511M/s l_data [Sa]=268.435M n_threads=1
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      640814066 ns    640625000 ns            1 Sa/Sec=419.021M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      609571934 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      640671015 ns    640625000 ns            1 Sa/Sec=419.021M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/2/268435456      640671015 ns    609375000 ns            1 Sa/Sec=440.509M/s l_data [Sa]=268.435M n_threads=2
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      343777537 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      335958004 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      335940957 ns    320312500 ns            2 Sa/Sec=838.042M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/4/268435456      335958481 ns    335937500 ns            2 Sa/Sec=799.064M/s l_data [Sa]=268.435M n_threads=4
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      250015338 ns    244791667 ns            3 Sa/Sec=1096.59M/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      229183992 ns    218750000 ns            3 Sa/Sec=1.22713G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      234428326 ns    229166667 ns            3 Sa/Sec=1.17135G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/6/268435456      234392087 ns    218750000 ns            3 Sa/Sec=1.22713G/s l_data [Sa]=268.435M n_threads=6
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456      210951209 ns    191406250 ns            4 Sa/Sec=1.40244G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456      210946500 ns    195312500 ns            4 Sa/Sec=1.37439G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456      207040012 ns    203125000 ns            4 Sa/Sec=1.32153G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/8/268435456      208340327 ns    197916667 ns            3 Sa/Sec=1.35631G/s l_data [Sa]=268.435M n_threads=8
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456     175008011 ns    175000000 ns            5 Sa/Sec=1.53392G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456     179698765 ns    175781250 ns            4 Sa/Sec=1.5271G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456     179699242 ns    167968750 ns            4 Sa/Sec=1.59813G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/10/268435456     175788522 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=10
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456     171885729 ns    160156250 ns            4 Sa/Sec=1.67608G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456     167975783 ns    164062500 ns            4 Sa/Sec=1.63618G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456     171881735 ns    171875000 ns            4 Sa/Sec=1.56181G/s l_data [Sa]=268.435M n_threads=12
+Histogram2D_accumulate_l_data<uint32_t ,uint16_t>/12/268435456     175788701 ns    156250000 ns            4 Sa/Sec=1.71799G/s l_data [Sa]=268.435M n_threads=12
