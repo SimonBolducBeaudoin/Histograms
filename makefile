@@ -39,7 +39,6 @@ POSITION_INDEP = -fPIC
 SHARED = -shared
 
 OMP = -fopenmp -fopenmp-simd
-FFTW= -lfftw3
 MATH = -lm
 
 PY = $(OS:Windows_NT=/c/Anaconda2/)python
