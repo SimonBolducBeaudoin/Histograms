@@ -17,7 +17,7 @@ Histogram<BinType,DataType>::Histogram( int n_threads )
 :
 	nofbins( 1<<(8*sizeof(ConstructorType)) ) ,
 	n_threads(n_threads),
-	histogram	(Multi_array<BinType,1> ( 1<<(8*sizeof(ConstructorType)) )),
+	histogram	( Multi_array<BinType,1>(1<<(8*sizeof(ConstructorType))) ),
 	max(1.0), bit(8)
 {	
 	omp_set_num_threads(n_threads);
@@ -30,7 +30,7 @@ Histogram<BinType,DataType>::Histogram( int n_threads , uint bit )
 :
 	nofbins( 1<<bit ) ,
 	n_threads(n_threads),
-	histogram	(Multi_array<BinType,1> ( 			1<<bit )),
+	histogram	( Multi_array<BinType,1>(1<<bit) ),
 	max(1.0), bit(bit)
 {	
 	omp_set_num_threads(n_threads);
@@ -114,10 +114,9 @@ void Histogram<BIN_TYPE,uint8_t>::accumulate( uint8_t* data,  uint64_t L_data )\
 #define ACCUMULATE_UINT16(BIN_TYPE,UNROLL)\
 template<>\
 template<>\
-void Histogram<BIN_TYPE,uint16_t>::accumulate( uint16_t* data,  uint64_t L_data)\
+void Histogram<BIN_TYPE,uint16_t>::accumulate( uint16_t* data, uint64_t L_data )\
 {\
 	int b = bit;\
-	int tail = 16-b;\
 	BIN_TYPE* histogram_local = histogram.get_ptr();\
     _Pragma("omp parallel")\
     {\
@@ -128,23 +127,51 @@ void Histogram<BIN_TYPE,uint16_t>::accumulate( uint16_t* data,  uint64_t L_data)
 			PRAGMA_GCC_UNROLL(UNROLL)\
 			for (uint64_t j=0; j<UNROLL; j++) \
 			{\
-				histogram_local[ data[i+j] >> tail ]++; \
+				histogram_local[ data[i+j] ]++; \
 			}\
 		}\
     }\
 	for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
 	{\
-		histogram[ data[i] >> tail ]++;\
+		histogram[ data[i] ]++;\
 	}\
-}\
+}
+
+// template<>
+// template<>
+// void Histogram<BIN_TYPE,uint16_t>::accumulate( uint16_t* data, uint64_t L_data , int tail )
+// {
+	// int b = bit;
+	// int tail = 16-b;
+	// BIN_TYPE* histogram_local = histogram.get_ptr();
+    // _Pragma("omp parallel")
+    // {
+        // manage_thread_affinity();
+        // _Pragma( "omp for reduction(+:histogram_local[:1<<b])" )
+		// for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)
+		// {
+			// PRAGMA_GCC_UNROLL(UNROLL)
+			// for (uint64_t j=0; j<UNROLL; j++)
+			// {
+				// histogram_local[ data[i+j] >> tail ]++;
+			// }
+		// }
+    // }
+	// for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)
+	// {
+		// histogram[ data[i] >> tail ]++;
+	// }
+// }
+
+
 
 #define ACCUMULATE_INT8(BIN_TYPE,UNROLL)\
 template<>\
 template<>\
 void Histogram<BIN_TYPE,int8_t>::accumulate( int8_t* data,  uint64_t L_data )\
 {\
+    int min_val = 1<<(8-1);\
 	BIN_TYPE* histogram_local = histogram.get_ptr();\
-	uint8_t* data_unsigned = (uint8_t *) data;\
     _Pragma("omp parallel")\
     {\
         manage_thread_affinity();\
@@ -154,25 +181,24 @@ void Histogram<BIN_TYPE,int8_t>::accumulate( int8_t* data,  uint64_t L_data )\
 			PRAGMA_GCC_UNROLL(UNROLL)\
 			for (uint64_t j=0; j<UNROLL; j++) \
 			{\
-				histogram_local[ data_unsigned[i+j] ]++;\
+				histogram_local[ (int)(data[i+j])+min_val ]++;\
 			}\
 		}\
     }\
 	for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
 	{\
-		histogram[ data_unsigned[i] ]++;\
+		histogram[ (int)(data[i])+min_val  ]++;\
 	}\
 }\
 
 #define ACCUMULATE_INT16(BIN_TYPE,UNROLL)\
 template<>\
 template<>\
-void Histogram<BIN_TYPE, int16_t>::accumulate( int16_t* data,  uint64_t L_data)\
+void Histogram<BIN_TYPE, int16_t>::accumulate( int16_t* data,  uint64_t L_data )\
 {\
 	int b = bit;\
-	int tail = 16-b;\
+    int min_val = 1<<(b-1);\
 	BIN_TYPE* histogram_local = histogram.get_ptr();\
-	uint16_t* data_unsigned = (uint16_t *) data;\
     _Pragma("omp parallel")\
     {\
         manage_thread_affinity(); \
@@ -182,15 +208,42 @@ void Histogram<BIN_TYPE, int16_t>::accumulate( int16_t* data,  uint64_t L_data)\
 			PRAGMA_GCC_UNROLL(UNROLL)\
 			for (uint64_t j=0; j<UNROLL; j++) \
 			{\
-				histogram_local[ data_unsigned[i+j] >> tail ]++; \
+				histogram_local[ (int)(data[i+j])+min_val ]++; \
 			}\
 		}\
     }\
 	for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)\
 	{\
-		histogram[ data_unsigned[i] ]++;\
+		histogram[ (int)(data[i])+min_val  ]++;\
 	}\
-}\
+}
+
+// template<>
+// template<>
+// void Histogram<BIN_TYPE, int16_t>::accumulate( int16_t* data,  uint64_t L_data , int tail )
+// {
+	// int b = bit;
+	// int tail = 16-b ;
+	// BIN_TYPE* histogram_local = histogram.get_ptr();
+	// uint16_t* data_unsigned = (uint16_t *) data;
+    // _Pragma("omp parallel")
+    // {
+        // manage_thread_affinity();
+        // _Pragma( "omp for reduction(+:histogram_local[:1<<b])" )
+		// for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)
+		// {
+			// PRAGMA_GCC_UNROLL(UNROLL)
+			// for (uint64_t j=0; j<UNROLL; j++)
+			// {
+				// histogram_local[ data_unsigned[i+j] >> tail ]++; 
+			// }
+		// }
+    // }
+	// for (uint64_t i=L_data-(L_data%UNROLL); i<L_data; i++)
+	// {
+		// histogram[ data_unsigned[i] >> tail ]++;
+	// }
+// }
 
 #define ACCUMULATE(BIN_TYPE) \
 ACCUMULATE_DOUBLE(BIN_TYPE);\
@@ -226,19 +279,19 @@ void Histogram<BinType,DataType>::reset()
 /////////
 // SWAPS
 /////////
-template<class BinType,class DataType>
-template<class UnsignedType,class Enable>
-void Histogram<BinType,DataType>::swap()
-{
-	const uint halfsize = 1<<(bit-1);
-	Multi_array<BinType,1> tmp (halfsize);
-	for ( uint i=0; i<halfsize; i++)
-	{
-		tmp[i] = histogram[i];
-		histogram[i] = histogram[i+halfsize];
-		histogram[i+halfsize] = tmp[i];
-	}
-}
+// template<class BinType,class DataType>
+// template<class UnsignedType,class Enable>
+// void Histogram<BinType,DataType>::swap()
+// {
+	// const uint halfsize = 1<<(bit-1);
+	// Multi_array<BinType,1> tmp (halfsize);
+	// for ( uint i=0; i<halfsize; i++)
+	// {
+		// tmp[i] = histogram[i];
+		// histogram[i] = histogram[i+halfsize];
+		// histogram[i+halfsize] = tmp[i];
+	// }
+// }
 
 template<class BinType,class Datatype>
 template<class FloatType>
@@ -260,30 +313,29 @@ inline void Histogram<BinType,Datatype>::float_to_hist( FloatType data, BinType*
 
 template<class BinType,class Datatype>
 template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment( AbscisseType* bins , uint exp , int n_threads )
+double Histogram<BinType,Datatype>::moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip)
 {
-	uint64_t n_total = ::moment( histogram.get_ptr() , bins , nofbins , 0 , 1 , n_threads ) ;
-    return ::moment(histogram.get_ptr() , bins, nofbins, exp, n_total , n_threads );
+	uint64_t n_total = ::moment( histogram.get_ptr() , bins , nofbins , 0 , 1 , n_threads , no_clip ) ;
+    return ::moment( histogram.get_ptr() , bins, nofbins, exp, n_total , n_threads,no_clip );
 }
 template<class BinType,class Datatype>
 template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads )
+double Histogram<BinType,Datatype>::moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
 {
-    return ::moment(histogram.get_ptr(), bins, nofbins, exp, n_total , n_threads );
-}
-
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_no_clip( AbscisseType* bins , uint exp , int n_threads )
-{
-	uint64_t n_total = ::moment( histogram.get_ptr() , bins , nofbins , 0 , 1 , n_threads ) ;
-    return ::moment(histogram.get_ptr() , bins, nofbins, exp, n_total , n_threads );
+    return ::moment( histogram.get_ptr(), bins, nofbins, exp, n_total , n_threads, no_clip );
 }
 template<class BinType,class Datatype>
 template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_no_clip( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads )
+double Histogram<BinType,Datatype>::centered_moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip)
 {
-    return ::moment(histogram.get_ptr(), bins, nofbins, exp, n_total , n_threads );
+	uint64_t n_total = ::moment( histogram.get_ptr() , bins , nofbins , 0 , 1 , n_threads , no_clip ) ;
+    return ::centered_moment( histogram.get_ptr() , bins, nofbins, exp, n_total , n_threads,no_clip );
+}
+template<class BinType,class Datatype>
+template<class AbscisseType>
+double Histogram<BinType,Datatype>::centered_moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
+{
+    return ::centered_moment( histogram.get_ptr(), bins, nofbins, exp, n_total , n_threads, no_clip );
 }
 
 template<class BinType,class Datatype>
@@ -317,7 +369,7 @@ void Histogram<BinType,Datatype>::accumulate_py( py::array_t<AccumulateType> dat
 
 template<class BinType,class Datatype>
 template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads )
+double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip)
 {
 	py::buffer_info buf = bins.request(); 
     if (buf.ndim != 1 )
@@ -328,12 +380,12 @@ double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , 
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
-	return moment( (AbscisseType*)buf.ptr , exp , n_threads );
+	return moment( (AbscisseType*)buf.ptr , exp , n_threads,no_clip );
 }
 
 template<class BinType,class Datatype>
 template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads )
+double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
 {
 	py::buffer_info buf = bins.request(); 
     if (buf.ndim != 1 )
@@ -344,12 +396,27 @@ double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , 
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
-	return moment( (AbscisseType*)buf.ptr , exp , n_total , n_threads );
+	return moment( (AbscisseType*)buf.ptr , exp , n_total , n_threads,no_clip );
+}
+template<class BinType,class Datatype>
+template<class AbscisseType>
+double Histogram<BinType,Datatype>::centered_moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip)
+{
+	py::buffer_info buf = bins.request(); 
+    if (buf.ndim != 1 )
+    {
+		throw std::runtime_error("Number of dimensions must be one");
+	}
+	else if (buf.shape[0] != nofbins)
+	{
+		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
+	}
+	return centered_moment( (AbscisseType*)buf.ptr , exp , n_threads,no_clip );
 }
 
 template<class BinType,class Datatype>
 template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp , int n_threads )
+double Histogram<BinType,Datatype>::centered_moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
 {
 	py::buffer_info buf = bins.request(); 
     if (buf.ndim != 1 )
@@ -360,31 +427,50 @@ double Histogram<BinType,Datatype>::moment_no_clip_py( py::array_t<AbscisseType>
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
-	return moment_no_clip( (AbscisseType*)buf.ptr , exp , n_threads );
+	return centered_moment( (AbscisseType*)buf.ptr , exp , n_total , n_threads,no_clip );
 }
 
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads )
-{
-	py::buffer_info buf = bins.request(); 
-    if (buf.ndim != 1 )
-    {
-		throw std::runtime_error("Number of dimensions must be one");
-	}
-	else if (buf.shape[0] != nofbins)
-	{
-		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
-	}
-	return moment_no_clip( (AbscisseType*)buf.ptr , exp , n_total , n_threads );
-}
+// template<class BinType,class Datatype>
+// template<class AbscisseType>
+// double Histogram<BinType,Datatype>::moment_py( py::array_t<BinType> histogram, py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip)
+// {
+	// py::buffer_info h_buf = histogram.request(); 
+	// py::buffer_info b_buf = bins.request(); 
+    // if (h_buf.ndim != 1 )or(b_buf.ndim != 1 )
+    // {
+		// throw std::runtime_error("Number of dimensions must be one");
+	// }
+	// else if (h_buf.shape[0] != b_buf.shape[0])
+	// {
+		// throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
+	// }
+    // uint64_t n_total =  ::moment( (BinType*)h_buf.ptr , (AbscisseType*)b_buf.ptr , nofbins , 0 , 1       , n_threads , no_clip ) ;
+    // return              ::moment( (BinType*)h_buf.ptr , (AbscisseType*)b_buf.ptr , nofbins, exp, n_total , n_threads , no_clip );
+// }
+
+// template<class BinType,class Datatype>
+// template<class AbscisseType>
+// double Histogram<BinType,Datatype>::moment_py( py::array_t<BinType> histogram, py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip)
+// {
+	// py::buffer_info h_buf = histogram.request(); 
+	// py::buffer_info b_buf = bins.request(); 
+    // if (h_buf.ndim != 1 )or(b_buf.ndim != 1 )
+    // {
+		// throw std::runtime_error("Number of dimensions must be one");
+	// }
+	// else if (h_buf.shape[0] != b_buf.shape[0])
+	// {
+		// throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
+	// }
+    // return              ::moment( (BinType*)h_buf.ptr , (AbscisseType*)b_buf.ptr , nofbins, exp, n_total , n_threads , no_clip );
+// }
 
 /*
 ### get abscisse representation
 */
 
 template<class BinType,class Datatype>
-py::array_t<double> Histogram<BinType,Datatype>::abscisse_py( double max )
+py::array_t<double> Histogram<BinType,Datatype>::abscisse_py( double max, uint nofbins )
 {
 	double bin_width = 2.0*max/( nofbins );
 	Multi_array<double,1> abscisse(nofbins) ;	

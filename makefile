@@ -1,7 +1,7 @@
 NAME = histograms
 PYLIB_EXT = $(if $(filter $(OS),Windows_NT),.pyd,.so)
 TARGET_STATIC = lib$(NAME).a
-TARGET_PYLIB = ../Python/$(NAME)$(PYLIB_EXT)
+TARGET_PYLIB = ../../Python_2_7/lib/$(NAME)$(PYLIB_EXT)
 
 MULTI_ARRAY = ../Multi_array
 OMP_EXTRA = ../Omp_extra
@@ -20,7 +20,9 @@ MATH_EXTRA_OBJ = $(wildcard $(MATH_EXTRA)/$(ODIR)/*.o)
 MOMENTS_CUMULANTS_OBJ = $(wildcard $(MOMENTS_CUMULANTS)/$(ODIR)/*.o)
 
 EXTERNAL_OBJ = $(OMP_EXTRA_OBJ) $(MATH_EXTRA_OBJ) 
-EXTERNAL_INCLUDES = -I$(MULTI_ARRAY)/$(IDIR) -I$(OMP_EXTRA)/$(IDIR) -I$(MATH_EXTRA)/$(IDIR) -I$(MOMENTS_CUMULANTS)/$(IDIR) -I$(HISTOGRAMS)/$(IDIR)
+EXTERNAL_INCLUDES = -I$(MULTI_ARRAY)/$(IDIR) -I$(OMP_EXTRA)/$(IDIR) \
+                    -I$(MATH_EXTRA)/$(IDIR) -I$(MOMENTS_CUMULANTS)/$(IDIR) \
+                    -I$(HISTOGRAMS)/$(IDIR)
 
 SRC  = $(wildcard $(SDIR)/*.cpp)
 OBJ  = $(patsubst $(SDIR)/%.cpp,$(ODIR)/%.o,$(SRC))

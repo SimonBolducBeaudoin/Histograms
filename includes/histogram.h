@@ -51,7 +51,7 @@ class Histogram
             // Core functions
 		template<class AccumulateType=DataType>
 		void accumulate( AccumulateType* data, uint64_t L_data ) ;
-        
+				
 		void reset();
 		
             // Sets and gets
@@ -59,42 +59,44 @@ class Histogram
         
             // Histogram properties
 		template<class AbscisseType=DataType>
-        double moment( AbscisseType* bins , uint exp , int n_threads = 6 );
+        double moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip=false );
 		template<class AbscisseType=DataType>
-        double moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads = 6 );
-        
+        double moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip=false);
         template<class AbscisseType=DataType>
-        double moment_no_clip( AbscisseType* bins , uint exp , int n_threads = 6 );
+        double centered_moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip=false );
 		template<class AbscisseType=DataType>
-        double moment_no_clip( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads = 6 );
+        double centered_moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip=false);
         		
         // Python interface         
             // Core functions
         template<class AccumulateType=DataType>
 		void accumulate_py( py::array_t<AccumulateType> data ) ;
 		
-		template
-		<	/*uint8_t, int8_t, uint16_t, int16_t*/
-			class UnsignedType = DataType, 
-			class Enable = typename std::enable_if_t<std::is_integral<UnsignedType>::value>
-		>
-		void swap();
+		// template
+		// <	/*uint8_t, int8_t, uint16_t, int16_t*/
+			// class UnsignedType = DataType, 
+			// class Enable = typename std::enable_if_t<std::is_integral<UnsignedType>::value>
+		// >
+		// void swap();
         
         uint64_t how_much_clip();
         
 		template<class AbscisseType=DataType>
-		double moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads );
+		double moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip = false );
 		template<class AbscisseType=DataType>
-        double moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads );
-        
+        double moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip = false );
         template<class AbscisseType=DataType>
-		double moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp , int n_threads );
+		double centered_moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip = false );
 		template<class AbscisseType=DataType>
-        double moment_no_clip_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads );
+        double centered_moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip = false );
+		// template<class AbscisseType=DataType>
+		// static double moment_py( py::array_t<BinType> histogram , py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip = false );
+		// template<class AbscisseType=DataType>
+        // static double moment_py( py::array_t<BinType> histogram , py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip = false );
 		
             // Sets and gets
 		py::array_t<BinType> share_py(){ return histogram.share_py(); };
-        py::array_t<double> abscisse_py( double max );
+        static py::array_t<double> abscisse_py( double max , uint nofbins );
 		
 		uint64_t get_alloc_memory_size(){return histogram.get_alloc_memory_size();};
 		
