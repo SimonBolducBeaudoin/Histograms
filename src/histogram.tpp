@@ -430,45 +430,6 @@ double Histogram<BinType,Datatype>::centered_moment_py( py::array_t<AbscisseType
 	return centered_moment( (AbscisseType*)buf.ptr , exp , n_total , n_threads,no_clip );
 }
 
-// template<class BinType,class Datatype>
-// template<class AbscisseType>
-// double Histogram<BinType,Datatype>::moment_py( py::array_t<BinType> histogram, py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip)
-// {
-	// py::buffer_info h_buf = histogram.request(); 
-	// py::buffer_info b_buf = bins.request(); 
-    // if (h_buf.ndim != 1 )or(b_buf.ndim != 1 )
-    // {
-		// throw std::runtime_error("Number of dimensions must be one");
-	// }
-	// else if (h_buf.shape[0] != b_buf.shape[0])
-	// {
-		// throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
-	// }
-    // uint64_t n_total =  ::moment( (BinType*)h_buf.ptr , (AbscisseType*)b_buf.ptr , nofbins , 0 , 1       , n_threads , no_clip ) ;
-    // return              ::moment( (BinType*)h_buf.ptr , (AbscisseType*)b_buf.ptr , nofbins, exp, n_total , n_threads , no_clip );
-// }
-
-// template<class BinType,class Datatype>
-// template<class AbscisseType>
-// double Histogram<BinType,Datatype>::moment_py( py::array_t<BinType> histogram, py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip)
-// {
-	// py::buffer_info h_buf = histogram.request(); 
-	// py::buffer_info b_buf = bins.request(); 
-    // if (h_buf.ndim != 1 )or(b_buf.ndim != 1 )
-    // {
-		// throw std::runtime_error("Number of dimensions must be one");
-	// }
-	// else if (h_buf.shape[0] != b_buf.shape[0])
-	// {
-		// throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
-	// }
-    // return              ::moment( (BinType*)h_buf.ptr , (AbscisseType*)b_buf.ptr , nofbins, exp, n_total , n_threads , no_clip );
-// }
-
-/*
-### get abscisse representation
-*/
-
 template<class BinType,class Datatype>
 py::array_t<double> Histogram<BinType,Datatype>::abscisse_py( double max, uint nofbins )
 {

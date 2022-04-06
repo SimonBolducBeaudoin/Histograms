@@ -116,4 +116,4 @@ class Histogram
 		
 };
 
-#include "../src/histogram.tpp"
+#include "histogram.tpp"
