@@ -50,7 +50,7 @@ class Histogram
 		// C++ INTERFACE
             // Core functions
 		template<class AccumulateType=DataType>
-		void accumulate( AccumulateType* data, uint64_t L_data ) ;
+		void accumulate( AccumulateType* data, uint64_t L_data, size_t stride ) ;
 				
 		void reset();
 		
