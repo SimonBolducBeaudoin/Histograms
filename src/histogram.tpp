@@ -311,31 +311,12 @@ inline void Histogram<BinType,Datatype>::float_to_hist( FloatType data, BinType*
 // Histogram properties
 /////////////////////////
 
+
 template<class BinType,class Datatype>
 template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip)
+std::vector<double> Histogram<BinType,Datatype>::std_moments(AbscisseType* bins , uint order , bool no_clip)
 {
-	uint64_t n_total = ::moment( histogram.get_ptr() , bins , nofbins , 0 , 1 , n_threads , no_clip ) ;
-    return ::moment( histogram.get_ptr() , bins, nofbins, exp, n_total , n_threads,no_clip );
-}
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
-{
-    return ::moment( histogram.get_ptr(), bins, nofbins, exp, n_total , n_threads, no_clip );
-}
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::centered_moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip)
-{
-	uint64_t n_total = ::moment( histogram.get_ptr() , bins , nofbins , 0 , 1 , n_threads , no_clip ) ;
-    return ::centered_moment( histogram.get_ptr() , bins, nofbins, exp, n_total , n_threads,no_clip );
-}
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::centered_moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
-{
-    return ::centered_moment( histogram.get_ptr(), bins, nofbins, exp, n_total , n_threads, no_clip );
+    return ::std_moments( histogram.get_ptr() , bins, nofbins, order ,no_clip );
 }
 
 template<class BinType,class Datatype>
@@ -364,15 +345,16 @@ void Histogram<BinType,Datatype>::accumulate_py( py::array_t<AccumulateType> dat
 	
 	uint64_t L_data = buf.size ;
     size_t stride   = buf.strides[0];
-	 
+	
+    py::gil_scoped_release release; 
 	accumulate( (AccumulateType*)buf.ptr , L_data , stride);
 }
 
 template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip)
+template <class AbscisseType> 
+std::vector<double> Histogram<BinType,Datatype>::std_moments_py( py::array_t<AbscisseType> bins , uint order , bool no_clip)
 {
-	py::buffer_info buf = bins.request(); 
+    py::buffer_info buf = bins.request(); 
     if (buf.ndim != 1 )
     {
 		throw std::runtime_error("Number of dimensions must be one");
@@ -381,54 +363,8 @@ double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , 
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
-	return moment( (AbscisseType*)buf.ptr , exp , n_threads,no_clip );
-}
-
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
-{
-	py::buffer_info buf = bins.request(); 
-    if (buf.ndim != 1 )
-    {
-		throw std::runtime_error("Number of dimensions must be one");
-	}
-	else if (buf.shape[0] != nofbins)
-	{
-		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
-	}
-	return moment( (AbscisseType*)buf.ptr , exp , n_total , n_threads,no_clip );
-}
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::centered_moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip)
-{
-	py::buffer_info buf = bins.request(); 
-    if (buf.ndim != 1 )
-    {
-		throw std::runtime_error("Number of dimensions must be one");
-	}
-	else if (buf.shape[0] != nofbins)
-	{
-		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
-	}
-	return centered_moment( (AbscisseType*)buf.ptr , exp , n_threads,no_clip );
-}
-
-template<class BinType,class Datatype>
-template<class AbscisseType>
-double Histogram<BinType,Datatype>::centered_moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads, bool no_clip )
-{
-	py::buffer_info buf = bins.request(); 
-    if (buf.ndim != 1 )
-    {
-		throw std::runtime_error("Number of dimensions must be one");
-	}
-	else if (buf.shape[0] != nofbins)
-	{
-		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
-	}
-	return centered_moment( (AbscisseType*)buf.ptr , exp , n_total , n_threads,no_clip );
+    py::gil_scoped_release release;  
+	return std_moments( (AbscisseType*)buf.ptr , order ,no_clip );
 }
 
 template<class BinType,class Datatype>

@@ -452,6 +452,7 @@ void Histogram2D<BinType,DataType>::accumulate_py(  py::array_t<AccumulateType> 
 		throw std::runtime_error("Length of the data vectors must be the same.");
 	}
 	uint64_t L_data = buf_1.size ;
+    py::gil_scoped_release release; 
 	accumulate( (AccumulateType*)buf_1.ptr, (AccumulateType*)buf_2.ptr , L_data );
 }
 
@@ -468,6 +469,7 @@ double Histogram2D<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins 
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
+    py::gil_scoped_release release; 
 	return moment( (AbscisseType*)buf.ptr , exp_x , exp_y , n_threads, no_clip );
 }
 
@@ -484,6 +486,7 @@ double Histogram2D<BinType,Datatype>::moment_py( py::array_t<AbscisseType> bins 
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
+    py::gil_scoped_release release; 
 	return moment( (AbscisseType*)buf.ptr , exp_x , exp_y , n_total , n_threads , no_clip);
 }
 
@@ -500,6 +503,7 @@ double Histogram2D<BinType,Datatype>::centered_moment_py( py::array_t<AbscisseTy
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
+    py::gil_scoped_release release; 
 	return centered_moment( (AbscisseType*)buf.ptr , exp_x , exp_y , n_threads, no_clip );
 }
 
@@ -516,10 +520,9 @@ double Histogram2D<BinType,Datatype>::centered_moment_py( py::array_t<AbscisseTy
 	{
 		throw std::runtime_error("Length of abscisse must correspond to the number of bins of the histogram");
 	}
+    py::gil_scoped_release release; 
 	return centered_moment( (AbscisseType*)buf.ptr , exp_x , exp_y , n_total , n_threads, no_clip );
 }
-
-
 
 template<class BinType,class Datatype>
 py::array_t<double> Histogram2D<BinType,Datatype>::abscisse_py( double max, uint nofbins )

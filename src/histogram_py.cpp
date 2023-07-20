@@ -8,10 +8,7 @@ py::class_<Histogram<BinType,FloatType>>( m , "Histogram_"#BinType"_"#FloatType 
 	.def("reset", &Histogram<BinType,FloatType>::reset)\
 	.def("get", &Histogram<BinType,FloatType>::share_py)\
 	.def_static("abscisse", &Histogram<BinType,FloatType>::abscisse_py, "max"_a.noconvert() , "nofbins"_a.noconvert() )\
-	.def("moment",          (double (Histogram<BinType,FloatType>::*) (py::array_t<FloatType> , uint , int , bool) )            &Histogram<BinType,FloatType>::moment_py           , "bins"_a.noconvert() ,"exp"_a ,                              "n_threads"_a,  "no_clip"_a = false )\
-	.def("moment",          (double (Histogram<BinType,FloatType>::*) (py::array_t<FloatType> , uint , uint64_t , int , bool) ) &Histogram<BinType,FloatType>::moment_py           , "bins"_a.noconvert() ,"exp"_a , "n_total"_a.noconvert() ,    "n_threads"_a,  "no_clip"_a = false )\
-    .def("centered_moment", (double (Histogram<BinType,FloatType>::*) (py::array_t<FloatType> , uint , int , bool) )            &Histogram<BinType,FloatType>::centered_moment_py  , "bins"_a.noconvert() ,"exp"_a ,                              "n_threads"_a,  "no_clip"_a = false )\
-	.def("centered_moment", (double (Histogram<BinType,FloatType>::*) (py::array_t<FloatType> , uint , uint64_t , int, bool) ) &Histogram<BinType,FloatType>::centered_moment_py  , "bins"_a.noconvert() ,"exp"_a , "n_total"_a.noconvert() ,    "n_threads"_a,  "no_clip"_a = false )\
+    .def("std_moments",          (std::vector<double> (Histogram<BinType,FloatType>::*) (py::array_t<FloatType> , uint , bool) )            &Histogram<BinType,FloatType>::std_moments_py           , "bins"_a.noconvert() ,"order"_a , "no_clip"_a = false )\
     .def("how_much_clip", &Histogram<BinType,FloatType>::how_much_clip)\
     .def("get_alloc_memory_size", &Histogram<BinType,FloatType>::get_alloc_memory_size)\
 	;
@@ -23,8 +20,7 @@ py::class_<Histogram<BinType,IntegerType>>( m , "Histogram_"#BinType"_"#IntegerT
 	.def("accumulate", &Histogram<BinType,IntegerType>::accumulate_py<IntegerType>, "data"_a.noconvert()  )\
 	.def("reset", &Histogram<BinType,IntegerType>::reset)\
 	.def("get", &Histogram<BinType,IntegerType>::share_py)\
-	.def("moment", (double (Histogram<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , int , bool) )            &Histogram<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp"_a ,                            "n_threads"_a ,  "no_clip"_a = false)\
-	.def("moment", (double (Histogram<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , uint64_t , int, bool) ) &Histogram<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp"_a , "n_total"_a.noconvert() ,  "n_threads"_a ,  "no_clip"_a = false)\
+    .def("std_moments",(std::vector<double> (Histogram<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , bool) ) &Histogram<BinType,IntegerType>::std_moments_py , "bins"_a.noconvert() ,"order"_a , "no_clip"_a = false )\
 	.def("how_much_clip", &Histogram<BinType,IntegerType>::how_much_clip)\
 	.def("get_alloc_memory_size", &Histogram<BinType,IntegerType>::get_alloc_memory_size)\
     ;
@@ -36,8 +32,7 @@ py::class_<Histogram<BinType,IntegerType>>( m , "Histogram_"#BinType"_"#IntegerT
 	.def("accumulate", &Histogram<BinType,IntegerType>::accumulate_py<IntegerType>, "data"_a.noconvert()  )\
 	.def("reset", &Histogram<BinType,IntegerType>::reset)\
 	.def("get", &Histogram<BinType,IntegerType>::share_py)\
-	.def("moment", (double (Histogram<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , int, bool) )&Histogram<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp"_a , "n_threads"_a ,  "no_clip"_a = false)\
-	.def("moment", (double (Histogram<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , uint64_t , int, bool) )&Histogram<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp"_a , "n_total"_a.noconvert() , "n_threads"_a ,  "no_clip"_a = false)\
+    .def("std_moments",(std::vector<double> (Histogram<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , bool) ) &Histogram<BinType,IntegerType>::std_moments_py , "bins"_a.noconvert() ,"order"_a , "no_clip"_a = false )\
     .def("how_much_clip", &Histogram<BinType,IntegerType>::how_much_clip)\
     .def("get_alloc_memory_size", &Histogram<BinType,IntegerType>::get_alloc_memory_size)\
 	;

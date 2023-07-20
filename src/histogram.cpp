@@ -21,7 +21,7 @@ template class Histogram<BinType,int8_t>; \
 	template Histogram<BinType,int8_t>::Histogram(int) ; \
 	template Histogram<BinType,int8_t>::Histogram(int,uint) ;
 
-HISTOGRAM(uint64_t);
+// HISTOGRAM(uint64_t);
 // HISTOGRAM(uint32_t);
 // HISTOGRAM(uint16_t);
 

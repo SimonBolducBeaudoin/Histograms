@@ -58,14 +58,9 @@ class Histogram
 		uint get_nofbins(){return nofbins ;};
         
             // Histogram properties
-		template<class AbscisseType=DataType>
-        double moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip=false );
-		template<class AbscisseType=DataType>
-        double moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip=false);
-        template<class AbscisseType=DataType>
-        double centered_moment( AbscisseType* bins , uint exp , int n_threads , bool no_clip=false );
-		template<class AbscisseType=DataType>
-        double centered_moment( AbscisseType* bins , uint exp , uint64_t n_total , int n_threads, bool no_clip=false);
+            
+        template <class AbscisseType=DataType>
+        std::vector<double> std_moments(AbscisseType* bins , uint order , bool no_clip = false); 
         		
         // Python interface         
             // Core functions
@@ -81,18 +76,8 @@ class Histogram
         
         uint64_t how_much_clip();
         
-		template<class AbscisseType=DataType>
-		double moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip = false );
-		template<class AbscisseType=DataType>
-        double moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip = false );
-        template<class AbscisseType=DataType>
-		double centered_moment_py( py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip = false );
-		template<class AbscisseType=DataType>
-        double centered_moment_py( py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip = false );
-		// template<class AbscisseType=DataType>
-		// static double moment_py( py::array_t<BinType> histogram , py::array_t<AbscisseType> bins , uint exp , int n_threads , bool no_clip = false );
-		// template<class AbscisseType=DataType>
-        // static double moment_py( py::array_t<BinType> histogram , py::array_t<AbscisseType> bins , uint exp , uint64_t n_total , int n_threads , bool no_clip = false );
+        template <class AbscisseType=DataType> 
+        std::vector<double> std_moments_py( py::array_t<AbscisseType> bins , uint order , bool no_clip = false);
 		
             // Sets and gets
 		py::array_t<BinType> share_py(){ return histogram.share_py(); };
