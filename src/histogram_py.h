@@ -8,7 +8,7 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-#include <histogram.h>
-#include <histogram2D.h>
+#include "histogram.h"
+#include "histogram2D.h"
 
 void init_Histograms(py::module &m);
