@@ -2,17 +2,26 @@
 # compilation on windows using cygwin and crosscompiling using mingw
 # also don't forget to edit config.cmake for machine specific stuff     
 
-set(PROJECT_NAME Histograms)                    
+set(PROJECT_NAME Histograms)                     
 set(LIB_NAME histograms)                        
-set(EXTERNAL_INCLUDES ../Multi_array/src ../Omp_extra/src ../Moments_cumulants/src ../Math_extra/src ./src) 
+set(EXTERNAL_INCLUDES Multi_array/src Omp_extra/src Moments_cumulants/src Math_extra/src)
+set(STATIC_LINKS Omp_extra/obj/omp_extra.a Math_extra/obj/math_extra.a) 
+
 set(COMPILE_OPTIONS_ADD -fopenmp -fopenmp-simd )  
 set(LINKS -fopenmp -fopenmp-simd)
-s#eparate_arguments(EXTERNAL_INCLUDES)           # Turned into a list a list 
-#separate_arguments(COMPILE_OPTIONS_ADD)    
-#separate_arguments(LINKS)    
 
 cmake_minimum_required(VERSION 3.15)
-project(${PROJECT_NAME} VERSION 1.0.0) # Needs to be ontop
+project(${PROJECT_NAME}) # Needs to be ontop
+
+# Prepending the absolute path
+list(TRANSFORM EXTERNAL_INCLUDES PREPEND "${PROJECT_SOURCE_DIR}/../" REGEX "^(.*)$" )
+list(TRANSFORM STATIC_LINKS PREPEND "${PROJECT_SOURCE_DIR}/../" REGEX "^(.*)$" )
+list(APPEND LINKS ${STATIC_LINKS})
+
+# AUTOGIT STUFF #########   
+include(../AutoGitVersion/AutoGitVersion.cmake )   # Defined cmake functions : AutoGitVersion and others
+AutoGitVersion(GIT_VERSION_TARGET ${PROJECT_NAME}) # Sets up a target git_version.cpp that constains  kGitHash and GitTag as const
+#########################
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE)
@@ -30,21 +39,24 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/obj)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/obj)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/obj)
 
-file(GLOB SRC_FILES "src/*.cpp")
+file(GLOB SRC_FILES_PY "src/*_py.cpp")
 
 add_compile_options(-Wall -O3 -march=native )
 add_compile_options(${COMPILE_OPTIONS_ADD})
 
-add_library(${LIB_NAME} ${SRC_FILES})
+
+add_library(${LIB_NAME}_py ${SRC_FILES_PY})        #shared library (i.e. the python library)
+set_target_properties(${LIB_NAME}_py PROPERTIES OUTPUT_NAME ${LIB_NAME})        #shared library (i.e. the python library)
 include(config.cmake) # sets IS_MINGW,PY_INCL,SHARED_LIB_PREFIX,SHARED_LIB_SUFFIX and updates LINKS
 
 #compile includes
 include_directories(${PY_INCL})           # pybind11 includes
+
 include_directories(${EXTERNAL_INCLUDES})
 
 #linking 
-set_target_properties(${LIB_NAME} PROPERTIES PREFIX "${SHARED_LIB_PREFIX}")
-set_target_properties(${LIB_NAME} PROPERTIES SUFFIX ${SHARED_LIB_SUFFIX})
-target_link_libraries(${LIB_NAME} ${LINKS})
+set_target_properties(${LIB_NAME}_py PROPERTIES PREFIX "${SHARED_LIB_PREFIX}")
+set_target_properties(${LIB_NAME}_py PROPERTIES SUFFIX ${SHARED_LIB_SUFFIX})
+target_link_libraries(${LIB_NAME}_py ${GIT_VERSION_TARGET} ${LINKS})
 
 

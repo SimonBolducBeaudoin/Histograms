@@ -1,4 +1,5 @@
-#include <histogram_py.h>
+#include "histogram_py.h"
+#include "git_version.h"
 
 // CLASS MACROS		
 #define PY_HISTOGRAM_FLOAT(BinType,FloatType)\
@@ -113,8 +114,10 @@ void init_Histograms(py::module &m)
 
 PYBIND11_MODULE(histograms, m)
 {
-    m.doc() = " Fast histogram library for many types (integers and floats)";
+    m.doc() = "Fast histogram library for many types (integers and floats)\n"\
+    "Git Info : \n "\
+    + std::string(kGitInfo)\
+    +"\n";
 	init_Histograms(m);
-	// init_buffered_arrays(m);
 }
 
