@@ -4,7 +4,7 @@
 
 set(PROJECT_NAME Histograms)                     
 set(LIB_NAME histograms)                        
-set(EXTERNAL_INCLUDES Multi_array/src Omp_extra/src Moments_cumulants/src Math_extra/src)
+set(EXTERNAL_INCLUDES Multi_array/src Omp_extra/src Math_extra/src)
 set(STATIC_LINKS Omp_extra/obj/omp_extra.a Math_extra/obj/math_extra.a) 
 
 set(COMPILE_OPTIONS_ADD -fopenmp -fopenmp-simd )  
@@ -34,7 +34,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/obj)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/obj)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/obj)
 
-file(GLOB SRC_FILES_PY "src/*_py.cpp")
+file(GLOB SRC_FILES_PY "src/*.cpp")
 
 add_compile_options(-Wall -O3 -march=native )
 add_compile_options(${COMPILE_OPTIONS_ADD})
@@ -46,7 +46,6 @@ include(config.cmake) # sets IS_MINGW,PY_INCL,SHARED_LIB_PREFIX,SHARED_LIB_SUFFI
 
 #compile includes
 include_directories(${PY_INCL})           # pybind11 includes
-
 include_directories(${EXTERNAL_INCLUDES})
 
 #linking 
