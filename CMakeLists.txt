@@ -42,7 +42,7 @@ add_compile_options(${COMPILE_OPTIONS_ADD})
 
 add_library(${LIB_NAME}_py ${SRC_FILES_PY})        #shared library (i.e. the python library)
 set_target_properties(${LIB_NAME}_py PROPERTIES OUTPUT_NAME ${LIB_NAME})        #shared library (i.e. the python library)
-include(config.cmake) # sets IS_MINGW,PY_INCL,SHARED_LIB_PREFIX,SHARED_LIB_SUFFIX and updates LINKS
+include(CMakeConfigs/pybind11.cmake) # sets IS_MINGW,PY_INCL,SHARED_LIB_PREFIX,SHARED_LIB_SUFFIX and updates LINKS
 
 #compile includes
 include_directories(${PY_INCL})           # pybind11 includes
