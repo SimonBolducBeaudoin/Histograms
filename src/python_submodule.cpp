@@ -1,5 +1,4 @@
-#include "histogram_py.h"
-#include "git_version.h"
+#include "python_submodule.h"
 
 // CLASS MACROS		
 #define PY_HISTOGRAM_FLOAT(BinType,FloatType)\
@@ -109,15 +108,28 @@ void init_Histograms(py::module &m)
 #undef PY_HISTOGRAM2D_INT
 #undef PY_HISTOGRAM
 
+#define  MOMENTS(HistType,AbscisseType)\
+m.def("std_moments", (std::vector<double> (*) (np_array<HistType>& histogram , np_array<AbscisseType>&,uint,bool) )(&std_moments_py<HistType,AbscisseType>)  , "histogram"_a.noconvert(), "bins"_a.noconvert() , "order"_a.noconvert() , "no_clip"_a.noconvert() = false ) ;\
+m.def("moment", (double (*) (np_array<HistType>& histogram , np_array<AbscisseType>&,uint,uint64_t,bool) )(&moment_py<HistType,AbscisseType>)  , "histogram"_a.noconvert(), "bins"_a.noconvert() , "exp"_a.noconvert() , "n_total"_a.noconvert() , "no_clip"_a.noconvert() = false ) ;\
+m.def("moment", (double (*) (np_array<HistType>& histogram , np_array<AbscisseType>&,uint,uint,uint64_t,int,bool) )(&moment_py<HistType,AbscisseType>)  , "histogram"_a.noconvert(), "bins"_a.noconvert(), "exp_x"_a.noconvert(), "exp_y"_a.noconvert() , "n_total"_a.noconvert() , "n_threads"_a.noconvert() , "no_clip"_a.noconvert() = false ) ;\
+m.def("centered_moment", (double (*) (np_array<HistType>& histogram , np_array<AbscisseType>&,uint,uint64_t,bool) )(&centered_moment_py<HistType,AbscisseType>) , "histogram"_a.noconvert(), "bins"_a.noconvert(), "exp"_a.noconvert() , "n_total"_a.noconvert() , "no_clip"_a.noconvert() = false ) ;\
+m.def("centered_moment", (double (*) (np_array<HistType>& histogram , np_array<AbscisseType>&,uint,uint,uint64_t,int,bool) )(&centered_moment_py<HistType,AbscisseType>) , "histogram"_a.noconvert(), "bins"_a.noconvert(), "exp_x"_a.noconvert(), "exp_y"_a.noconvert() , "n_total"_a.noconvert() , "n_threads"_a.noconvert() , "no_clip"_a.noconvert() = false ) ;
+
+void init_moments_cumulants(py::module &m)
+{
+	MOMENTS(double,double);
+    MOMENTS(uint32_t,double);
+    MOMENTS(uint64_t,double);
+}
+
+#undef MOMENTS
 // See Pybind11 FAQ «How can I reduce the build time ?» :
 // https://pybind11.readthedocs.io/en/stable/faq.html#how-can-i-reduce-the-build-time
 
 PYBIND11_MODULE(histograms, m)
 {
-    m.doc() = "Fast histogram library for many types (integers and floats)\n"\
-    "Git Info : \n "\
-    + std::string(kGitInfo)\
-    +"\n";
+    m.doc() = "Fast histogram library for many types (integers and floats)\n";
 	init_Histograms(m);
+    init_moments_cumulants(m);
 }
 
