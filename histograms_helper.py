@@ -16,7 +16,7 @@ Todos :
 Bugs :
 """
 
-@_nb.guvectorize([(_nb.uint64[:],_nb.float64[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+@_nb.guvectorize([(_nb.uint64[:],_nb.float64[:],_nb.int32[:],_nb.float64,_nb.float64[:])], '(n),(n),(m),()->(m)')
 def std_moments_numba(histogram,x,order,Cx,res=None):
     no_clip=True
     first_bin = 1 if no_clip else 0
@@ -45,7 +45,7 @@ def std_moments_numba(histogram,x,order,Cx,res=None):
     moments[3:] /= moments[2] ** (order[3:] / 2.0)
     res[:] = moments
 
-@_nb.guvectorize([(_nb.uint32[:],_nb.float64[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+@_nb.guvectorize([(_nb.uint32[:],_nb.float64[:],_nb.int32[:],_nb.float64,_nb.float64[:])], '(n),(n),(m),()->(m)')
 def std_moments_numba(histogram,x,order,Cx,res=None):
     no_clip=True
     first_bin = 1 if no_clip else 0
@@ -74,7 +74,7 @@ def std_moments_numba(histogram,x,order,Cx,res=None):
     moments[3:] /= moments[2] ** (order[3:] / 2.0)
     res[:] = moments
 
-@_nb.guvectorize([(_nb.uint64[:],_nb.float32[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+@_nb.guvectorize([(_nb.uint64[:],_nb.float32[:],_nb.int32[:],_nb.float64,_nb.float64[:])], '(n),(n),(m),()->(m)')
 def std_moments_numba(histogram,x,order,Cx,res=None):
     no_clip=True
     first_bin = 1 if no_clip else 0
@@ -103,7 +103,7 @@ def std_moments_numba(histogram,x,order,Cx,res=None):
     moments[3:] /= moments[2] ** (order[3:] / 2.0)
     res[:] = moments
     
-@_nb.guvectorize([(_nb.uint32[:],_nb.float32[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+@_nb.guvectorize([(_nb.uint32[:],_nb.float32[:],_nb.int32[:],_nb.float64,_nb.float64[:])], '(n),(n),(m),()->(m)')
 def std_moments_numba(histogram,x,order,Cx,res=None):
     no_clip=True
     first_bin = 1 if no_clip else 0
