@@ -84,7 +84,7 @@ def compute_moments(Hs,x,order = 8,Cxs=None,implementation='C++_class'):
             order = _np.r_[:order]
         if order.shape[-1] < 3 :
             raise Exception("Order must be > 2")
-        return compute_moments_numba(Hs,x,order,Cxs)
+        return std_moments_numba(Hs,x,order,Cxs)
     else :
         raise Exception("No implementation chosen.")
 
