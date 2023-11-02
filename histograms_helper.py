@@ -24,7 +24,7 @@ def std_moments_numba(histogram,x,order,Cx,res=None):
     x_slice   = slice(first_bin,last_bin)
     bins = x*Cx
     
-    moments = _np.zeros(len(order), dtype=np.float64)
+    moments = _np.zeros(len(order), dtype=_np.float64)
     
     moments[0] = histogram[x_slice].sum()
     moments[1] = (histogram[x_slice]* bins[x_slice]).sum() 
@@ -53,7 +53,7 @@ def std_moments_numba(histogram,x,order,Cx,res=None):
     x_slice   = slice(first_bin,last_bin)
     bins = x*Cx
     
-    moments = _np.zeros(len(order), dtype=np.float64)
+    moments = _np.zeros(len(order), dtype=_np.float64)
     
     moments[0] = histogram[x_slice].sum()
     moments[1] = (histogram[x_slice]* bins[x_slice]).sum() 
