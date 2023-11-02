@@ -16,28 +16,28 @@ Todos :
 Bugs :
 """
 
-@_nb.guvectorize([(_nb.uint32[:],_nb.float64[:],_nb.uint64[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+@_nb.guvectorize([(_nb.uint64[:],_nb.float64[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
 def std_moments_numba(histogram,x,order,Cx,res=None):
     no_clip=True
     first_bin = 1 if no_clip else 0
     last_bin  = len(x) - 1 if no_clip else len(x)
     x_slice   = slice(first_bin,last_bin)
     bins = x*Cx
-    
+
     moments = _np.zeros(len(order), dtype=_np.float64)
-    
+
     moments[0] = histogram[x_slice].sum()
     moments[1] = (histogram[x_slice]* bins[x_slice]).sum() 
     moments[2] = (histogram[x_slice]* bins[x_slice]**2).sum()   # sum square
-    
+
     moments[1] /= moments[0]  # normalize
     moments[2] /= moments[0]  # normalize
     moments[2] -= moments[1] * moments[1]  # <x^2> - <x>^2
-    
+
     x_bar = moments[1]
-    
+
     for i,o in enumerate(order[3:]):
-        moments[i] = (histogram[x_slice]* (bins[x_slice] - x_bar)**o).sum()  # <(x - <x>)^o>
+        moments[i+3] = (histogram[x_slice]* (bins[x_slice] - x_bar)**o).sum()  # <(x - <x>)^o>
         
     # normalisation
     moments[3:] /= moments[0]
@@ -45,34 +45,95 @@ def std_moments_numba(histogram,x,order,Cx,res=None):
     moments[3:] /= moments[2] ** (order[3:] / 2.0)
     res[:] = moments
 
-@_nb.guvectorize([(_nb.uint64[:],_nb.float64[:],_nb.uint64[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+@_nb.guvectorize([(_nb.uint32[:],_nb.float64[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
 def std_moments_numba(histogram,x,order,Cx,res=None):
     no_clip=True
     first_bin = 1 if no_clip else 0
     last_bin  = len(x) - 1 if no_clip else len(x)
     x_slice   = slice(first_bin,last_bin)
     bins = x*Cx
-    
+
     moments = _np.zeros(len(order), dtype=_np.float64)
-    
+
     moments[0] = histogram[x_slice].sum()
     moments[1] = (histogram[x_slice]* bins[x_slice]).sum() 
     moments[2] = (histogram[x_slice]* bins[x_slice]**2).sum()   # sum square
-    
+
     moments[1] /= moments[0]  # normalize
     moments[2] /= moments[0]  # normalize
     moments[2] -= moments[1] * moments[1]  # <x^2> - <x>^2
-    
+
     x_bar = moments[1]
-    
+
     for i,o in enumerate(order[3:]):
-        moments[i] = (histogram[x_slice]* (bins[x_slice] - x_bar)**o).sum()  # <(x - <x>)^o>
+        moments[i+3] = (histogram[x_slice]* (bins[x_slice] - x_bar)**o).sum()  # <(x - <x>)^o>
         
     # normalisation
     moments[3:] /= moments[0]
     # Standardisation
     moments[3:] /= moments[2] ** (order[3:] / 2.0)
     res[:] = moments
+
+@_nb.guvectorize([(_nb.uint64[:],_nb.float32[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+def std_moments_numba(histogram,x,order,Cx,res=None):
+    no_clip=True
+    first_bin = 1 if no_clip else 0
+    last_bin  = len(x) - 1 if no_clip else len(x)
+    x_slice   = slice(first_bin,last_bin)
+    bins = x*Cx
+
+    moments = _np.zeros(len(order), dtype=_np.float64)
+
+    moments[0] = histogram[x_slice].sum()
+    moments[1] = (histogram[x_slice]* bins[x_slice]).sum() 
+    moments[2] = (histogram[x_slice]* bins[x_slice]**2).sum()   # sum square
+
+    moments[1] /= moments[0]  # normalize
+    moments[2] /= moments[0]  # normalize
+    moments[2] -= moments[1] * moments[1]  # <x^2> - <x>^2
+
+    x_bar = moments[1]
+
+    for i,o in enumerate(order[3:]):
+        moments[i+3] = (histogram[x_slice]* (bins[x_slice] - x_bar)**o).sum()  # <(x - <x>)^o>
+        
+    # normalisation
+    moments[3:] /= moments[0]
+    # Standardisation
+    moments[3:] /= moments[2] ** (order[3:] / 2.0)
+    res[:] = moments
+    
+@_nb.guvectorize([(_nb.uint32[:],_nb.float32[:],_nb.int32[:],_nb.uint64,_nb.float64[:])], '(n),(n),(m),()->(m)')
+def std_moments_numba(histogram,x,order,Cx,res=None):
+    no_clip=True
+    first_bin = 1 if no_clip else 0
+    last_bin  = len(x) - 1 if no_clip else len(x)
+    x_slice   = slice(first_bin,last_bin)
+    bins = x*Cx
+
+    moments = _np.zeros(len(order), dtype=_np.float64)
+
+    moments[0] = histogram[x_slice].sum()
+    moments[1] = (histogram[x_slice]* bins[x_slice]).sum() 
+    moments[2] = (histogram[x_slice]* bins[x_slice]**2).sum()   # sum square
+
+    moments[1] /= moments[0]  # normalize
+    moments[2] /= moments[0]  # normalize
+    moments[2] -= moments[1] * moments[1]  # <x^2> - <x>^2
+
+    x_bar = moments[1]
+
+    for i,o in enumerate(order[3:]):
+        moments[i+3] = (histogram[x_slice]* (bins[x_slice] - x_bar)**o).sum()  # <(x - <x>)^o>
+        
+    # normalisation
+    moments[3:] /= moments[0]
+    # Standardisation
+    moments[3:] /= moments[2] ** (order[3:] / 2.0)
+    res[:] = moments
+    
+
+
     
 def compute_moments(Hs,x,order = 8,Cxs=None,implementation='C++_class'):
     if implementation == 'C++_class' :
