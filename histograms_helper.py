@@ -142,7 +142,7 @@ def compute_moments(Hs,x,order = 8,Cxs=None,implementation='C++_class'):
         return compute_moments_cpp_class_par(Hs,x,order,Cxs)
     elif implementation == 'numba' :
         if type(order) is int :
-            order = _np.r_[:order]
+            order = _np.r_[:order+1]
         if order.shape[-1] < 3 :
             raise Exception("Order must be > 2")
         return std_moments_numba(Hs,x,order,Cxs)
