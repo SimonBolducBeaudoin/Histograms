@@ -13,11 +13,6 @@
 
 
 /*
-# Uncomment to benchmark
-*/
-//#include "../../SM-Scoped_timer/includes/scoped_timer.h"
-
-/*
 https://en.cppreference.com/w/cpp/language/template_specialization
 https://en.cppreference.com/w/cpp/language/member_template#Member_function_templates
 */
@@ -58,7 +53,6 @@ class Histogram
 		uint get_nofbins(){return nofbins ;};
         
             // Histogram properties
-            
         template <class AbscisseType=DataType>
         std::vector<double> std_moments(AbscisseType* bins , uint order , bool no_clip = false); 
         		
@@ -89,7 +83,7 @@ class Histogram
 		uint nofbins ;
 		int n_threads ;
 		
-		Multi_array<BinType,1> histogram ;
+		Multi_array<BinType,1,uint32_t> histogram ;
 		
 		DataType max ; // Defines the window for accumulation of floats (used only when DataType = floats)
 		uint bit ; // The number of bit for the abscisse of the integer histogram

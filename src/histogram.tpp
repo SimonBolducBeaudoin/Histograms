@@ -4,10 +4,9 @@ Histogram<BinType,DataType>::Histogram( uint nofbins , int n_threads , Construct
 :
 	nofbins(nofbins) ,
 	n_threads(n_threads),
-	histogram(Multi_array<BinType,1> (nofbins)),
+	histogram(Multi_array<BinType,1,uint32_t> (nofbins)),
 	max(max), bit(0)
 {
-	omp_set_num_threads(n_threads);
 	reset();
 }
 
@@ -17,10 +16,9 @@ Histogram<BinType,DataType>::Histogram( int n_threads )
 :
 	nofbins( 1<<(8*sizeof(ConstructorType)) ) ,
 	n_threads(n_threads),
-	histogram	( Multi_array<BinType,1>(1<<(8*sizeof(ConstructorType))) ),
+	histogram	( Multi_array<BinType,1,uint32_t>(1<<(8*sizeof(ConstructorType))) ),
 	max(1.0), bit(8)
 {	
-	omp_set_num_threads(n_threads);
 	reset();
 }
 
@@ -30,10 +28,9 @@ Histogram<BinType,DataType>::Histogram( int n_threads , uint bit )
 :
 	nofbins( 1<<bit ) ,
 	n_threads(n_threads),
-	histogram	( Multi_array<BinType,1>(1<<bit) ),
+	histogram	( Multi_array<BinType,1,uint32_t>(1<<bit) ),
 	max(1.0), bit(bit)
 {	
-	omp_set_num_threads(n_threads);
 	reset();
 }
 
@@ -325,13 +322,6 @@ uint64_t Histogram<BinType,Datatype>::how_much_clip()
     return histogram(0)+histogram(histogram.get_n_i()-1);
 }
 
-
-/*
-## PYTHON WRAPPER METHODS
-*/
-/*
-### accumulate METHODS
-*/
 template<class BinType,class Datatype>
 template<class AccumulateType>
 void Histogram<BinType,Datatype>::accumulate_py( py::array_t<AccumulateType> data )
@@ -347,6 +337,7 @@ void Histogram<BinType,Datatype>::accumulate_py( py::array_t<AccumulateType> dat
     size_t stride   = buf.strides[0];
 	
     py::gil_scoped_release release; 
+    omp_set_num_threads(n_threads);
 	accumulate( (AccumulateType*)buf.ptr , L_data , stride);
 }
 
