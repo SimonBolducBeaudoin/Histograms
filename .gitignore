@@ -37,3 +37,4 @@
 # Directories
 build
 *.pyc
+__pycache__/
