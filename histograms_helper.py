@@ -141,7 +141,7 @@ def compute_moments(Hs,x,order = 8,Cxs=None,implementation='C++_class'):
     elif implementation == 'C++_class_par_threads' :
         return compute_moments_cpp_class_par(Hs,x,order,Cxs)
     elif implementation == 'numba' :
-        if type(order) is int :
+        if isinstance(order, int) :
             order = _np.r_[:order+1]
         if order.shape[-1] < 3 :
             raise Exception("Order must be > 2")
