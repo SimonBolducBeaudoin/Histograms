@@ -132,8 +132,6 @@ def std_moments_numba(histogram,x,order,Cx,res=None):
     moments[3:] /= moments[2] ** (order[3:] / 2.0)
     res[:] = moments
     
-
-
     
 def compute_moments(Hs,x,order = 8,Cxs=None,implementation='C++_class'):
     if implementation == 'C++_class' :
@@ -145,7 +143,7 @@ def compute_moments(Hs,x,order = 8,Cxs=None,implementation='C++_class'):
             order = _np.r_[:order+1]
         if order.shape[-1] < 3 :
             raise Exception("Order must be > 2")
-        return std_moments_numba(Hs,x,order,Cxs)
+        return std_moments_numba(Hs,x.astype('float32'),order,Cxs)
     else :
         raise Exception("No implementation chosen.")
 
