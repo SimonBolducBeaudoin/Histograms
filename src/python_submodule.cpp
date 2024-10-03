@@ -44,10 +44,6 @@ py::class_<Histogram2D<BinType,FloatType>>( m , "Histogram2D_"#BinType"_"#FloatT
 	.def("reset", &Histogram2D<BinType,FloatType>::reset)\
 	.def("get", &Histogram2D<BinType,FloatType>::share_py)\
 	.def_static("abscisse", &Histogram2D<BinType,FloatType>::abscisse_py, "max"_a.noconvert() , "nofbins"_a.noconvert() )\
-	.def("moment",          (double (Histogram2D<BinType,FloatType>::*) (py::array_t<FloatType> , uint , uint , int, bool) )           &Histogram2D<BinType,FloatType>::moment_py             , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a ,                              "n_threads"_a ,  "no_clip"_a = false )\
-	.def("moment",          (double (Histogram2D<BinType,FloatType>::*) (py::array_t<FloatType> , uint , uint , uint64_t , int, bool) )&Histogram2D<BinType,FloatType>::moment_py             , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a , "n_total"_a.noconvert() ,    "n_threads"_a ,  "no_clip"_a = false )\
-    .def("centered_moment", (double (Histogram2D<BinType,FloatType>::*) (py::array_t<FloatType> , uint , uint , int, bool) )           &Histogram2D<BinType,FloatType>::centered_moment_py    , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a ,                              "n_threads"_a ,  "no_clip"_a = false )\
-	.def("centered_moment", (double (Histogram2D<BinType,FloatType>::*) (py::array_t<FloatType> , uint , uint , uint64_t , int, bool) )&Histogram2D<BinType,FloatType>::centered_moment_py    , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a , "n_total"_a.noconvert() ,    "n_threads"_a ,  "no_clip"_a = false )\
 	.def("how_much_clip", &Histogram2D<BinType,FloatType>::how_much_clip)\
 	.def("get_alloc_memory_size", &Histogram2D<BinType,FloatType>::get_alloc_memory_size)\
     ;
@@ -59,8 +55,6 @@ py::class_<Histogram2D<BinType,IntegerType>>( m , "Histogram2D_"#BinType"_"#Inte
 	.def("accumulate", &Histogram2D<BinType,IntegerType>::accumulate_py<IntegerType>, "data_1"_a.noconvert(), "data_2"_a.noconvert() )\
 	.def("reset", &Histogram2D<BinType,IntegerType>::reset)\
 	.def("get", &Histogram2D<BinType,IntegerType>::share_py)\
-	.def("moment", (double (Histogram2D<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , uint , int, bool) )&Histogram2D<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a , "n_threads"_a ,  "no_clip"_a = false)\
-	.def("moment", (double (Histogram2D<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , uint , uint64_t , int, bool) )&Histogram2D<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a , "n_total"_a.noconvert() , "n_threads"_a , "no_clip"_a = false)\
 	.def("how_much_clip", &Histogram2D<BinType,IntegerType>::how_much_clip)\
 	.def("get_alloc_memory_size", &Histogram2D<BinType,IntegerType>::get_alloc_memory_size)\
     ;
@@ -72,8 +66,6 @@ py::class_<Histogram2D<BinType,IntegerType>>( m , "Histogram2D_"#BinType"_"#Inte
 	.def("accumulate", &Histogram2D<BinType,IntegerType>::accumulate_py<IntegerType>, "data_1"_a.noconvert(), "data_2"_a.noconvert() )\
 	.def("reset", &Histogram2D<BinType,IntegerType>::reset)\
 	.def("get", &Histogram2D<BinType,IntegerType>::share_py)\
-	.def("moment", (double (Histogram2D<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , uint , int, bool) )&Histogram2D<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a , "n_threads"_a , "no_clip"_a = false)\
-	.def("moment", (double (Histogram2D<BinType,IntegerType>::*) (py::array_t<IntegerType> , uint , uint , uint64_t , int, bool) )&Histogram2D<BinType,IntegerType>::moment_py , "bins"_a.noconvert() ,"exp_x"_a , "exp_y"_a , "n_total"_a.noconvert() , "n_threads"_a , "no_clip"_a = false )\
 	.def("how_much_clip", &Histogram2D<BinType,IntegerType>::how_much_clip)\
 	.def("get_alloc_memory_size", &Histogram2D<BinType,IntegerType>::get_alloc_memory_size)\
 	;
