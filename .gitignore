@@ -39,3 +39,7 @@ build
 *.pyc
 __pycache__/
 *.bak
+
+*.hhh
+
+*.tppp
