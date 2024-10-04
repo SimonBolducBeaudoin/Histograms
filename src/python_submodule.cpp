@@ -56,7 +56,7 @@
         .def(py::init<uint, int, double, uint>(), "nofbins"_a.noconvert(),                         \
              "n_threads"_a.noconvert(), "max"_a, "n_hist"_a)                                       \
         .def("accumulate", &Histogram2D<BinType, FloatType>::accumulate_py<FloatType>,             \
-             "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a)                       \
+             "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a = 0)                   \
         .def("reset", &Histogram2D<BinType, FloatType>::reset)                                     \
         .def("get", &Histogram2D<BinType, FloatType>::share_py)                                    \
         .def_static("abscisse", &Histogram2D<BinType, FloatType>::abscisse_py,                     \
@@ -69,7 +69,7 @@
         .def(py::init<int, uint>(), "n_threads"_a.noconvert(), "n_hist"_a)                         \
         .def(py::init<int, uint, uint>(), "n_threads"_a.noconvert(), "bit"_a = 0, "n_hist"_a)      \
         .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py<IntegerType>,         \
-             "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a)                       \
+             "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a = 0)                   \
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                   \
         .def("get", &Histogram2D<BinType, IntegerType>::share_py)                                  \
         .def("how_much_clip", &Histogram2D<BinType, IntegerType>::how_much_clip)                   \
@@ -80,7 +80,7 @@
         .def(py::init<int, uint>(), "n_threads"_a.noconvert(), "n_hist"_a)                         \
         .def(py::init<int, uint, uint>(), "n_threads"_a.noconvert(), "bit"_a = 0, "n_hist"_a)      \
         .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py<IntegerType>,         \
-             "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a)                       \
+             "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a = 0)                   \
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                   \
         .def("get", &Histogram2D<BinType, IntegerType>::share_py)                                  \
         .def("how_much_clip", &Histogram2D<BinType, IntegerType>::how_much_clip)                   \

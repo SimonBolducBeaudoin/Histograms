@@ -10,7 +10,7 @@ moment( histogram , bins , n_bins , exp_x , ... , n_total )
                 of the histogram defined by histogram, bins and  n_bins.
                 It is only valid for squared histogram (same number of bin in
 each dimension) And for efficiency reasons n_total must be precalculated
-        
+        
         Variables :
         - histogram : a pointer to the histogram data linearly arranged in
 memory (C style)
@@ -20,13 +20,13 @@ memory (C style)
         - exp_x : the first exponent that defines the moment to calculate
         - exp_y : the 2nd exponent ...
         - ...
-        
+        
         */
 
 /*
         Cannot do partial template specialization for function, see :
    https://en.wikipedia.org/wiki/Partial_template_specialization
-        
+        
         Can only do full specialization
         I could use macro instead
 */

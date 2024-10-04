@@ -1,7 +1,7 @@
 /*
         Cannot do partial template specialization for function, see :
    https://en.wikipedia.org/wiki/Partial_template_specialization
-        
+        
         Can only do full specialization
         Therefore I'll be doing full specialisation using macros for compactness
 */
