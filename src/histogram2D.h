@@ -26,9 +26,25 @@ template <class BinType, class DataType = uint> class Histogram2D {
               class Enable = typename std::enable_if_t<std::is_integral<ConstructorType>::value>>
     Histogram2D(int n_threads, uint bit, uint n_prod);
 
-    template <class AccumulateType = DataType>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data,
-                    uint i_prod = 1);
+	// double //
+    template <class AccumulateType = DataType,typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data,uint i_prod = 1);
+	// float //
+	template <class AccumulateType = DataType,typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data,uint i_prod = 1);
+	// uint8 //
+	template <class AccumulateType = DataType,typename std::enable_if<std::is_same<AccumulateType, uint8_t>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data,uint i_prod = 1);
+	// uint16 //
+	template <class AccumulateType = DataType,typename std::enable_if<std::is_same<AccumulateType, uint16_t>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data,uint i_prod = 1);
+	// int8 //
+	template <class AccumulateType = DataType,typename std::enable_if<std::is_same<AccumulateType, int8_t>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data,uint i_prod = 1);
+	// int16 //
+	template <class AccumulateType = DataType,typename std::enable_if<std::is_same<AccumulateType, int16_t>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data,uint i_prod = 1);
+	
 
     void reset();
 
@@ -81,4 +97,4 @@ template <class BinType, class DataType = uint> class Histogram2D {
     void reset_threads();
 };
 
-#include "../src/histogram2D.tpp"
+#include "histogram2D.tpp"
