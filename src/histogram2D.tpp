@@ -77,6 +77,12 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
     return abscisse.move_py();
 }
 
+template <class BinType, class DataType>
+inline void
+Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::reduction() {
+    reduction_and_reset_threads();
+}
+
 ///// METHODS FLOATING POINTS END
 ///////////////////////
 

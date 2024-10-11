@@ -49,7 +49,7 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_po
 
     uint64_t get_alloc_memory_size() { return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size(); };
 
-  protected:
+    void reduction();
     const uint n_prod;
     const uint nofbins;
     const int n_threads;
