@@ -1,8 +1,7 @@
 template <class BinType, class DataType>
 template <class ConstructorType, class Enable>
 Histogram<BinType, DataType>::Histogram(uint nofbins, int n_threads, ConstructorType max)
-    : nofbins(nofbins), n_threads(n_threads), histogram(Multi_array<BinType, 1, uint32_t>(nofbins)),
-      max(max), bit(0) {
+    : nofbins(nofbins), n_threads(n_threads), histogram(Multi_array<BinType, 1, uint32_t>(nofbins)), max(max), bit(0) {
     reset();
 }
 
@@ -10,16 +9,15 @@ template <class BinType, class DataType>
 template <class ConstructorType, class Enable>
 Histogram<BinType, DataType>::Histogram(int n_threads)
     : nofbins(1 << (8 * sizeof(ConstructorType))), n_threads(n_threads),
-      histogram(Multi_array<BinType, 1, uint32_t>(1 << (8 * sizeof(ConstructorType)))), max(1.0),
-      bit(8) {
+      histogram(Multi_array<BinType, 1, uint32_t>(1 << (8 * sizeof(ConstructorType)))), max(1.0), bit(8) {
     reset();
 }
 
 template <class BinType, class DataType>
 template <class ConstructorType, class Enable>
 Histogram<BinType, DataType>::Histogram(int n_threads, uint bit)
-    : nofbins(1 << bit), n_threads(n_threads),
-      histogram(Multi_array<BinType, 1, uint32_t>(1 << bit)), max(1.0), bit(bit) {
+    : nofbins(1 << bit), n_threads(n_threads), histogram(Multi_array<BinType, 1, uint32_t>(1 << bit)), max(1.0),
+      bit(bit) {
     reset();
 }
 
@@ -27,91 +25,79 @@ Histogram<BinType, DataType>::Histogram(int n_threads, uint bit)
 #define _PRAGMA_(x) _Pragma(#x)
 #define PRAGMA_GCC_UNROLL(x) _PRAGMA_(GCC unroll x)
 
-#define ACCUMULATE_DOUBLE(BIN_TYPE)                                                                \
-    template <>                                                                                    \
-    template <>                                                                                    \
-    void Histogram<BIN_TYPE, double>::accumulate(double *data, uint64_t L_data, size_t stride) {   \
-        double bin_width = 2.0 * max / (nofbins);                                                  \
-        BIN_TYPE *histogram_local = histogram.get_ptr();                                           \
-        _Pragma("omp parallel") {                                                                  \
-            manage_thread_affinity();                                                              \
-            _Pragma("omp for reduction(+:histogram_local[:nofbins])") for (uint64_t i = 0;         \
-                                                                           i < L_data; i++) {      \
-                float_to_hist(*((double *)(((char *)data) + (stride * i))), histogram_local, max,  \
-                              bin_width);                                                          \
-            }                                                                                      \
-        }                                                                                          \
+#define ACCUMULATE_DOUBLE(BIN_TYPE)                                                                                    \
+    template <>                                                                                                        \
+    template <>                                                                                                        \
+    void Histogram<BIN_TYPE, double>::accumulate(double *data, uint64_t L_data, size_t stride) {                       \
+        double bin_width = 2.0 * max / (nofbins);                                                                      \
+        BIN_TYPE *histogram_local = histogram.get_ptr();                                                               \
+        _Pragma("omp parallel") {                                                                                      \
+            manage_thread_affinity();                                                                                  \
+            _Pragma("omp for reduction(+:histogram_local[:nofbins])") for (uint64_t i = 0; i < L_data; i++) {          \
+                float_to_hist(*((double *)(((char *)data) + (stride * i))), histogram_local, max, bin_width);          \
+            }                                                                                                          \
+        }                                                                                                              \
     }
 
-#define ACCUMULATE_FLOAT(BIN_TYPE, UNROLL)                                                         \
-    template <>                                                                                    \
-    template <>                                                                                    \
-    void Histogram<BIN_TYPE, float>::accumulate(float *data, uint64_t L_data, size_t stride) {     \
-        float bin_width = 2.0 * max / (nofbins);                                                   \
-        BIN_TYPE *histogram_local = histogram.get_ptr();                                           \
-        _Pragma("omp parallel") {                                                                  \
-            manage_thread_affinity();                                                              \
-            _Pragma("omp for reduction(+:histogram_local[:nofbins])") for (uint64_t i = 0;         \
-                                                                           i < L_data - (L_data %  \
-                                                                                         UNROLL);  \
-                                                                           i += UNROLL) {          \
-                PRAGMA_GCC_UNROLL(UNROLL)                                                          \
-                for (uint64_t j = 0; j < UNROLL; j++) {                                            \
-                    float_to_hist(*((float *)(((char *)data) + (stride * (i + j)))),               \
-                                  histogram_local, max, bin_width);                                \
-                }                                                                                  \
-            }                                                                                      \
-        }                                                                                          \
-        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                           \
-            float_to_hist(*((float *)(((char *)data) + (stride * (i)))), histogram.get_ptr(), max, \
-                          bin_width);                                                              \
-        }                                                                                          \
+#define ACCUMULATE_FLOAT(BIN_TYPE, UNROLL)                                                                             \
+    template <> template <> void Histogram<BIN_TYPE, float>::accumulate(float *data, uint64_t L_data, size_t stride) { \
+        float bin_width = 2.0 * max / (nofbins);                                                                       \
+        BIN_TYPE *histogram_local = histogram.get_ptr();                                                               \
+        _Pragma("omp parallel") {                                                                                      \
+            manage_thread_affinity();                                                                                  \
+            _Pragma("omp for reduction(+:histogram_local[:nofbins])") for (uint64_t i = 0;                             \
+                                                                           i < L_data - (L_data % UNROLL);             \
+                                                                           i += UNROLL) {                              \
+                PRAGMA_GCC_UNROLL(UNROLL)                                                                              \
+                for (uint64_t j = 0; j < UNROLL; j++) {                                                                \
+                    float_to_hist(*((float *)(((char *)data) + (stride * (i + j)))), histogram_local, max, bin_width); \
+                }                                                                                                      \
+            }                                                                                                          \
+        }                                                                                                              \
+        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                                               \
+            float_to_hist(*((float *)(((char *)data) + (stride * (i)))), histogram.get_ptr(), max, bin_width);         \
+        }                                                                                                              \
     }
 
-#define ACCUMULATE_UINT8(BIN_TYPE, UNROLL)                                                         \
-    template <>                                                                                    \
-    template <>                                                                                    \
-    void Histogram<BIN_TYPE, uint8_t>::accumulate(uint8_t *data, uint64_t L_data, size_t stride) { \
-        BIN_TYPE *histogram_local = histogram.get_ptr();                                           \
-        _Pragma("omp parallel") {                                                                  \
-            manage_thread_affinity();                                                              \
-            _Pragma("omp for reduction(+:histogram_local[:1<<8])") for (uint64_t i = 0;            \
-                                                                        i < L_data -               \
-                                                                                (L_data % UNROLL); \
-                                                                        i += UNROLL) {             \
-                PRAGMA_GCC_UNROLL(UNROLL)                                                          \
-                for (uint64_t j = 0; j < UNROLL; j++) {                                            \
-                    histogram_local[*((uint8_t *)(((char *)data) + (stride * (i + j))))]++;        \
-                }                                                                                  \
-            }                                                                                      \
-        }                                                                                          \
-        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                           \
-            histogram[*((uint8_t *)(((char *)data) + (stride * (i))))]++;                          \
-        }                                                                                          \
+#define ACCUMULATE_UINT8(BIN_TYPE, UNROLL)                                                                             \
+    template <>                                                                                                        \
+    template <>                                                                                                        \
+    void Histogram<BIN_TYPE, uint8_t>::accumulate(uint8_t *data, uint64_t L_data, size_t stride) {                     \
+        BIN_TYPE *histogram_local = histogram.get_ptr();                                                               \
+        _Pragma("omp parallel") {                                                                                      \
+            manage_thread_affinity();                                                                                  \
+            _Pragma("omp for reduction(+:histogram_local[:1<<8])") for (uint64_t i = 0;                                \
+                                                                        i < L_data - (L_data % UNROLL); i += UNROLL) { \
+                PRAGMA_GCC_UNROLL(UNROLL)                                                                              \
+                for (uint64_t j = 0; j < UNROLL; j++) {                                                                \
+                    histogram_local[*((uint8_t *)(((char *)data) + (stride * (i + j))))]++;                            \
+                }                                                                                                      \
+            }                                                                                                          \
+        }                                                                                                              \
+        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                                               \
+            histogram[*((uint8_t *)(((char *)data) + (stride * (i))))]++;                                              \
+        }                                                                                                              \
     }
 
-#define ACCUMULATE_UINT16(BIN_TYPE, UNROLL)                                                        \
-    template <>                                                                                    \
-    template <>                                                                                    \
-    void Histogram<BIN_TYPE, uint16_t>::accumulate(uint16_t *data, uint64_t L_data,                \
-                                                   size_t stride) {                                \
-        int b = bit;                                                                               \
-        BIN_TYPE *histogram_local = histogram.get_ptr();                                           \
-        _Pragma("omp parallel") {                                                                  \
-            manage_thread_affinity();                                                              \
-            _Pragma("omp for reduction(+:histogram_local[:1<<b])") for (uint64_t i = 0;            \
-                                                                        i < L_data -               \
-                                                                                (L_data % UNROLL); \
-                                                                        i += UNROLL) {             \
-                PRAGMA_GCC_UNROLL(UNROLL)                                                          \
-                for (uint64_t j = 0; j < UNROLL; j++) {                                            \
-                    histogram_local[*((uint16_t *)(((char *)data) + (stride * (i + j))))]++;       \
-                }                                                                                  \
-            }                                                                                      \
-        }                                                                                          \
-        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                           \
-            histogram[*((uint16_t *)(((char *)data) + (stride * (i))))]++;                         \
-        }                                                                                          \
+#define ACCUMULATE_UINT16(BIN_TYPE, UNROLL)                                                                            \
+    template <>                                                                                                        \
+    template <>                                                                                                        \
+    void Histogram<BIN_TYPE, uint16_t>::accumulate(uint16_t *data, uint64_t L_data, size_t stride) {                   \
+        int b = bit;                                                                                                   \
+        BIN_TYPE *histogram_local = histogram.get_ptr();                                                               \
+        _Pragma("omp parallel") {                                                                                      \
+            manage_thread_affinity();                                                                                  \
+            _Pragma("omp for reduction(+:histogram_local[:1<<b])") for (uint64_t i = 0;                                \
+                                                                        i < L_data - (L_data % UNROLL); i += UNROLL) { \
+                PRAGMA_GCC_UNROLL(UNROLL)                                                                              \
+                for (uint64_t j = 0; j < UNROLL; j++) {                                                                \
+                    histogram_local[*((uint16_t *)(((char *)data) + (stride * (i + j))))]++;                           \
+                }                                                                                                      \
+            }                                                                                                          \
+        }                                                                                                              \
+        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                                               \
+            histogram[*((uint16_t *)(((char *)data) + (stride * (i))))]++;                                             \
+        }                                                                                                              \
     }
 
 // template<>
@@ -141,53 +127,47 @@ Histogram<BinType, DataType>::Histogram(int n_threads, uint bit)
 // }
 // }
 
-#define ACCUMULATE_INT8(BIN_TYPE, UNROLL)                                                          \
-    template <>                                                                                    \
-    template <>                                                                                    \
-    void Histogram<BIN_TYPE, int8_t>::accumulate(int8_t *data, uint64_t L_data, size_t stride) {   \
-        int min_val = 1 << (8 - 1);                                                                \
-        BIN_TYPE *histogram_local = histogram.get_ptr();                                           \
-        _Pragma("omp parallel") {                                                                  \
-            manage_thread_affinity();                                                              \
-            _Pragma("omp for reduction(+:histogram_local[:1<<8])") for (uint64_t i = 0;            \
-                                                                        i < L_data -               \
-                                                                                (L_data % UNROLL); \
-                                                                        i += UNROLL) {             \
-                PRAGMA_GCC_UNROLL(UNROLL)                                                          \
-                for (uint64_t j = 0; j < UNROLL; j++) {                                            \
-                    histogram_local[(int)(*((uint8_t *)(((char *)data) + (stride * (i + j))))) +   \
-                                    min_val]++;                                                    \
-                }                                                                                  \
-            }                                                                                      \
-        }                                                                                          \
-        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                           \
-            histogram[(int)(*((uint8_t *)(((char *)data) + (stride * (i))))) + min_val]++;         \
-        }                                                                                          \
+#define ACCUMULATE_INT8(BIN_TYPE, UNROLL)                                                                              \
+    template <>                                                                                                        \
+    template <>                                                                                                        \
+    void Histogram<BIN_TYPE, int8_t>::accumulate(int8_t *data, uint64_t L_data, size_t stride) {                       \
+        int min_val = 1 << (8 - 1);                                                                                    \
+        BIN_TYPE *histogram_local = histogram.get_ptr();                                                               \
+        _Pragma("omp parallel") {                                                                                      \
+            manage_thread_affinity();                                                                                  \
+            _Pragma("omp for reduction(+:histogram_local[:1<<8])") for (uint64_t i = 0;                                \
+                                                                        i < L_data - (L_data % UNROLL); i += UNROLL) { \
+                PRAGMA_GCC_UNROLL(UNROLL)                                                                              \
+                for (uint64_t j = 0; j < UNROLL; j++) {                                                                \
+                    histogram_local[(int)(*((uint8_t *)(((char *)data) + (stride * (i + j))))) + min_val]++;           \
+                }                                                                                                      \
+            }                                                                                                          \
+        }                                                                                                              \
+        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                                               \
+            histogram[(int)(*((uint8_t *)(((char *)data) + (stride * (i))))) + min_val]++;                             \
+        }                                                                                                              \
     }
 
-#define ACCUMULATE_INT16(BIN_TYPE, UNROLL)                                                         \
-    template <>                                                                                    \
-    template <>                                                                                    \
-    void Histogram<BIN_TYPE, int16_t>::accumulate(int16_t *data, uint64_t L_data, size_t stride) { \
-        int b = bit;                                                                               \
-        int min_val = 1 << (b - 1);                                                                \
-        BIN_TYPE *histogram_local = histogram.get_ptr();                                           \
-        _Pragma("omp parallel") {                                                                  \
-            manage_thread_affinity();                                                              \
-            _Pragma("omp for reduction(+:histogram_local[:1<<b])") for (uint64_t i = 0;            \
-                                                                        i < L_data -               \
-                                                                                (L_data % UNROLL); \
-                                                                        i += UNROLL) {             \
-                PRAGMA_GCC_UNROLL(UNROLL)                                                          \
-                for (uint64_t j = 0; j < UNROLL; j++) {                                            \
-                    histogram_local[(int)(*((int16_t *)(((char *)data) + (stride * (i + j))))) +   \
-                                    min_val]++;                                                    \
-                }                                                                                  \
-            }                                                                                      \
-        }                                                                                          \
-        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                           \
-            histogram[(int)(*((int16_t *)(((char *)data) + (stride * (i))))) + min_val]++;         \
-        }                                                                                          \
+#define ACCUMULATE_INT16(BIN_TYPE, UNROLL)                                                                             \
+    template <>                                                                                                        \
+    template <>                                                                                                        \
+    void Histogram<BIN_TYPE, int16_t>::accumulate(int16_t *data, uint64_t L_data, size_t stride) {                     \
+        int b = bit;                                                                                                   \
+        int min_val = 1 << (b - 1);                                                                                    \
+        BIN_TYPE *histogram_local = histogram.get_ptr();                                                               \
+        _Pragma("omp parallel") {                                                                                      \
+            manage_thread_affinity();                                                                                  \
+            _Pragma("omp for reduction(+:histogram_local[:1<<b])") for (uint64_t i = 0;                                \
+                                                                        i < L_data - (L_data % UNROLL); i += UNROLL) { \
+                PRAGMA_GCC_UNROLL(UNROLL)                                                                              \
+                for (uint64_t j = 0; j < UNROLL; j++) {                                                                \
+                    histogram_local[(int)(*((int16_t *)(((char *)data) + (stride * (i + j))))) + min_val]++;           \
+                }                                                                                                      \
+            }                                                                                                          \
+        }                                                                                                              \
+        for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {                                               \
+            histogram[(int)(*((int16_t *)(((char *)data) + (stride * (i))))) + min_val]++;                             \
+        }                                                                                                              \
     }
 
 // template<>
@@ -218,12 +198,12 @@ Histogram<BinType, DataType>::Histogram(int n_threads, uint bit)
 // }
 // }
 
-#define ACCUMULATE(BIN_TYPE)                                                                       \
-    ACCUMULATE_DOUBLE(BIN_TYPE);                                                                   \
-    ACCUMULATE_FLOAT(BIN_TYPE, 2);                                                                 \
-    ACCUMULATE_UINT8(BIN_TYPE, 8);                                                                 \
-    ACCUMULATE_UINT16(BIN_TYPE, 4);                                                                \
-    ACCUMULATE_INT8(BIN_TYPE, 8);                                                                  \
+#define ACCUMULATE(BIN_TYPE)                                                                                           \
+    ACCUMULATE_DOUBLE(BIN_TYPE);                                                                                       \
+    ACCUMULATE_FLOAT(BIN_TYPE, 2);                                                                                     \
+    ACCUMULATE_UINT8(BIN_TYPE, 8);                                                                                     \
+    ACCUMULATE_UINT16(BIN_TYPE, 4);                                                                                    \
+    ACCUMULATE_INT8(BIN_TYPE, 8);                                                                                      \
     ACCUMULATE_INT16(BIN_TYPE, 4);
 
 ACCUMULATE(uint64_t);
@@ -265,8 +245,8 @@ template <class BinType, class DataType> void Histogram<BinType, DataType>::rese
 
 template <class BinType, class Datatype>
 template <class FloatType>
-inline void Histogram<BinType, Datatype>::float_to_hist(FloatType data, BinType *histogram,
-                                                        FloatType max, FloatType bin_width) {
+inline void Histogram<BinType, Datatype>::float_to_hist(FloatType data, BinType *histogram, FloatType max,
+                                                        FloatType bin_width) {
     /*
             Two simplifications where made :
                     - A conditionnal was removed by stacking all clipping in the
@@ -274,8 +254,7 @@ inline void Histogram<BinType, Datatype>::float_to_hist(FloatType data, BinType 
                             - This indice a very sligh error due to <= instead of
        < for the negative cliping
     */
-    std::abs(data) >= max ? histogram[0]++
-                          : histogram[(unsigned int)((data + max) / (bin_width))]++;
+    std::abs(data) >= max ? histogram[0]++ : histogram[(unsigned int)((data + max) / (bin_width))]++;
 
     // histogram[ (std::abs(data) < max) * (uint)((data+max)/(bin_width)) ]++ ;
 }
@@ -286,8 +265,7 @@ inline void Histogram<BinType, Datatype>::float_to_hist(FloatType data, BinType 
 
 template <class BinType, class Datatype>
 template <class AbscisseType>
-std::vector<double> Histogram<BinType, Datatype>::std_moments(AbscisseType *bins, uint order,
-                                                              bool no_clip) {
+std::vector<double> Histogram<BinType, Datatype>::std_moments(AbscisseType *bins, uint order, bool no_clip) {
     return ::std_moments(histogram.get_ptr(), bins, nofbins, order, no_clip);
 }
 
@@ -314,8 +292,8 @@ void Histogram<BinType, Datatype>::accumulate_py(py::array_t<AccumulateType> dat
 
 template <class BinType, class Datatype>
 template <class AbscisseType>
-std::vector<double> Histogram<BinType, Datatype>::std_moments_py(py::array_t<AbscisseType> bins,
-                                                                 uint order, bool no_clip) {
+std::vector<double> Histogram<BinType, Datatype>::std_moments_py(py::array_t<AbscisseType> bins, uint order,
+                                                                 bool no_clip) {
     py::buffer_info buf = bins.request();
     if (buf.ndim != 1) {
         throw std::runtime_error("Number of dimensions must be one");

@@ -10,7 +10,7 @@ moment( histogram , bins , n_bins , exp_x , ... , n_total )
                 of the histogram defined by histogram, bins and  n_bins.
                 It is only valid for squared histogram (same number of bin in
 each dimension) And for efficiency reasons n_total must be precalculated
-        
+        
         Variables :
         - histogram : a pointer to the histogram data linearly arranged in
 memory (C style)
@@ -20,36 +20,34 @@ memory (C style)
         - exp_x : the first exponent that defines the moment to calculate
         - exp_y : the 2nd exponent ...
         - ...
-        
+        
         */
 
 /*
         Cannot do partial template specialization for function, see :
    https://en.wikipedia.org/wiki/Partial_template_specialization
-        
+        
         Can only do full specialization
         I could use macro instead
 */
 
 template <class BinType, class AbscisseType>
-std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_bins, uint order,
-                                bool no_clip = false);
+std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_bins, uint order, bool no_clip = false);
 
 template <class BinType, class AbscisseType>
-double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total,
-              bool no_clip = false);
+double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total, bool no_clip = false);
 
 template <class BinType, class AbscisseType>
-double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp_x, uint exp_y,
-              uint64_t n_total, int n_threads, bool no_clip = false);
+double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp_x, uint exp_y, uint64_t n_total,
+              int n_threads, bool no_clip = false);
 
 template <class BinType, class AbscisseType>
-double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp,
-                       uint64_t n_total, bool no_clip = false);
+double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total,
+                       bool no_clip = false);
 
 template <class BinType, class AbscisseType>
-double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp_x, uint exp_y,
-                       uint64_t n_total, int n_threads, bool no_clip = false);
+double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp_x, uint exp_y, uint64_t n_total,
+                       int n_threads, bool no_clip = false);
 
 /*
 Ref:
