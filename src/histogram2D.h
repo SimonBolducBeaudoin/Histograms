@@ -47,8 +47,8 @@ class Histogram2D<BinType,DataType, typename std::enable_if<std::is_floating_poi
     Multi_array<BinType, 3> histogram;
     Multi_array<uint8_t, 4> hs;
 
-    DataType max; 
-	DataType bin_width; 
+    const DataType max; 
+	const DataType bin_width; 
 	
     void compute_bins(DataType data_1, DataType data_2,uint &biny, uint &binx);
     void to_middleman(uint i_prod, int this_thread, uint biny, uint binx);
