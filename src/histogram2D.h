@@ -3,6 +3,7 @@
 #include <Multi_array.h>
 #include <omp_extra.h>
 #include <type_traits>
+#include <limits>   // For std::numeric_limits
 #include <algorithm>   // For std::max
 
 // Empty Base Class //
