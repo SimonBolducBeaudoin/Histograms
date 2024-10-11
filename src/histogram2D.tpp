@@ -91,17 +91,18 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
 //////////////////////////////////////////////
 #define _PRAGMA_(x) _Pragma(#x)
 #define PRAGMA_GCC_UNROLL(x) _PRAGMA_(GCC unroll x)
-
 // DOUBLE BEGIN /////////////////////////////////////
 #define UNROLL 8
 template <class BinType, class DataType>
 template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type>
 void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
     AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod) {
-    _Pragma("omp parallel") {
+#pragma omp parallel num_threads(n_threads)
+    {
         manage_thread_affinity();
         int this_thread = omp_get_thread_num();
-        _Pragma("omp for") for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+#pragma omp for
+        for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
                 to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
@@ -117,19 +118,18 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_poi
 #define UNROLL 8
 template <class BinType, class DataType>
 template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type>
-void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
-accumulate(AccumulateType *data_1, AccumulateType *data_2,uint64_t L_data, uint i_prod,int this_thread) 
-{ 
-	// Thread safe version of accumulate
-	for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
-		PRAGMA_GCC_UNROLL(UNROLL)
-		for (uint64_t j = 0; j < UNROLL; j++) {
-			to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
-		}
-	}
-	for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
-		to_hs(data_2[i], data_1[i], i_prod, 0);
-	}
+void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
+    AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod, int this_thread) {
+    // Thread safe version of accumulate
+    for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+        PRAGMA_GCC_UNROLL(UNROLL)
+        for (uint64_t j = 0; j < UNROLL; j++) {
+            to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
+        }
+    }
+    for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
+        to_hs(data_2[i], data_1[i], i_prod, 0);
+    }
 }
 #undef UNROLL
 
@@ -140,10 +140,12 @@ template <class BinType, class DataType>
 template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type>
 void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
     AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod) {
-    _Pragma("omp parallel") {
+#pragma omp parallel num_threads(n_threads)
+    {
         manage_thread_affinity();
         int this_thread = omp_get_thread_num();
-        _Pragma("omp for") for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+#pragma omp for
+        for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
                 to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
@@ -159,19 +161,18 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_poi
 #define UNROLL 8
 template <class BinType, class DataType>
 template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type>
-void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
-accumulate(AccumulateType *data_1, AccumulateType *data_2,uint64_t L_data, uint i_prod,int this_thread) 
-{ 
-	// Thread safe version of accumulate
-	for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
-		PRAGMA_GCC_UNROLL(UNROLL)
-		for (uint64_t j = 0; j < UNROLL; j++) {
-			to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
-		}
-	}
-	for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
-		to_hs(data_2[i], data_1[i], i_prod, 0);
-	}
+void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
+    AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod, int this_thread) {
+    // Thread safe version of accumulate
+    for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+        PRAGMA_GCC_UNROLL(UNROLL)
+        for (uint64_t j = 0; j < UNROLL; j++) {
+            to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
+        }
+    }
+    for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
+        to_hs(data_2[i], data_1[i], i_prod, 0);
+    }
 }
 #undef UNROLL
 // FLOAT END /////////////////////////////////////
@@ -182,10 +183,11 @@ template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateT
 void Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::accumulate(
     AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod) {
     BinType *histogram_local = histogram(i_prod);
-    _Pragma("omp parallel") {
+#pragma omp parallel num_threads(n_threads)
+    {
         manage_thread_affinity();
-        _Pragma("omp for reduction(+:histogram_local[:1<<16])") for (uint64_t i = 0; i < L_data - (L_data % UNROLL);
-                                                                     i += UNROLL) {
+#pragma omp for reduction(+ : histogram_local[:1 << 16])
+        for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
                 histogram_local[nofbins * data_2[i + j] + data_1[i + j]]++;
@@ -204,10 +206,12 @@ template <class BinType, class DataType>
 template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateType, uint16_t>::value, int>::type>
 void Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::accumulate(
     AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod) {
-    _Pragma("omp parallel") {
+#pragma omp parallel num_threads(n_threads)
+    {
         manage_thread_affinity();
         int this_thread = omp_get_thread_num();
-        _Pragma("omp for") for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+#pragma omp for
+        for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
                 to_middleman(i_prod, this_thread, data_2[i + j], data_1[i + j]);
@@ -231,7 +235,8 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<Dat
 // {
 // manage_thread_affinity();
 // int this_thread = omp_get_thread_num();
-// _Pragma("omp for")
+// #pragma omp for
+
 // for (uint64_t i=0; i<L_data-(L_data%UNROLL); i+=UNROLL)
 // {
 // PRAGMA_GCC_UNROLL(UNROLL)
@@ -257,10 +262,11 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<Dat
     AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod) {
     int min_val = 1 << (8 - 1);
     BinType *histogram_local = histogram(i_prod);
-    _Pragma("omp parallel") {
+#pragma omp parallel num_threads(n_threads)
+    {
         manage_thread_affinity();
-        _Pragma("omp for reduction(+:histogram_local[:1<<16])") for (uint64_t i = 0; i < L_data - (L_data % UNROLL);
-                                                                     i += UNROLL) {
+#pragma omp for reduction(+ : histogram_local[:1 << 16])
+        for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
                 histogram_local[nofbins * data_2[i + j] + min_val + data_1[i + j] + min_val]++;
@@ -281,10 +287,12 @@ template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateT
 void Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::accumulate(
     AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod) {
     int min_val = 1 << (bit - 1);
-    _Pragma("omp parallel") {
+#pragma omp parallel num_threads(n_threads)
+    {
         manage_thread_affinity();
         int this_thread = omp_get_thread_num();
-        _Pragma("omp for") for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+#pragma omp for
+        for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
                 to_middleman(i_prod, this_thread, (int)(data_2[i + j]) + min_val, (int)(data_1[i + j]) + min_val);
@@ -338,7 +346,8 @@ inline void
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::to_middleman(
     uint i_prod, int this_thread, uint biny, uint binx) {
     if (hs(i_prod, this_thread, biny, binx) == 255) {
-        _Pragma("omp atomic update") histogram(i_prod, biny, binx) += (1 << 8);
+#pragma omp atomic update
+        histogram(i_prod, biny, binx) += (1 << 8);
     }
     hs(i_prod, this_thread, biny, binx)++;
 }
@@ -348,7 +357,7 @@ inline void
 Histogram2D<BinType, DataType,
             typename std::enable_if<std::is_floating_point<DataType>::value>::type>::reduction_and_reset_threads() {
     for (int thread = 0; thread < n_threads; thread++) {
-#pragma omp parallel
+#pragma omp parallel num_threads(n_threads)
         {
             manage_thread_affinity();
 #pragma omp for collapse(3)
@@ -433,7 +442,8 @@ inline void
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::to_middleman(
     uint i_prod, int this_thread, uint biny, uint binx) {
     if (hs(i_prod, this_thread, biny, binx) == 255) {
-        _Pragma("omp atomic update") histogram(i_prod, biny, binx) += (1 << 8);
+#pragma omp atomic update
+        histogram(i_prod, biny, binx) += (1 << 8);
     }
     hs(i_prod, this_thread, biny, binx)++;
 }
@@ -443,7 +453,7 @@ inline void
 Histogram2D<BinType, DataType,
             typename std::enable_if<std::is_integral<DataType>::value>::type>::reduction_and_reset_threads() {
     for (int thread = 0; thread < n_threads; thread++) {
-#pragma omp parallel
+#pragma omp parallel num_threads(n_threads)
         {
             manage_thread_affinity();
 #pragma omp for collapse(3)
