@@ -45,3 +45,5 @@ __pycache__/
 *.tppp
 .clang-format
 *.ignore
+
+*.log
