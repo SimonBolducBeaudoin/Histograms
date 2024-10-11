@@ -55,7 +55,7 @@
     py::class_<Histogram2D<BinType, FloatType>>(m, "Histogram2D_" #BinType "_" #FloatType)         \
         .def(py::init<uint, int, double, uint>(), "nofbins"_a.noconvert(),                         \
              "n_threads"_a.noconvert(), "max"_a, "n_hist"_a)                                       \
-        .def("accumulate", &Histogram2D<BinType, FloatType>::accumulate_py<FloatType>,             \
+        .def("accumulate", &Histogram2D<BinType, FloatType>::accumulate_py,             \
              "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a = 0)                   \
         .def("reset", &Histogram2D<BinType, FloatType>::reset)                                     \
         .def("get", &Histogram2D<BinType, FloatType>::share_py)                                    \
@@ -68,7 +68,7 @@
     py::class_<Histogram2D<BinType, IntegerType>>(m, "Histogram2D_" #BinType "_" #IntegerType)     \
         .def(py::init<int, uint>(), "n_threads"_a.noconvert(), "n_hist"_a)                         \
         .def(py::init<int, uint, uint>(), "n_threads"_a.noconvert(), "bit"_a = 0, "n_hist"_a)      \
-        .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py<IntegerType>,         \
+        .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py,         \
              "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a = 0)                   \
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                   \
         .def("get", &Histogram2D<BinType, IntegerType>::share_py)                                  \
@@ -79,7 +79,7 @@
     py::class_<Histogram2D<BinType, IntegerType>>(m, "Histogram2D_" #BinType "_" #IntegerType)     \
         .def(py::init<int, uint>(), "n_threads"_a.noconvert(), "n_hist"_a)                         \
         .def(py::init<int, uint, uint>(), "n_threads"_a.noconvert(), "bit"_a = 0, "n_hist"_a)      \
-        .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py<IntegerType>,         \
+        .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py,         \
              "data_1"_a.noconvert(), "data_2"_a.noconvert(), "hist_index"_a = 0)                   \
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                   \
         .def("get", &Histogram2D<BinType, IntegerType>::share_py)                                  \
