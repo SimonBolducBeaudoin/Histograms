@@ -50,12 +50,9 @@ class Histogram2D<BinType,DataType, typename std::enable_if<std::is_floating_poi
     DataType max; 
 	DataType bin_width; 
 	
-    void compute_bins(DataType data_1, DataType data_2, DataType max, DataType bin_width,
-                      uint &biny, uint &binx);
+    void compute_bins(DataType data_1, DataType data_2,uint &biny, uint &binx);
     void to_middleman(uint i_prod, int this_thread, uint biny, uint binx);
-    
-    void to_hs(DataType data_y, DataType data_x, DataType max, DataType bin_width, uint i_prod,
-               int this_thread);
+    void to_hs(DataType data_y, DataType data_x, uint i_prod,int this_thread);
 
     void reduction_and_reset_threads();
     void reset_threads();
