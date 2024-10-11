@@ -108,27 +108,26 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_poi
     reduction_and_reset_threads();
 }
 #undef UNROLL
-/*
 #define UNROLL 8
 template <class BinType, class DataType>
-template <class DataType,typename std::enable_if<std::is_same<DataType, double>::value, int>::type>
-void Histogram2D<BinType,DataType>::accumulate(DataType *data_1, DataType *data_2,
-                                                                                           uint64_t L_data, uint i_prod,
-int this_thread) { _Pragma("omp for") for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
-                        PRAGMA_GCC_UNROLL(UNROLL)
-                        for (uint64_t j = 0; j < UNROLL; j++) {
-                                to_hs(data_2[i + j], data_1[i + j], max, bin_width, i_prod, this_thread);
-                        }
-                }
-                for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
-                        to_hs(data_2[i], data_1[i], max, bin_width, i_prod, 0);
-                }
-        }
-        reduction_and_reset_threads();
+template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type>
+void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
+accumulate(AccumulateType *data_1, AccumulateType *data_2,uint64_t L_data, uint i_prod,int this_thread) 
+{ 
+	// Thread safe version of accumulate
+	for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+		PRAGMA_GCC_UNROLL(UNROLL)
+		for (uint64_t j = 0; j < UNROLL; j++) {
+			to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
+		}
+	}
+	for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
+		to_hs(data_2[i], data_1[i], i_prod, 0);
+	}
 }
 #undef UNROLL
-*/
-// DOUBLE END /////////////////////////////////////
+
+// DOUBLE END //////////////////////////////////////
 // FLOAT BEGIN /////////////////////////////////////
 #define UNROLL 8
 template <class BinType, class DataType>
@@ -149,6 +148,24 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_poi
         }
     }
     reduction_and_reset_threads();
+}
+#undef UNROLL
+#define UNROLL 8
+template <class BinType, class DataType>
+template <class AccumulateType, typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type>
+void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
+accumulate(AccumulateType *data_1, AccumulateType *data_2,uint64_t L_data, uint i_prod,int this_thread) 
+{ 
+	// Thread safe version of accumulate
+	for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
+		PRAGMA_GCC_UNROLL(UNROLL)
+		for (uint64_t j = 0; j < UNROLL; j++) {
+			to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
+		}
+	}
+	for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
+		to_hs(data_2[i], data_1[i], i_prod, 0);
+	}
 }
 #undef UNROLL
 // FLOAT END /////////////////////////////////////

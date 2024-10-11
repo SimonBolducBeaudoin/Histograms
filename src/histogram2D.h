@@ -15,14 +15,24 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_po
   public:
     Histogram2D(uint nofbins, int n_threads, DataType max, uint n_prod);
 
-    // double //
+    // double begin ////////////////////////////////////////////////////////////////////////////////////////
     template <class AccumulateType = DataType,
               typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type = 0>
     void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
-    // float //
+	// Thread safe accumulate // 
+	template <class AccumulateType = DataType,
+              typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod ,int this_thread);
+	// double end /////////////////////////////////////////////////////////////////////////////////////////
+    // float begin ////////////////////////////////////////////////////////////////////////////////////////
     template <class AccumulateType = DataType,
               typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type = 0>
     void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
+	// Thread safe accumulate //
+	template <class AccumulateType = DataType,
+              typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type = 0>
+    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod ,int this_thread);
+	// flaot end //////////////////////////////////////////////////////////////////////////////////////////
 
     void reset();
 
