@@ -24,7 +24,7 @@ class Histogram2D<BinType,DataType, typename std::enable_if<std::is_floating_poi
 	
     void reset();
 
-    uint64_t get_nofbins() { return nofbins; };
+    uint get_nofbins() { return nofbins; };
 	
     void accumulate_py(py::array_t<DataType> data_1, py::array_t<DataType> data_2,uint i_prod = 1);
 
@@ -82,7 +82,7 @@ class Histogram2D<BinType,DataType, typename std::enable_if<std::is_integral<Dat
 	
     void reset();
 
-    uint64_t get_nofbins() { return nofbins; };
+    uint get_nofbins() { return nofbins; };
 	
     void accumulate_py(py::array_t<DataType> data_1, py::array_t<DataType> data_2,
                        uint i_prod = 1);
