@@ -2,20 +2,19 @@ template <class BinType, class DataType>
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
 Histogram2D(uint nofbins, int n_threads, DataType max, uint n_prod)
 	// DataType Constructor ///////
-    : n_prod(std::max(n_prod, (uint)1)), nofbins(nofbins), n_threads(n_threads),
+    : n_prod(std::max(n_prod, (uint)1)), nofbins(std::max(nofbins, (uint)4 )), n_threads( std::max(n_threads,1) ),
       histogram(Multi_array<BinType, 3>(n_prod, nofbins, nofbins)),
-      hs(Multi_array<uint8_t, 4>(n_prod, n_threads, nofbins, nofbins)), max(max), bin_width(1.0) {
+      hs(Multi_array<uint8_t, 4>(n_prod, n_threads, nofbins, nofbins)), max( std::max(max, std::numeric_limits<DataType>::epsilon()*4 ) ), bin_width( 2.0 * max / nofbins ) {
     omp_set_num_threads(n_threads);
     reset();
     reset_threads();
 }
 
-
 template <class BinType, class DataType>
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::
 Histogram2D(int n_threads, uint n_prod)
 	// IntergerType Constructor ///////
-    : n_prod(std::max(n_prod, (uint)1)), nofbins(1 << (8 * sizeof(DataType))), n_threads(n_threads),
+    : n_prod(std::max(n_prod, (uint)1)), nofbins(1 << (8 * sizeof(DataType))), n_threads( std::max(n_threads,1) ),
       histogram(Multi_array<BinType, 3>(n_prod, 1 << (8 * sizeof(DataType)),
                                         1 << (8 * sizeof(DataType)))),
       hs(Multi_array<uint8_t, 4>(n_prod, n_threads, 1 << (8 * sizeof(DataType)),
@@ -29,7 +28,7 @@ template <class BinType, class DataType>
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::
 Histogram2D(int n_threads, uint bit, uint n_prod)
 	// IntergerType Constructor ///////
-    : n_prod(std::max(n_prod, (uint)1)), nofbins(1 << bit), n_threads(n_threads),
+    : n_prod(std::max(n_prod, (uint)1)), nofbins(1 << bit), n_threads( std::max(n_threads,1) ),
       histogram(Multi_array<BinType, 3>(n_prod, 1 << bit, 1 << bit)),
       hs(Multi_array<uint8_t, 4>(n_prod, n_threads, 1 << bit, 1 << bit)), bit(bit) {
     omp_set_num_threads(n_threads);
