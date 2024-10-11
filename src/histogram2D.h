@@ -41,9 +41,9 @@ class Histogram2D<BinType,DataType, typename std::enable_if<std::is_floating_poi
     };
 
   protected:
-    uint n_prod;
-    uint nofbins;
-    int n_threads;
+    const uint n_prod;
+    const uint nofbins;
+    const int n_threads;
     Multi_array<BinType, 3> histogram;
     Multi_array<uint8_t, 4> hs;
 
@@ -103,9 +103,9 @@ class Histogram2D<BinType,DataType, typename std::enable_if<std::is_integral<Dat
     };
 
   protected:
-    uint n_prod;
-    uint nofbins;
-    int n_threads;
+    const uint n_prod;
+    const uint nofbins;
+    const int n_threads;
     Multi_array<BinType, 3> histogram;
     Multi_array<uint8_t, 4> hs;
 	
