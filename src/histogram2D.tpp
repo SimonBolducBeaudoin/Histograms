@@ -137,7 +137,7 @@ template <class BinType, class DataType>
 template <class PointerType> 
 typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, float*>::value>::type
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
-    float* data_1, float* data_2, uint64_t L_data, uint i_prod, int this_thread) {
+    PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread) {
     // Thread safe version of accumulate
     for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
         PRAGMA_GCC_UNROLL(UNROLL)

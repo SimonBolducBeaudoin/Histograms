@@ -15,11 +15,7 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_po
   public:
     Histogram2D(uint nofbins, int n_threads, DataType max, uint n_prod);
 	
-	
-	
     // double begin ////////////////////////////////////////////////////////////////////////////////////////
-	
-	
     template <class PointerType = DataType>
 	typename std::enable_if<std::is_same<PointerType, double*>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
@@ -30,7 +26,7 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_po
 	// Thread safe accumulate with float inputs //
 	template <class PointerType>
 	typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, float*>::value>::type
-    accumulate(float* data_1, float* data_2, uint64_t L_data, uint i_prod, int this_thread);
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread);
     // double end /////////////////////////////////////////////////////////////////////////////////////////
     // float begin ////////////////////////////////////////////////////////////////////////////////////////
     template <class PointerType = DataType>
