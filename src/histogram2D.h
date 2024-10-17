@@ -14,24 +14,32 @@ template <class BinType, class DataType>
 class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type> {
   public:
     Histogram2D(uint nofbins, int n_threads, DataType max, uint n_prod);
-
+	
+	
+	
     // double begin ////////////////////////////////////////////////////////////////////////////////////////
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
+	
+	
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, double*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // Thread safe accumulate //
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, double>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod, int this_thread);
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, double*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread);
+	// Thread safe accumulate with float inputs //
+	template <class PointerType>
+	typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, float*>::value>::type
+    accumulate(float* data_1, float* data_2, uint64_t L_data, uint i_prod, int this_thread);
     // double end /////////////////////////////////////////////////////////////////////////////////////////
     // float begin ////////////////////////////////////////////////////////////////////////////////////////
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, float*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // Thread safe accumulate //
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, float>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod, int this_thread);
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, float*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread);
     // flaot end //////////////////////////////////////////////////////////////////////////////////////////
 
     void reset();
@@ -77,21 +85,21 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<Da
     Histogram2D(int n_threads, uint bit, uint n_prod);
 
     // uint8 //
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, uint8_t>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, uint8_t*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // uint16 //
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, uint16_t>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, uint16_t*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // int8 //
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, int8_t>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, int8_t*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // int16 //
-    template <class AccumulateType = DataType,
-              typename std::enable_if<std::is_same<AccumulateType, int16_t>::value, int>::type = 0>
-    void accumulate(AccumulateType *data_1, AccumulateType *data_2, uint64_t L_data, uint i_prod = 1);
+    template <class PointerType = DataType>
+	typename std::enable_if<std::is_same<PointerType, int16_t*>::value>::type
+    accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
 
     void reset();
 
