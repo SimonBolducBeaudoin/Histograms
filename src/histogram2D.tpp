@@ -95,7 +95,7 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
 #define UNROLL 8
 template <class BinType, class DataType>
 template <class PointerType> 
-typename std::enable_if<std::is_same<PointerType, double*>::value>::type
+typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, double*>::value>::type
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
     PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod) {
 #pragma omp parallel num_threads(n_threads)
@@ -118,7 +118,7 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
 
 template <class BinType, class DataType>
 template <class PointerType> 
-typename std::enable_if<std::is_same<PointerType, double*>::value>::type
+typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, double*>::value>::type
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
     PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread) {
     // Thread safe version of accumulate
@@ -156,7 +156,7 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
 #define UNROLL 8
 template <class BinType, class DataType>
 template <class PointerType>
-typename std::enable_if<std::is_same<PointerType, float*>::value>::type
+typename std::enable_if<std::is_same<DataType, float>::value && std::is_same<PointerType, float*>::value>::type
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
     PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod) {
 #pragma omp parallel num_threads(n_threads)
@@ -180,7 +180,7 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
 #define UNROLL 8
 template <class BinType, class DataType>
 template <class PointerType> 
-typename std::enable_if<std::is_same<PointerType, float*>::value>::type
+typename std::enable_if<std::is_same<DataType, float>::value && std::is_same<PointerType, float*>::value>::type
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::accumulate(
     PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread) {
     // Thread safe version of accumulate
