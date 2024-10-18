@@ -21,8 +21,9 @@ https://en.cppreference.com/w/cpp/language/member_template#Member_function_templ
 template <class BinType, class DataType> class Histogram {
   public:
     template </*float double*/
-              class ConstructorType = DataType, class Enable = typename std::enable_if_t<
-                                                    std::is_floating_point<ConstructorType>::value>> /*double, float*/
+              class ConstructorType = DataType,
+              class Enable =
+                  typename std::enable_if_t<std::is_floating_point<ConstructorType>::value>> /*double, float*/
     Histogram(uint nofbins, int n_threads, ConstructorType max);
 
     template </*uint8_t, int8_t, uint16_t, int16_t*/
@@ -37,7 +38,8 @@ template <class BinType, class DataType> class Histogram {
 
     // C++ INTERFACE
     // Core functions
-    template <class AccumulateType = DataType> void accumulate(AccumulateType *data, uint64_t L_data, size_t stride);
+    template <class AccumulateType = DataType>
+    void accumulate(AccumulateType *data, uint64_t L_data, size_t stride);
 
     void reset();
 

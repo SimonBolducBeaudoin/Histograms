@@ -1,13 +1,14 @@
 /*
         Cannot do partial template specialization for function, see :
    https://en.wikipedia.org/wiki/Partial_template_specialization
-        
+        
         Can only do full specialization
         Therefore I'll be doing full specialisation using macros for compactness
 */
 
 template <class BinType, class AbscisseType>
-std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_bins, uint order, bool no_clip) {
+std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_bins, uint order,
+                                bool no_clip) {
     /*
     Computes all 1D standardize moments up to order.
     Order cannot be < 2
@@ -65,7 +66,8 @@ double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uin
 }
 
 template <class BinType, class AbscisseType>
-double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total, bool no_clip) {
+double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total,
+                       bool no_clip) {
     double val = 0;
     uint first_bin = no_clip ? 1 : 0;
     uint last_bin = no_clip ? n_bins - 1 : n_bins;
@@ -104,8 +106,8 @@ double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp_x, u
 }
 
 template <class BinType, class AbscisseType>
-double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp_x, uint exp_y, uint64_t n_total,
-                       int n_threads, bool no_clip) {
+double centered_moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp_x, uint exp_y,
+                       uint64_t n_total, int n_threads, bool no_clip) {
     omp_set_num_threads(n_threads);
     double val = 0;
     uint first_bin = no_clip ? 1 : 0;

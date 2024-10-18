@@ -32,8 +32,8 @@ double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, ui
 }
 
 template <class HistType, class AbscisseType>
-double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp_x, uint exp_y, uint64_t n_total,
-                 int n_threads, bool no_clip) {
+double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp_x, uint exp_y,
+                 uint64_t n_total, int n_threads, bool no_clip) {
     py::buffer_info bins_buf = bins.request();
     py::buffer_info h_buf = histogram.request();
     if ((bins_buf.ndim != 1) or (h_buf.ndim != 2)) {
@@ -44,13 +44,13 @@ double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, ui
     }
     uint nofbins = h_buf.shape[0];
 
-    return moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y, n_total, n_threads,
-                  no_clip);
+    return moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y, n_total,
+                  n_threads, no_clip);
 }
 
 template <class HistType, class AbscisseType>
-double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp, uint64_t n_total,
-                          bool no_clip) {
+double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp,
+                          uint64_t n_total, bool no_clip) {
     py::buffer_info bins_buf = bins.request();
     py::buffer_info h_buf = histogram.request();
     if ((bins_buf.ndim != 1) or (h_buf.ndim != 1)) {
@@ -61,7 +61,8 @@ double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> 
     }
     uint nofbins = h_buf.shape[0];
 
-    return centered_moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp, n_total, no_clip);
+    return centered_moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp, n_total,
+                           no_clip);
 }
 
 template <class HistType, class AbscisseType>
@@ -77,6 +78,6 @@ double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> 
     }
     uint nofbins = h_buf.shape[0];
 
-    return centered_moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y, n_total,
-                           n_threads, no_clip);
+    return centered_moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y,
+                           n_total, n_threads, no_clip);
 }

@@ -14,27 +14,32 @@ template <class BinType, class DataType>
 class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type> {
   public:
     Histogram2D(uint nofbins, int n_threads, DataType max, uint n_prod);
-	
+
     // double begin ////////////////////////////////////////////////////////////////////////////////////////
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, double*>::value>::type
+    typename std::enable_if<std::is_same<DataType, double>::value &&
+                            std::is_same<PointerType, double *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // Thread safe accumulate //
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, double*>::value>::type
+    typename std::enable_if<std::is_same<DataType, double>::value &&
+                            std::is_same<PointerType, double *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread);
-	// Thread safe accumulate with float inputs //
-	template <class PointerType>
-	typename std::enable_if<std::is_same<DataType, double>::value && std::is_same<PointerType, float*>::value>::type
+    // Thread safe accumulate with float inputs //
+    template <class PointerType>
+    typename std::enable_if<std::is_same<DataType, double>::value &&
+                            std::is_same<PointerType, float *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread);
     // double end /////////////////////////////////////////////////////////////////////////////////////////
     // float begin ////////////////////////////////////////////////////////////////////////////////////////
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<DataType, float>::value && std::is_same<PointerType, float*>::value>::type
+    typename std::enable_if<std::is_same<DataType, float>::value &&
+                            std::is_same<PointerType, float *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // Thread safe accumulate //
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<DataType, float>::value && std::is_same<PointerType, float*>::value>::type
+    typename std::enable_if<std::is_same<DataType, float>::value &&
+                            std::is_same<PointerType, float *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread);
     // flaot end //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +56,9 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_po
 
     static py::array_t<double> abscisse_py(double max, uint nofbins);
 
-    uint64_t get_alloc_memory_size() { return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size(); };
+    uint64_t get_alloc_memory_size() {
+        return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size();
+    };
 
     void reduction();
 
@@ -82,19 +89,19 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<Da
 
     // uint8 //
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<PointerType, uint8_t*>::value>::type
+    typename std::enable_if<std::is_same<PointerType, uint8_t *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // uint16 //
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<PointerType, uint16_t*>::value>::type
+    typename std::enable_if<std::is_same<PointerType, uint16_t *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // int8 //
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<PointerType, int8_t*>::value>::type
+    typename std::enable_if<std::is_same<PointerType, int8_t *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
     // int16 //
     template <class PointerType = DataType>
-	typename std::enable_if<std::is_same<PointerType, int16_t*>::value>::type
+    typename std::enable_if<std::is_same<PointerType, int16_t *>::value>::type
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod = 1);
 
     void reset();
@@ -116,7 +123,9 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<Da
     // Sets and gets
     py::array_t<BinType> share_py() { return histogram.share_py(); };
 
-    uint64_t get_alloc_memory_size() { return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size(); };
+    uint64_t get_alloc_memory_size() {
+        return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size();
+    };
 
   private:
     const uint n_prod;
