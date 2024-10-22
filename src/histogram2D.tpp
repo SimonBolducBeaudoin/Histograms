@@ -416,6 +416,7 @@ void Histogram2D<BinType, DataType,
             }
         }
     }
+	reset_threads();
 }
 
 template <class BinType, class DataType>
@@ -517,6 +518,7 @@ void Histogram2D<BinType, DataType,
             }
         }
     }
+	reset_threads();
 }
 
 template <class BinType, class DataType>
