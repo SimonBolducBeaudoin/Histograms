@@ -85,13 +85,13 @@
         .def("get_alloc_memory_size", &Histogram2D<BinType, IntegerType>::get_alloc_memory_size);
 		
 #define PY_HISTOGRAM2D_PERIODIC_FLOAT(BinType, FloatType)                                                             \
-    py::class_<Histogram2D_periodic<BinType, FloatType>>(m, "Histogram2D_periodic_periodic_" #BinType "_" #FloatType)                   \
-        .def(py::init<uint, int, double, uint>(), "nofbins"_a.noconvert(), "n_threads"_a.noconvert(),        \
+    py::class_<Histogram2D_periodic<BinType, FloatType>>(m, "Histogram2D_periodic_" #BinType "_" #FloatType)                   \
+        .def(py::init<uint, int, double, uint,uint>(), "nofbins"_a.noconvert(), "n_threads"_a.noconvert(),        \
              "max"_a, "n_hist"_a,"period"_a)                                                                            \
         .def("accumulate", &Histogram2D_periodic<BinType, FloatType>::accumulate_py, "data_1"_a.noconvert(),          \
              "data_2"_a.noconvert(), "hist_index"_a = 0, "starting_point_in_the_period"_a = 0)                                                     \
         .def("reset", &Histogram2D_periodic<BinType, FloatType>::reset)                                               \
-        .def("get", &Histogram2D_periodic<BinType, FloatType>::share_py)                                              \
+        .def("get", &Histogram2D_periodic<BinType, FloatType>::copy_py)                                              \
         .def_static("abscisse", &Histogram2D_periodic<BinType, FloatType>::abscisse_py, "max"_a.noconvert(),          \
                     "nofbins"_a.noconvert())                                                                 \
         .def("how_much_clip", &Histogram2D_periodic<BinType, FloatType>::how_much_clip)                               \
