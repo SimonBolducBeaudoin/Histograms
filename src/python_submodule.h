@@ -10,6 +10,7 @@ using namespace pybind11::literals;
 
 #include "histogram.h"
 #include "histogram2D.h"
+#include "histogram2D_periodic.h"
 #include "moments_cumulants_py.h"
 
 void init_Histograms(py::module &m);
