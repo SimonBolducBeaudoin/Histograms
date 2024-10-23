@@ -102,11 +102,11 @@ typename std::enable_if<std::is_same<DataType, double>::value &&
                         std::is_same<PointerType, double *>::value>::type
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod) {
-#pragma omp parallel num_threads(n_threads)
+	#pragma omp parallel num_threads(n_threads)
     {
         manage_thread_affinity();
         int this_thread = omp_get_thread_num();
-#pragma omp for
+		#pragma omp for
         for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
@@ -127,14 +127,9 @@ typename std::enable_if<std::is_same<DataType, double>::value &&
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread) {
     // Thread safe version of accumulate
-    for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
-        PRAGMA_GCC_UNROLL(UNROLL)
-        for (uint64_t j = 0; j < UNROLL; j++) {
-            to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
-        }
-    }
-    for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
-        to_hs(data_2[i], data_1[i], i_prod, 0);
+	PRAGMA_GCC_UNROLL(UNROLL)
+    for (uint64_t i = 0; i < L_data; i++) {
+		to_hs(data_2[i],data_1[i], i_prod, this_thread);
     }
 }
 
@@ -145,14 +140,9 @@ typename std::enable_if<std::is_same<DataType, double>::value &&
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread) {
     // Thread safe version of accumulate
-    for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
-        PRAGMA_GCC_UNROLL(UNROLL)
-        for (uint64_t j = 0; j < UNROLL; j++) {
-            to_hs((double)data_2[i + j], (double)data_1[i + j], i_prod, this_thread);
-        }
-    }
-    for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
-        to_hs((double)data_2[i], (double)data_1[i], i_prod, 0);
+	PRAGMA_GCC_UNROLL(UNROLL)
+    for (uint64_t i = 0; i < L_data; i++) {
+		to_hs((double)data_2[i], (double)data_1[i], i_prod, this_thread);
     }
 }
 #undef UNROLL
@@ -166,11 +156,11 @@ typename std::enable_if<std::is_same<DataType, float>::value &&
                         std::is_same<PointerType, float *>::value>::type
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod) {
-#pragma omp parallel num_threads(n_threads)
+	#pragma omp parallel num_threads(n_threads)
     {
         manage_thread_affinity();
         int this_thread = omp_get_thread_num();
-#pragma omp for
+		#pragma omp for
         for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
             PRAGMA_GCC_UNROLL(UNROLL)
             for (uint64_t j = 0; j < UNROLL; j++) {
@@ -192,14 +182,9 @@ typename std::enable_if<std::is_same<DataType, float>::value &&
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_prod, int this_thread) {
     // Thread safe version of accumulate
-    for (uint64_t i = 0; i < L_data - (L_data % UNROLL); i += UNROLL) {
-        PRAGMA_GCC_UNROLL(UNROLL)
-        for (uint64_t j = 0; j < UNROLL; j++) {
-            to_hs(data_2[i + j], data_1[i + j], i_prod, this_thread);
-        }
-    }
-    for (uint64_t i = L_data - (L_data % UNROLL); i < L_data; i++) {
-        to_hs(data_2[i], data_1[i], i_prod, 0);
+    PRAGMA_GCC_UNROLL(UNROLL)
+    for (uint64_t i = 0; i < L_data; i++) {
+		to_hs(data_2[i],data_1[i], i_prod, this_thread);
     }
 }
 #undef UNROLL
