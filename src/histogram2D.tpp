@@ -52,8 +52,8 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
                             - This indice a very sligh error due to <= instead of
        < for the negative cliping
     */
-    binx = std::abs(data_1) >= max ? 0 : (unsigned int)((data_1 + max) / (bin_width));
-    biny = std::abs(data_2) >= max ? 0 : (unsigned int)((data_2 + max) / (bin_width));
+    binx = std::abs(data_1) < max ? (unsigned int)((data_1 + max) / (bin_width)) : 0;
+    biny = std::abs(data_2) < max ? (unsigned int)((data_2 + max) / (bin_width)) : 0;
 }
 
 template <class BinType, class DataType>

@@ -265,7 +265,7 @@ inline void Histogram<BinType, Datatype>::float_to_hist(FloatType data, BinType 
                             - This indice a very sligh error due to <= instead of
        < for the negative cliping
     */
-    std::abs(data) >= max ? histogram[0]++ : histogram[(unsigned int)((data + max) / (bin_width))]++;
+    std::abs(data) < max ?  histogram[(unsigned int)((data + max) / (bin_width))]++ : histogram[0]++ ;
 
     // histogram[ (std::abs(data) < max) * (uint)((data+max)/(bin_width)) ]++ ;
 }
