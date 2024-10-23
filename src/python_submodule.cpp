@@ -83,6 +83,19 @@
         .def("get", &Histogram2D<BinType, IntegerType>::share_py)                                            \
         .def("how_much_clip", &Histogram2D<BinType, IntegerType>::how_much_clip)                             \
         .def("get_alloc_memory_size", &Histogram2D<BinType, IntegerType>::get_alloc_memory_size);
+		
+#define PY_HISTOGRAM2D_PERIODIC_FLOAT(BinType, FloatType)                                                             \
+    py::class_<Histogram2D_periodic<BinType, FloatType>>(m, "Histogram2D_periodic_periodic_" #BinType "_" #FloatType)                   \
+        .def(py::init<uint, int, double, uint>(), "nofbins"_a.noconvert(), "n_threads"_a.noconvert(),        \
+             "max"_a, "n_hist"_a,"period"_a)                                                                            \
+        .def("accumulate", &Histogram2D_periodic<BinType, FloatType>::accumulate_py, "data_1"_a.noconvert(),          \
+             "data_2"_a.noconvert(), "hist_index"_a = 0, "starting_point_in_the_period"_a = 0)                                                     \
+        .def("reset", &Histogram2D_periodic<BinType, FloatType>::reset)                                               \
+        .def("get", &Histogram2D_periodic<BinType, FloatType>::share_py)                                              \
+        .def_static("abscisse", &Histogram2D_periodic<BinType, FloatType>::abscisse_py, "max"_a.noconvert(),          \
+                    "nofbins"_a.noconvert())                                                                 \
+        .def("how_much_clip", &Histogram2D_periodic<BinType, FloatType>::how_much_clip)                               \
+        .def("get_alloc_memory_size", &Histogram2D_periodic<BinType, FloatType>::get_alloc_memory_size);
 
 #define PY_HISTOGRAM(BinType)                                                                                \
     PY_HISTOGRAM_FLOAT(BinType, double);                                                                     \
@@ -97,7 +110,10 @@
     PY_HISTOGRAM2D_UINT(BinType, uint16_t);                                                                  \
     PY_HISTOGRAM2D_UINT(BinType, uint8_t);                                                                   \
     PY_HISTOGRAM2D_INT(BinType, int16_t);                                                                    \
-    PY_HISTOGRAM2D_INT(BinType, int8_t);
+    PY_HISTOGRAM2D_INT(BinType, int8_t);\
+	\
+	PY_HISTOGRAM2D_PERIODIC_FLOAT(BinType, double);                                                          \
+    PY_HISTOGRAM2D_PERIODIC_FLOAT(BinType, float); 
 
 void init_Histograms(py::module &m) {
     PY_HISTOGRAM(uint64_t);
