@@ -63,11 +63,12 @@ class Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_fl
     void reduction();
 
   private:
-	const uint period;
+    const uint period;
+    const uint prd_end;
     const uint n_hist;
     const uint n_prod;
     const uint nofbins;
-    const  int n_threads;
+    const int n_threads;
     Multi_array<BinType, 3> histogram;
     Multi_array<uint8_t, 4> hs;
 
