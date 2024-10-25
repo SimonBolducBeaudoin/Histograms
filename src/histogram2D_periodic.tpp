@@ -221,38 +221,9 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 
 template <class BinType, class DataType>
 py::array_t<BinType> 
-Histogram2D_periodic<BinType, DataType,typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
-copy_py() { 
-	py::array_t<BinType> np_histogram = histogram.share_py();
-	py::buffer_info buffer = np_histogram.request();
-
-	std::vector<ssize_t> shape ;
-	shape.push_back(uint(n_hist));
-	shape.push_back(uint(period));
-	shape.push_back(uint(nofbins));
-	shape.push_back(uint(nofbins));
-
-	std::vector<ssize_t> strides;
-	for (uint i = 0; i < shape.size(); ++i) {
-		ssize_t prod = 1;
-		for (uint j = i + 1; j < shape.size(); ++j) {
-		  prod *= shape[j];
-		}
-		strides.push_back(prod * sizeof(BinType));
-	}
-
-	BinType *ptr = (BinType *)buffer.ptr;
-	size_t num_bytes = shape[0] * strides[0];
-	BinType *new_array = (BinType *)malloc(num_bytes);
-	memcpy((void *)new_array, (void *)ptr, num_bytes);
-	py::capsule capsule(new_array, free);
-
-	return py::array_t<BinType, py::array::c_style>(
-	  shape,  // shape
-	  strides,   // C-style contiguous strides
-	  new_array, // the data pointer
-	  capsule    // numpy array references this parent
-	);
+Histogram2D_periodic<BinType, DataType,
+                     typename std::enable_if<std::is_floating_point<DataType>::value>::type>::share_py() {
+    return histogram.share_py().reshape({n_hist,period,nofbins,nofbins});
 };
 
 template <class BinType, class DataType>
