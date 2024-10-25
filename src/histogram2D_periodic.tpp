@@ -178,12 +178,12 @@ Histogram2D_periodic<BinType, DataType,
                int this_thread) {
     uint i_prod = i_hist * period;
 	std::vector<uint> idx(period);
-	for (uint k=0,j_p = start; k < prd_end ; k++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
+	for (uint k=0,j_p = start; k < period ; k++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
 		idx[k] = i_prod+j_p;
 	}
 	
 	uint64_t top = L_data -(L_data%period);
-	for (uint k=0; k < prd_end ; k++) {	
+	for (uint k=0; k < period ; k++) {	
 		PRAGMA_GCC_UNROLL(UNROLL)
 		for (uint64_t i = k; i < top; i+=period) 
 		{	
