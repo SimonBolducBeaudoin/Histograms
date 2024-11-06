@@ -136,7 +136,10 @@ Histogram2D_periodic<BinType, DataType,
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_hist, uint start,
                int this_thread) {
     // Thread safe version of accumulate
-	
+	// The user indicates which thread number is currently being used which will be used to point to the thread specific memory
+    // WARNING ! Reduction has to be called before calling this function again with a different value of i_hist
+    // Not doing so will result in unwanted mixed data between histograms
+    
 	//// V1
 	// uint i_prod = i_hist * period;
     // uint64_t i = 0;
