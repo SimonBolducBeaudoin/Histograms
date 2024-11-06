@@ -99,7 +99,7 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 	
 	// V2 (4x faster then V1)
 	// If we use this version we don't need as much memory
-    uint i_prod = i_hist * period + start;
+    uint i_prod = i_hist * period;
 	uint64_t top = L_data -(L_data%period);
 	std::vector<uint> idx(period);
 	for (uint k=0,j_p = start; k < period ; k++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
