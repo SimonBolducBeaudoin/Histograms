@@ -53,6 +53,52 @@ std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_b
 }
 
 template <class BinType, class AbscisseType>
+Multi_array<BinType, 2> std_2Dmoments(BinType* const __restrict histogram, const AbscisseType* __restrict binx, const AbscisseType* __restrict biny, uint n_bins, uint order) {
+    /*
+    Computes all 1D standardize moments up to order.
+    Order cannot be < 2
+    The 3 first elements are [n_total,<x>, <x^2> - <x>^2, ]
+    The following elements are standardized moments
+    By default the first and last bin are not used no_clip = True
+    */
+    /*Always removing clip*/
+    uint first_bin = 1 ;
+    uint n_bins = n_bins - 1 
+
+    Multi_array<BinType, 2> moments( {order + 1, order + 1} );
+
+    for (uint i = first_bin; i < last_bin; i++) {
+        moments[0] += histogram[i];                     // n_total
+        moments[1] += histogram[i] * bins[i];           // sum
+        moments[2] += histogram[i] * bins[i] * bins[i]; // sum square
+    }
+
+    moments[1] /= moments[0];              // normalise
+    moments[2] /= moments[0];              // normalise
+    moments[2] -= moments[1] * moments[1]; //<x^2> - <x>^2
+
+    // standard moments
+    double x_bar = moments[1];
+
+    for (uint i = 3; i <= order; i++) {
+        for (uint j = first_bin; j < last_bin; j++) {
+            moments[i] += histogram[j] * pow(bins[j] - x_bar, i); // <(x - <x>)^i>
+        }
+    }
+
+    // normalisation
+    for (uint i = 3; i <= order; i++) {
+        moments[i] /= moments[0];
+    }
+    // Standardisation
+    for (uint i = 3; i <= order; i++) {
+        moments[i] /= pow(moments[2], ((double)i) / 2.0);
+    }
+
+    return moments;
+}
+
+template <class BinType, class AbscisseType>
 double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total, bool no_clip) {
     double val = 0;
     uint first_bin = no_clip ? 1 : 0;

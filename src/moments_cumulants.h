@@ -36,6 +36,10 @@ std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_b
                                 bool no_clip = false);
 
 template <class BinType, class AbscisseType>
+np_array<double> std_2Dmoments(BinType *histogram, AbscisseType *bins, uint n_bins, uint order,
+                                bool no_clip = false);
+
+template <class BinType, class AbscisseType>
 double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total,
               bool no_clip = false);
 

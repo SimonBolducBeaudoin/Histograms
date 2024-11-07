@@ -16,6 +16,9 @@ template <class HistType, class AbscisseType>
 std::vector<double> std_moments_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint order,
                                    bool no_clip);
 
+template <class HistType, class AbscisseType>
+np_array<double> std_2Dmoments_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint order,bool no_clip);
+
 template <class HistType, class AbscisseType = double>
 double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp, uint64_t n_total,
                  bool no_clip = false);
@@ -31,5 +34,7 @@ double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> 
 template <class HistType, class AbscisseType = double>
 double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp_x, uint exp_y,
                           uint64_t n_total, int n_threads, bool no_clip = false);
+                          
+
 
 #include "moments_cumulants_py.tpp"
