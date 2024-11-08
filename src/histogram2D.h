@@ -13,7 +13,7 @@ template <class BinType, class DataType, typename Enable = void> class Histogram
 template <class BinType, class DataType>
 class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type> {
   public:
-    Histogram2D(uint nofbins, int n_threads, DataType max, uint n_prod);
+    Histogram2D(uint nofbins, int n_threads, DataType max, uint n_hist);
 
     // double begin ////////////////////////////////////////////////////////////////////////////////////////
     template <class PointerType = DataType>
@@ -64,7 +64,7 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_po
     void reduction();
 
   private:
-    const uint n_prod;
+    const uint n_hist;
     const uint nofbins;
     const int n_threads;
     Multi_array<BinType, 3> histogram;
@@ -85,8 +85,8 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_po
 template <class BinType, class DataType>
 class Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type> {
   public:
-    Histogram2D(int n_threads, uint n_prod);
-    Histogram2D(int n_threads, uint bit, uint n_prod);
+    Histogram2D(int n_threads, uint n_hist);
+    Histogram2D(int n_threads, uint bit, uint n_hist);
 
     // uint8 //
     template <class PointerType = DataType>
@@ -130,7 +130,7 @@ class Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<Da
     };
 
   private:
-    const uint n_prod;
+    const uint n_hist;
     const uint nofbins;
     const int n_threads;
     Multi_array<BinType, 3> histogram;

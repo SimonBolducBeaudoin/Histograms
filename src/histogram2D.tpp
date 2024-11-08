@@ -1,10 +1,10 @@
 template <class BinType, class DataType>
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
-    Histogram2D(uint nofbins, int n_threads, DataType max, uint n_prod)
+    Histogram2D(uint nofbins, int n_threads, DataType max, uint n_hist)
     // DataType Constructor ///////
-    : n_prod(std::max(n_prod, (uint)1)), nofbins(std::max(nofbins, (uint)4)),
-      n_threads(std::max(n_threads, 1)), histogram(Multi_array<BinType, 3>(n_prod, nofbins, nofbins)),
-      hs(Multi_array<uint8_t, 4>(n_prod, n_threads, nofbins, nofbins)),
+    : n_hist(std::max(n_hist, (uint)1)), nofbins(std::max(nofbins, (uint)4)),
+      n_threads(std::max(n_threads, 1)), histogram(Multi_array<BinType, 3>(n_hist, nofbins, nofbins)),
+      hs(Multi_array<uint8_t, 4>(n_hist, n_threads, nofbins, nofbins)),
       max(std::max(max, std::numeric_limits<DataType>::epsilon() * 4)), bin_width(2.0 * max / nofbins) {
     omp_set_num_threads(n_threads);
     reset();
@@ -13,12 +13,12 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
 
 template <class BinType, class DataType>
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::Histogram2D(
-    int n_threads, uint n_prod)
+    int n_threads, uint n_hist)
     // IntergerType Constructor ///////
-    : n_prod(std::max(n_prod, (uint)1)), nofbins(1 << (8 * sizeof(DataType))),
+    : n_hist(std::max(n_hist, (uint)1)), nofbins(1 << (8 * sizeof(DataType))),
       n_threads(std::max(n_threads, 1)),
-      histogram(Multi_array<BinType, 3>(n_prod, 1 << (8 * sizeof(DataType)), 1 << (8 * sizeof(DataType)))),
-      hs(Multi_array<uint8_t, 4>(n_prod, n_threads, 1 << (8 * sizeof(DataType)),
+      histogram(Multi_array<BinType, 3>(n_hist, 1 << (8 * sizeof(DataType)), 1 << (8 * sizeof(DataType)))),
+      hs(Multi_array<uint8_t, 4>(n_hist, n_threads, 1 << (8 * sizeof(DataType)),
                                  1 << (8 * sizeof(DataType)))),
       bit(8) {
     omp_set_num_threads(n_threads);
@@ -28,11 +28,11 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType
 
 template <class BinType, class DataType>
 Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<DataType>::value>::type>::Histogram2D(
-    int n_threads, uint bit, uint n_prod)
+    int n_threads, uint bit, uint n_hist)
     // IntergerType Constructor ///////
-    : n_prod(std::max(n_prod, (uint)1)), nofbins(1 << bit), n_threads(std::max(n_threads, 1)),
-      histogram(Multi_array<BinType, 3>(n_prod, 1 << bit, 1 << bit)),
-      hs(Multi_array<uint8_t, 4>(n_prod, n_threads, 1 << bit, 1 << bit)), bit(bit) {
+    : n_hist(std::max(n_hist, (uint)1)), nofbins(1 << bit), n_threads(std::max(n_threads, 1)),
+      histogram(Multi_array<BinType, 3>(n_hist, 1 << bit, 1 << bit)),
+      hs(Multi_array<uint8_t, 4>(n_hist, n_threads, 1 << bit, 1 << bit)), bit(bit) {
     omp_set_num_threads(n_threads);
     reset();
     reset_threads();
@@ -379,7 +379,7 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
         {
             manage_thread_affinity();
 #pragma omp for collapse(3)
-            for (uint k = 0; k < n_prod; k++) {
+            for (uint k = 0; k < n_hist; k++) {
                 for (uint j = 0; j < nofbins; j++) {
                     for (uint i = 0; i < nofbins; i++) {
                         histogram(k, j, i) += hs(k, thread, j, i);
@@ -396,9 +396,9 @@ py::array_t<BinType>
 Histogram2D<BinType, DataType,
                      typename std::enable_if<std::is_floating_point<DataType>::value>::type>::pass_to_py(const std::string& memory_transfert) {
     if (memory_transfert == "copy") {
-        return histogram.copy_py().reshape({n_prod,nofbins,nofbins});
+        return histogram.copy_py().reshape({n_hist,nofbins,nofbins});
     } else if (memory_transfert == "share") {
-        return histogram.share_py().reshape({n_prod,nofbins,nofbins});
+        return histogram.share_py().reshape({n_hist,nofbins,nofbins});
     }
     else {
         throw std::invalid_argument("Invalid memory_transfert option. Use 'copy' or 'share'.");
@@ -409,7 +409,7 @@ Histogram2D<BinType, DataType,
 template <class BinType, class DataType>
 void Histogram2D<BinType, DataType,
                  typename std::enable_if<std::is_floating_point<DataType>::value>::type>::reset() {
-    for (uint k = 0; k < n_prod; k++) {
+    for (uint k = 0; k < n_hist; k++) {
         for (uint j = 0; j < nofbins; j++) {
             for (uint i = 0; i < nofbins; i++) {
                 histogram(k, j, i) = 0;
@@ -422,7 +422,7 @@ void Histogram2D<BinType, DataType,
 template <class BinType, class DataType>
 void Histogram2D<BinType, DataType,
                  typename std::enable_if<std::is_floating_point<DataType>::value>::type>::reset_threads() {
-    for (uint l = 0; l < n_prod; l++) {
+    for (uint l = 0; l < n_hist; l++) {
         for (int k = 0; k < n_threads; k++) {
             for (uint j = 0; j < nofbins; j++) {
                 for (uint i = 0; i < nofbins; i++) {
@@ -440,7 +440,7 @@ Histogram2D<BinType, DataType,
     uint64_t clip = 0;
     uint n_i = histogram.get_n_i();
     uint n_j = histogram.get_n_j();
-    for (uint k = 0; k < n_prod; k++) {
+    for (uint k = 0; k < n_hist; k++) {
         for (uint i = 0; i < n_i; i++) {
             clip += histogram(k, 0, i);
             clip += histogram(k, n_j - 1, i);
@@ -463,7 +463,7 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_poi
     if (buf_1.size != buf_2.size) {
         throw std::runtime_error("Length of the data vectors must be the same.");
     }
-    if (i_prod >= n_prod) {
+    if (i_prod >= n_hist) {
         throw std::runtime_error("Index outside valid range!");
     }
     uint64_t L_data = buf_1.size;
@@ -496,7 +496,7 @@ Histogram2D<BinType, DataType,
         {
             manage_thread_affinity();
 #pragma omp for collapse(3)
-            for (uint k = 0; k < n_prod; k++) {
+            for (uint k = 0; k < n_hist; k++) {
                 for (uint j = 0; j < nofbins; j++) {
                     for (uint i = 0; i < nofbins; i++) {
                         histogram(k, j, i) += hs(k, thread, j, i);
@@ -513,9 +513,9 @@ py::array_t<BinType>
 Histogram2D<BinType, DataType,
                      typename std::enable_if<std::is_integral<DataType>::value>::type>::pass_to_py(const std::string& memory_transfert) {
     if (memory_transfert == "copy") {
-        return histogram.copy_py().reshape({n_prod,nofbins,nofbins});
+        return histogram.copy_py().reshape({n_hist,nofbins,nofbins});
     } else if (memory_transfert == "share") {
-        return histogram.share_py().reshape({n_prod,nofbins,nofbins});
+        return histogram.share_py().reshape({n_hist,nofbins,nofbins});
     }
     else {
         throw std::invalid_argument("Invalid memory_transfert option. Use 'copy' or 'share'.");
@@ -526,7 +526,7 @@ Histogram2D<BinType, DataType,
 template <class BinType, class DataType>
 void Histogram2D<BinType, DataType,
                  typename std::enable_if<std::is_integral<DataType>::value>::type>::reset() {
-    for (uint k = 0; k < n_prod; k++) {
+    for (uint k = 0; k < n_hist; k++) {
         for (uint j = 0; j < nofbins; j++) {
             for (uint i = 0; i < nofbins; i++) {
                 histogram(k, j, i) = 0;
@@ -539,7 +539,7 @@ void Histogram2D<BinType, DataType,
 template <class BinType, class DataType>
 void Histogram2D<BinType, DataType,
                  typename std::enable_if<std::is_integral<DataType>::value>::type>::reset_threads() {
-    for (uint l = 0; l < n_prod; l++) {
+    for (uint l = 0; l < n_hist; l++) {
         for (int k = 0; k < n_threads; k++) {
             for (uint j = 0; j < nofbins; j++) {
                 for (uint i = 0; i < nofbins; i++) {
@@ -556,7 +556,7 @@ uint64_t Histogram2D<BinType, DataType,
     uint64_t clip = 0;
     uint n_i = histogram.get_n_i();
     uint n_j = histogram.get_n_j();
-    for (uint k = 0; k < n_prod; k++) {
+    for (uint k = 0; k < n_hist; k++) {
         for (uint i = 0; i < n_i; i++) {
             clip += histogram(k, 0, i);
             clip += histogram(k, n_j - 1, i);
@@ -579,7 +579,7 @@ void Histogram2D<BinType, DataType, typename std::enable_if<std::is_integral<Dat
     if (buf_1.size != buf_2.size) {
         throw std::runtime_error("Length of the data vectors must be the same.");
     }
-    if (i_prod >= n_prod) {
+    if (i_prod >= n_hist) {
         throw std::runtime_error("Index outside valid range!");
     }
     uint64_t L_data = buf_1.size;
