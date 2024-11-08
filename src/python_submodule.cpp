@@ -7,7 +7,7 @@
              "max"_a = 1.0)                                                                                  \
         .def("accumulate", &Histogram<BinType, FloatType>::accumulate_py<FloatType>, "data"_a.noconvert())   \
         .def("reset", &Histogram<BinType, FloatType>::reset)                                                 \
-        .def("get", &Histogram<BinType, FloatType>::share_py)                                                \
+        .def("get", &Histogram<BinType, FloatType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                                \
         .def_static("abscisse", &Histogram<BinType, FloatType>::abscisse_py, "max"_a.noconvert(),            \
                     "nofbins"_a.noconvert())                                                                 \
         .def("std_moments",                                                                                  \
@@ -24,7 +24,7 @@
         .def("accumulate", &Histogram<BinType, IntegerType>::accumulate_py<IntegerType>,                     \
              "data"_a.noconvert())                                                                           \
         .def("reset", &Histogram<BinType, IntegerType>::reset)                                               \
-        .def("get", &Histogram<BinType, IntegerType>::share_py)                                              \
+        .def("get", &Histogram<BinType, IntegerType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                              \
         .def("std_moments",                                                                                  \
              (std::vector<double>(Histogram<BinType, IntegerType>::*)(py::array_t<IntegerType>, uint,        \
                                                                       bool)) &                               \
@@ -40,7 +40,7 @@
         .def("accumulate", &Histogram<BinType, IntegerType>::accumulate_py<IntegerType>,                     \
              "data"_a.noconvert())                                                                           \
         .def("reset", &Histogram<BinType, IntegerType>::reset)                                               \
-        .def("get", &Histogram<BinType, IntegerType>::share_py)                                              \
+        .def("get", &Histogram<BinType, IntegerType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                              \
         .def("std_moments",                                                                                  \
              (std::vector<double>(Histogram<BinType, IntegerType>::*)(py::array_t<IntegerType>, uint,        \
                                                                       bool)) &                               \
@@ -56,7 +56,7 @@
         .def("accumulate", &Histogram2D<BinType, FloatType>::accumulate_py, "data_1"_a.noconvert(),          \
              "data_2"_a.noconvert(), "hist_index"_a = 0)                                                     \
         .def("reset", &Histogram2D<BinType, FloatType>::reset)                                               \
-        .def("get", &Histogram2D<BinType, FloatType>::share_py)                                              \
+        .def("get", &Histogram2D<BinType, FloatType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                              \
         .def_static("abscisse", &Histogram2D<BinType, FloatType>::abscisse_py, "max"_a.noconvert(),          \
                     "nofbins"_a.noconvert())                                                                 \
         .def("how_much_clip", &Histogram2D<BinType, FloatType>::how_much_clip)                               \
@@ -69,7 +69,7 @@
         .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py, "data_1"_a.noconvert(),        \
              "data_2"_a.noconvert(), "hist_index"_a = 0)                                                     \
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                             \
-        .def("get", &Histogram2D<BinType, IntegerType>::share_py)                                            \
+        .def("get", &Histogram2D<BinType, IntegerType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                            \
         .def("how_much_clip", &Histogram2D<BinType, IntegerType>::how_much_clip)                             \
         .def("get_alloc_memory_size", &Histogram2D<BinType, IntegerType>::get_alloc_memory_size);
 
@@ -80,7 +80,7 @@
         .def("accumulate", &Histogram2D<BinType, IntegerType>::accumulate_py, "data_1"_a.noconvert(),        \
              "data_2"_a.noconvert(), "hist_index"_a = 0)                                                     \
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                             \
-        .def("get", &Histogram2D<BinType, IntegerType>::share_py)                                            \
+        .def("get", &Histogram2D<BinType, IntegerType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                            \
         .def("how_much_clip", &Histogram2D<BinType, IntegerType>::how_much_clip)                             \
         .def("get_alloc_memory_size", &Histogram2D<BinType, IntegerType>::get_alloc_memory_size);
 
@@ -91,7 +91,7 @@
         .def("accumulate", &Histogram2D_periodic<BinType, FloatType>::accumulate_py, "data_1"_a.noconvert(), \
              "data_2"_a.noconvert(), "hist_index"_a = 0, "starting_point_in_the_period"_a = 0)               \
         .def("reset", &Histogram2D_periodic<BinType, FloatType>::reset)                                      \
-        .def("get", &Histogram2D_periodic<BinType, FloatType>::share_py)                                      \
+        .def("get", &Histogram2D_periodic<BinType, FloatType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                      \
         .def_static("abscisse", &Histogram2D_periodic<BinType, FloatType>::abscisse_py, "max"_a.noconvert(), \
                     "nofbins"_a.noconvert())                                                                 \
         .def("how_much_clip", &Histogram2D_periodic<BinType, FloatType>::how_much_clip)                      \

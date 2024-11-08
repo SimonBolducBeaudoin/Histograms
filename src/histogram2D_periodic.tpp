@@ -301,9 +301,18 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 template <class BinType, class DataType>
 py::array_t<BinType>
 Histogram2D_periodic<BinType, DataType,
-                     typename std::enable_if<std::is_floating_point<DataType>::value>::type>::share_py() {
-    return histogram.share_py().reshape({n_hist,period,nofbins,nofbins});
+                     typename std::enable_if<std::is_floating_point<DataType>::value>::type>::pass_to_py(const std::string& memory_transfert) {
+    if (memory_transfert == "copy") {
+        return histogram.copy_py().reshape({n_hist,period,nofbins,nofbins});
+    } else if (memory_transfert == "share") {
+        return histogram.share_py().reshape({n_hist,period,nofbins,nofbins});
+    }
+    else {
+        throw std::invalid_argument("Invalid memory_transfert option. Use 'copy' or 'share'.");
+    }
+    
 };
+
 
 template <class BinType, class DataType>
 void Histogram2D_periodic<BinType, DataType,

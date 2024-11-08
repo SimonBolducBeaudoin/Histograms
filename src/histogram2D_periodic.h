@@ -52,7 +52,7 @@ class Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_fl
     uint64_t how_much_clip();
 
     // Sets and gets
-    py::array_t<BinType> share_py();
+    py::array_t<BinType> pass_to_py(const std::string& memory_transfert ="copy");
 
     static py::array_t<double> abscisse_py(double max, uint nofbins);
 

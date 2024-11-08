@@ -392,6 +392,21 @@ Histogram2D<BinType, DataType, typename std::enable_if<std::is_floating_point<Da
 }
 
 template <class BinType, class DataType>
+py::array_t<BinType>
+Histogram2D<BinType, DataType,
+                     typename std::enable_if<std::is_floating_point<DataType>::value>::type>::pass_to_py(const std::string& memory_transfert) {
+    if (memory_transfert == "copy") {
+        return histogram.copy_py().reshape({n_prod,nofbins,nofbins});
+    } else if (memory_transfert == "share") {
+        return histogram.share_py().reshape({n_prod,nofbins,nofbins});
+    }
+    else {
+        throw std::invalid_argument("Invalid memory_transfert option. Use 'copy' or 'share'.");
+    }
+    
+};
+
+template <class BinType, class DataType>
 void Histogram2D<BinType, DataType,
                  typename std::enable_if<std::is_floating_point<DataType>::value>::type>::reset() {
     for (uint k = 0; k < n_prod; k++) {
@@ -492,6 +507,21 @@ Histogram2D<BinType, DataType,
         }
     }
 }
+
+template <class BinType, class DataType>
+py::array_t<BinType>
+Histogram2D<BinType, DataType,
+                     typename std::enable_if<std::is_integral<DataType>::value>::type>::pass_to_py(const std::string& memory_transfert) {
+    if (memory_transfert == "copy") {
+        return histogram.copy_py().reshape({n_prod,nofbins,nofbins});
+    } else if (memory_transfert == "share") {
+        return histogram.share_py().reshape({n_prod,nofbins,nofbins});
+    }
+    else {
+        throw std::invalid_argument("Invalid memory_transfert option. Use 'copy' or 'share'.");
+    }
+    
+};
 
 template <class BinType, class DataType>
 void Histogram2D<BinType, DataType,

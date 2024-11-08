@@ -231,7 +231,23 @@ ACCUMULATE(uint32_t);
 #undef _PRAGMA_
 #undef PRAGMA_GCC_UNROLL
 
-template <class BinType, class DataType> void Histogram<BinType, DataType>::reset() {
+
+template <class BinType, class DataType>
+py::array_t<BinType>
+Histogram<BinType, DataType>::pass_to_py(const std::string& memory_transfert) {
+    if (memory_transfert == "copy") {
+        return histogram.copy_py().reshape({nofbins});
+    } else if (memory_transfert == "share") {
+        return histogram.share_py().reshape({nofbins});
+    }
+    else {
+        throw std::invalid_argument("Invalid memory_transfert option. Use 'copy' or 'share'.");
+    }
+};
+
+template <class BinType, class DataType> 
+void 
+Histogram<BinType, DataType>::reset() {
     for (uint i = 0; i < nofbins; i++) {
         histogram(i) = 0;
     }
