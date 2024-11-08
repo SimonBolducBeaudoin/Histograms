@@ -299,6 +299,15 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 }
 
 template <class BinType, class DataType>
+Multi_array<BinType, 4>
+Histogram2D_periodic<BinType, DataType,
+                     typename std::enable_if<std::is_floating_point<DataType>::value>::type>::get_histograms() {
+    py::array_t<BinType, py::array::c_style> np_histograms = histogram.share_py().reshape({n_hist,period,nofbins,nofbins}) ;
+    Multi_array<BinType, 4> _histograms = Multi_array<BinType, 4>::numpy_share(np_histograms);
+    return _histograms ;
+};
+
+template <class BinType, class DataType>
 py::array_t<BinType>
 Histogram2D_periodic<BinType, DataType,
                      typename std::enable_if<std::is_floating_point<DataType>::value>::type>::pass_to_py(const std::string& memory_transfert) {
