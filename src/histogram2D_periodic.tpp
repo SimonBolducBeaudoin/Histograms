@@ -119,10 +119,8 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 		}
 		
     }
-    uint64_t i = 0;
-    uint j_p = start; // periodic index
-	for (i=L_data -(L_data%period); i < L_data; i++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
-        to_hs(data_2[i], data_1[i], i_prod + j_p, 0);
+	for (uint64_t i=L_data -(L_data%period); i < L_data; i++) {	
+        to_hs(data_2[i], data_1[i], idx[i], 0);
     }
 	reduction_and_reset_threads( i_hist );
 }
@@ -164,10 +162,8 @@ Histogram2D_periodic<BinType, DataType,
 			to_hs(data_2[i], data_1[i], idx[k]	, this_thread);
 		}
 	}
-	uint64_t i = 0;
-    uint j_p = start; // periodic index
-	for (i=L_data -(L_data%period); i < L_data; i++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
-        to_hs(data_2[i], data_1[i], i_prod + j_p, this_thread);
+	for (uint64_t i=L_data -(L_data%period); i < L_data; i++) {	
+        to_hs(data_2[i], data_1[i], idx[i], this_thread);
     }
 }
 
@@ -194,10 +190,8 @@ Histogram2D_periodic<BinType, DataType,
 			to_hs((double)data_2[i], (double)data_1[i], idx[k]	, this_thread);
 		}
 	}
-	uint64_t i = 0;
-    uint j_p = start; // periodic index
-	for (i=L_data -(L_data%period); i < L_data; i++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
-        to_hs((double)data_2[i], (double)data_1[i], i_prod + j_p, this_thread);
+	for (uint64_t i=L_data -(L_data%period); i < L_data; i++) {	
+        to_hs((double)data_2[i], (double)data_1[i], idx[i], this_thread);
     }
 }
 #undef UNROLL
@@ -231,10 +225,8 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 		}
 		
     }
-    uint64_t i = 0;
-    uint j_p = start; // periodic index
-	for (i=L_data -(L_data%period); i < L_data; i++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
-        to_hs(data_2[i], data_1[i], i_prod + j_p, 0);
+	for (uint64_t i=L_data -(L_data%period); i < L_data; i++) {	
+        to_hs(data_2[i], data_1[i], idx[i], 0);
     }
 	reduction_and_reset_threads( i_hist );
 }
@@ -248,7 +240,6 @@ Histogram2D_periodic<BinType, DataType,
                      typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
     accumulate(PointerType data_1, PointerType data_2, uint64_t L_data, uint i_hist, uint start,
                int this_thread) {
-    
 	uint i_prod = i_hist * period;
 	std::vector<uint> idx(period);
 	for (uint k=0,j_p = start; k < period ; k++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
@@ -263,10 +254,8 @@ Histogram2D_periodic<BinType, DataType,
 			to_hs(data_2[i], data_1[i], idx[k]	, this_thread);
 		}
 	}
-	uint64_t i = 0;
-    uint j_p = start; // periodic index
-	for (i=L_data -(L_data%period); i < L_data; i++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
-        to_hs(data_2[i], data_1[i], i_prod + j_p, this_thread);
+	for (uint64_t i=L_data -(L_data%period); i < L_data; i++) {	
+        to_hs(data_2[i], data_1[i], idx[i], this_thread);
     }
 	
 }
