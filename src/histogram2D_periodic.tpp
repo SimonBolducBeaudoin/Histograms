@@ -56,8 +56,8 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 
 template <class BinType, class DataType>
 inline void Histogram2D_periodic<BinType, DataType,
-                     typename std::enable_if<std::is_floating_point<DataType>::value>::type>::reduction() {
-    reduction_and_reset_threads();
+                     typename std::enable_if<std::is_floating_point<DataType>::value>::type>::reduction( uint i_hist ) {
+    reduction_and_reset_threads( i_hist );
 }
 
 ///// METHODS FLOATING POINTS END
@@ -124,7 +124,7 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 	for (i=L_data -(L_data%period); i < L_data; i++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
         to_hs(data_2[i], data_1[i], i_prod + j_p, 0);
     }
-	reduction_and_reset_threads();
+	reduction_and_reset_threads( i_hist );
 }
 
 template <class BinType, class DataType>
@@ -236,7 +236,7 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 	for (i=L_data -(L_data%period); i < L_data; i++, j_p = j_p < prd_end ? j_p + 1 : 0) {	
         to_hs(data_2[i], data_1[i], i_prod + j_p, 0);
     }
-	reduction_and_reset_threads();
+	reduction_and_reset_threads( i_hist );
 }
 #undef UNROLL
 #define UNROLL 8
@@ -291,17 +291,17 @@ Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating
 template <class BinType, class DataType>
 inline void
 Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_floating_point<DataType>::value>::type>::
-    reduction_and_reset_threads() {
+    reduction_and_reset_threads(uint i_hist) {
     for (int thread = 0; thread < n_threads; thread++) {
-#pragma omp parallel num_threads(n_threads)
+        #pragma omp parallel num_threads(n_threads)
         {
             manage_thread_affinity();
-#pragma omp for collapse(3)
-            for (uint k = 0; k < n_prod; k++) {
+            #pragma omp for collapse(3)
+            for (uint k = 0; k < period; k++) {
                 for (uint j = 0; j < nofbins; j++) {
                     for (uint i = 0; i < nofbins; i++) {
-                        histogram(k, j, i) += hs(k, thread, j, i);
-                        hs(k, thread, j, i) = 0;
+                        histogram(i_hist*period+k, j, i) += hs(i_hist*period+k, thread, j, i);
+                        hs(i_hist*period+k, thread, j, i) = 0;
                     }
                 }
             }

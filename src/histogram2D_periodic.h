@@ -60,7 +60,7 @@ class Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_fl
         return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size();
     };
 
-    void reduction();
+    void reduction( uint i_hist=0 );
 
   private:
     const uint period;
@@ -79,7 +79,7 @@ class Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_fl
     void to_middleman(uint i_prod, int this_thread, uint biny, uint binx);
     void to_hs(DataType data_y, DataType data_x, uint i_prod, int this_thread);
 
-    void reduction_and_reset_threads();
+    void reduction_and_reset_threads( uint i_hist = 0 );
     void reset_threads();
 };
 
