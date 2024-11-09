@@ -129,30 +129,34 @@ void init_Histograms(py::module &m) {
 #undef PY_HISTOGRAM2D_INT
 #undef PY_HISTOGRAM
 
-#define MOMENTS(HistType, AbscisseType)                                                                      \
+#define MOMENTS(BinType, AbscisseType)                                                                      \
     m.def("std_moments",                                                                                     \
-          (std::vector<double>(*)(np_array<HistType> & histogram, np_array<AbscisseType> &, uint, bool))(    \
-              &std_moments_py<HistType, AbscisseType>),                                                      \
+          (std::vector<double>(*)(np_array<BinType> &, np_array<AbscisseType> &, uint, bool))(    \
+              &std_moments_py<BinType, AbscisseType>),                                                      \
           "histogram"_a.noconvert(), "bins"_a.noconvert(), "order"_a.noconvert(),                            \
           "no_clip"_a.noconvert() = false);                                                                  \
+	m.def("std_2Dmoments",                                                                                     \
+          (np_array<double>(*)(np_array<BinType>& , np_array<BinType>&, np_array<BinType>&, uint))(    \
+              &std_2Dmoments_py<BinType, AbscisseType>),                                                      \
+          "histogram"_a.noconvert(), "binx"_a.noconvert(),"biny"_a.noconvert(), "order"_a.noconvert());                                                                  \
     m.def("moment",                                                                                          \
-          (double (*)(np_array<HistType> & histogram, np_array<AbscisseType> &, uint, uint64_t, bool))(      \
-              &moment_py<HistType, AbscisseType>),                                                           \
+          (double (*)(np_array<BinType> & histogram, np_array<AbscisseType> &, uint, uint64_t, bool))(      \
+              &moment_py<BinType, AbscisseType>),                                                           \
           "histogram"_a.noconvert(), "bins"_a.noconvert(), "exp"_a.noconvert(), "n_total"_a.noconvert(),     \
           "no_clip"_a.noconvert() = false);                                                                  \
     m.def("moment",                                                                                          \
-          (double (*)(np_array<HistType> & histogram, np_array<AbscisseType> &, uint, uint, uint64_t, int,   \
-                      bool))(&moment_py<HistType, AbscisseType>),                                            \
+          (double (*)(np_array<BinType> & histogram, np_array<AbscisseType> &, uint, uint, uint64_t, int,   \
+                      bool))(&moment_py<BinType, AbscisseType>),                                            \
           "histogram"_a.noconvert(), "bins"_a.noconvert(), "exp_x"_a.noconvert(), "exp_y"_a.noconvert(),     \
           "n_total"_a.noconvert(), "n_threads"_a.noconvert(), "no_clip"_a.noconvert() = false);              \
     m.def("centered_moment",                                                                                 \
-          (double (*)(np_array<HistType> & histogram, np_array<AbscisseType> &, uint, uint64_t, bool))(      \
-              &centered_moment_py<HistType, AbscisseType>),                                                  \
+          (double (*)(np_array<BinType> & histogram, np_array<AbscisseType> &, uint, uint64_t, bool))(      \
+              &centered_moment_py<BinType, AbscisseType>),                                                  \
           "histogram"_a.noconvert(), "bins"_a.noconvert(), "exp"_a.noconvert(), "n_total"_a.noconvert(),     \
           "no_clip"_a.noconvert() = false);                                                                  \
     m.def("centered_moment",                                                                                 \
-          (double (*)(np_array<HistType> & histogram, np_array<AbscisseType> &, uint, uint, uint64_t, int,   \
-                      bool))(&centered_moment_py<HistType, AbscisseType>),                                   \
+          (double (*)(np_array<BinType> & histogram, np_array<AbscisseType> &, uint, uint, uint64_t, int,   \
+                      bool))(&centered_moment_py<BinType, AbscisseType>),                                   \
           "histogram"_a.noconvert(), "bins"_a.noconvert(), "exp_x"_a.noconvert(), "exp_y"_a.noconvert(),     \
           "n_total"_a.noconvert(), "n_threads"_a.noconvert(), "no_clip"_a.noconvert() = false);
 

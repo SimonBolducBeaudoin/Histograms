@@ -3,6 +3,7 @@
 #include <math_extra.h>
 #include <omp_extra.h>
 #include <vector>
+#include <Multi_array.h>
 
 /*
 moment( histogram , bins , n_bins , exp_x , ... , n_total )
@@ -36,8 +37,7 @@ std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_b
                                 bool no_clip = false);
 
 template <class BinType, class AbscisseType>
-np_array<double> std_2Dmoments(BinType *histogram, AbscisseType *bins, uint n_bins, uint order,
-                                bool no_clip = false);
+Multi_array<double, 2> std_2Dmoments(Multi_array<BinType, 2>& histogram, Multi_array<AbscisseType, 1>& binx, Multi_array<AbscisseType, 1>& biny, uint n_bins, uint order);
 
 template <class BinType, class AbscisseType>
 double moment(BinType *histogram, AbscisseType *bins, uint n_bins, uint exp, uint64_t n_total,
@@ -61,4 +61,4 @@ http://www.stat.uchicago.edu/~pmcc/courses/stat306/2017/cumulants.pdf
 https://link.springer.com/content/pdf/10.1007/s11004-009-9258-9.pdf
 */
 
-#include "../src/moments_cumulants.tpp"
+#include "moments_cumulants.tpp"

@@ -1,5 +1,5 @@
-template <class HistType, class AbscisseType>
-std::vector<double> std_moments_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint order,
+template <class BinType, class AbscisseType>
+std::vector<double> std_moments_py(np_array<BinType> &histogram, np_array<AbscisseType> &bins, uint order,
                                    bool no_clip) {
 
     py::buffer_info bins_buf = bins.request();
@@ -12,11 +12,29 @@ std::vector<double> std_moments_py(np_array<HistType> &histogram, np_array<Absci
     }
     uint nofbins = h_buf.shape[0];
 
-    return std_moments((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, order, no_clip);
+    return std_moments((BinType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, order, no_clip);
 }
 
-template <class HistType, class AbscisseType>
-double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp, uint64_t n_total,
+
+template <class BinType, class AbscisseType>
+np_array<double> std_2Dmoments_py(np_array<BinType>& np_histogram, np_array<BinType>& np_binx, np_array<BinType>& np_biny,  uint order) {
+	
+	Multi_array<BinType, 2> histogram = Multi_array<BinType, 2>::numpy_share(np_histogram);
+	Multi_array<BinType, 1> binx =  Multi_array<BinType, 1>::numpy_share(np_binx);
+	Multi_array<BinType, 1> biny =  Multi_array<BinType, 1>::numpy_share(np_biny);
+	
+	if ( (binx.get_n_i() != biny.get_n_i()) || (histogram.get_n_i() != histogram.get_n_j()) || (histogram.get_n_i() != binx.get_n_i()) ){
+		throw std::runtime_error("Dimensions incompatibles.");
+	}
+
+	
+	uint n_bins =binx.get_n_i();
+	
+    return std_2Dmoments(histogram, binx, biny, n_bins, order).copy_py();
+}
+
+template <class BinType, class AbscisseType>
+double moment_py(np_array<BinType> &histogram, np_array<AbscisseType> &bins, uint exp, uint64_t n_total,
                  bool no_clip) {
     py::buffer_info bins_buf = bins.request();
     py::buffer_info h_buf = histogram.request();
@@ -28,11 +46,11 @@ double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, ui
     }
     uint nofbins = h_buf.shape[0];
 
-    return moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp, n_total, no_clip);
+    return moment((BinType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp, n_total, no_clip);
 }
 
-template <class HistType, class AbscisseType>
-double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp_x, uint exp_y,
+template <class BinType, class AbscisseType>
+double moment_py(np_array<BinType> &histogram, np_array<AbscisseType> &bins, uint exp_x, uint exp_y,
                  uint64_t n_total, int n_threads, bool no_clip) {
     py::buffer_info bins_buf = bins.request();
     py::buffer_info h_buf = histogram.request();
@@ -44,12 +62,12 @@ double moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, ui
     }
     uint nofbins = h_buf.shape[0];
 
-    return moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y, n_total,
+    return moment((BinType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y, n_total,
                   n_threads, no_clip);
 }
 
-template <class HistType, class AbscisseType>
-double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp,
+template <class BinType, class AbscisseType>
+double centered_moment_py(np_array<BinType> &histogram, np_array<AbscisseType> &bins, uint exp,
                           uint64_t n_total, bool no_clip) {
     py::buffer_info bins_buf = bins.request();
     py::buffer_info h_buf = histogram.request();
@@ -61,12 +79,12 @@ double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> 
     }
     uint nofbins = h_buf.shape[0];
 
-    return centered_moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp, n_total,
+    return centered_moment((BinType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp, n_total,
                            no_clip);
 }
 
-template <class HistType, class AbscisseType>
-double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> &bins, uint exp_x, uint exp_y,
+template <class BinType, class AbscisseType>
+double centered_moment_py(np_array<BinType> &histogram, np_array<AbscisseType> &bins, uint exp_x, uint exp_y,
                           uint64_t n_total, int n_threads, bool no_clip) {
     py::buffer_info bins_buf = bins.request();
     py::buffer_info h_buf = histogram.request();
@@ -78,6 +96,6 @@ double centered_moment_py(np_array<HistType> &histogram, np_array<AbscisseType> 
     }
     uint nofbins = h_buf.shape[0];
 
-    return centered_moment((HistType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y,
+    return centered_moment((BinType *)h_buf.ptr, (AbscisseType *)bins_buf.ptr, nofbins, exp_x, exp_y,
                            n_total, n_threads, no_clip);
 }

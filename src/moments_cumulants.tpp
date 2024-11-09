@@ -1,7 +1,6 @@
 /*
         Cannot do partial template specialization for function, see :
    https://en.wikipedia.org/wiki/Partial_template_specialization
-        
         Can only do full specialization
         Therefore I'll be doing full specialisation using macros for compactness
 */
@@ -53,29 +52,31 @@ std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_b
 }
 
 template <class BinType, class AbscisseType>
-Multi_array<double, 2> std_2Dmoments(const Multi_array<BinType, 2>& histogram, const Multi_array<AbscisseType, 2>& binx, const Multi_array<AbscisseType, 2>& biny, uint n_bins, uint order) {
+Multi_array<double, 2> std_2Dmoments(Multi_array<BinType, 2>& histogram, Multi_array<AbscisseType, 1>& binx, Multi_array<AbscisseType, 1>& biny, uint n_bins, uint order) {
     /*Order as to be bigger or equal to 2*/
     /*Always removing clip*/
     uint i_start = 1 ;
     uint l_stop = n_bins - 1 ;
-    len = order + 1 ;
+    uint len = order + 1 ;
 
     Multi_array<double, 2> moments( len,len );
     Multi_array<double, 1> cbinx( n_bins );
     Multi_array<double, 1> cbiny( n_bins );
-    Multi_array<double, 1> pbinx( len,n_bins );
-    Multi_array<double, 1> pbiny( len,n_bins );  
+    Multi_array<double, 2> pbinx( len,n_bins );
+    Multi_array<double, 2> pbiny( len,n_bins );  
     #pragma omp parallel
     {
         manage_thread_affinity();    
         // n_total
         uint64_t tot=0;
-        #pragma omp for simd collapse(2)
+        
+		#pragma omp for simd collapse(2)
         for (uint j = i_start; j < l_stop; j++) {
             for (uint i = i_start; i < l_stop; i++) {
                 tot += histogram(j,i); 
             }
         }
+		
         #pragma omp single
         {  
             moments(0,0)  = (double)tot; 
@@ -89,6 +90,7 @@ Multi_array<double, 2> std_2Dmoments(const Multi_array<BinType, 2>& histogram, c
                 moments(1,0) += histogram(j,i)*biny[i]; 
             }
         }
+		
         #pragma omp single
         {
             moments(0,1)/=tot;
@@ -102,27 +104,27 @@ Multi_array<double, 2> std_2Dmoments(const Multi_array<BinType, 2>& histogram, c
             cbinx[i] = binx[i]-moments(0,1);
             cbiny[i] = biny[i]-moments(1,0);
         }
-       
+        
         // Power of bins
         // #define INT_POW(x, n) ( (n) == 0 ? 1 : ( (n) == 1 ? (x) : ((x) * INT_POW((x), (n) - 1)) ) )  
         #pragma omp for simd collapse(2)
         for (uint l = 0; l < len; l++) {
             for (uint i = 0; i < n_bins; i++) {
-                pbinx(l,i) = pow(cbinx[l,i], (int)l ); 
-                pbinx(l,i) = pow(cbiny[l,i], (int)l );
+                pbinx(l,i) = pow(cbinx[i], (int)l ); 
+                pbiny(l,i) = pow(cbiny[i], (int)l );
             }
         } 
-        
+			
         // Moments up to order 2
         #pragma omp for simd collapse(2)
         for (uint j = i_start; j < l_stop; j++) {
             for (uint i = i_start; i < l_stop; i++) {
-                moments(1,1) += histogram[j,i]*pbiny(1,i)*pbinx(1,i);
-                moments(0,2) += histogram[j,i]           *pbinx(2,i);
-                moments(2,0) += histogram[j,i]*pbiny(2,i)           ;
-                moments(2,1) += histogram[j,i]*pbiny(2,i)*pbinx(1,i);
-                moments(1,2) += histogram[j,i]*pbiny(1,i)*pbinx(2,i);
-                moments(2,2) += histogram[j,i]*pbiny(1,i)*pbinx(2,i);
+                moments(1,1) += histogram(j,i)*pbiny(1,i)*pbinx(1,i);
+                moments(0,2) += histogram(j,i)           *pbinx(2,i);
+                moments(2,0) += histogram(j,i)*pbiny(2,i)           ;
+                moments(2,1) += histogram(j,i)*pbiny(2,i)*pbinx(1,i);
+                moments(1,2) += histogram(j,i)*pbiny(1,i)*pbinx(2,i);
+                moments(2,2) += histogram(j,i)*pbiny(1,i)*pbinx(2,i);
             }
         }
         
@@ -141,7 +143,7 @@ Multi_array<double, 2> std_2Dmoments(const Multi_array<BinType, 2>& histogram, c
             for (uint ox = 0; ox < 3; ox++) {
                 for (uint j = i_start; j < l_stop; j++) {
                     for (uint i = i_start; i < l_stop; i++) {
-                        moments(oy,ox) += histogram[j,i]*pbiny(oy,i)*pbinx(ox,i);
+                        moments(oy,ox) += histogram(j,i)*pbiny(oy,i)*pbinx(ox,i);
                     }
                 }
             }
@@ -151,7 +153,7 @@ Multi_array<double, 2> std_2Dmoments(const Multi_array<BinType, 2>& histogram, c
             for (uint ox = 3; ox < len ; ox++) {
                 for (uint j = i_start; j < l_stop; j++) {
                     for (uint i = i_start; i < l_stop; i++) {
-                        moments(oy,ox) += histogram[j,i]*pbiny(oy,i)*pbinx(ox,i);
+                        moments(oy,ox) += histogram(j,i)*pbiny(oy,i)*pbinx(ox,i);
                     }
                 }
             }
@@ -159,17 +161,20 @@ Multi_array<double, 2> std_2Dmoments(const Multi_array<BinType, 2>& histogram, c
         
         #pragma omp for simd collapse(2) nowait
         for (uint oy = 3; oy < len; oy++) {
-            for (uint ox = 0; oy < 3; ox++) {
-                moments(oy,ox) /= (moments(0,0) * pow(moments(2,0),(0.5*oy)) * pow(moments[0,2],(0.5*ox)) ) ;
+            for (uint ox = 0; ox < 3; ox++) {
+                moments(oy,ox) /= (moments(0,0) * pow(moments(2,0),(0.5*oy)) * pow(moments(0,2),(0.5*ox)) ) ;
             }
         }
+		
         #pragma omp for simd collapse(2) nowait
         for (uint oy = 0; oy < len; oy++) {
             for (uint ox = 3; ox < len ; ox++) {
-                moments(oy,ox) /= (moments(0,0) * pow(moments(2,0),(0.5*oy)) * pow(moments[0,2],(0.5*ox)) ) ;
+                moments(oy,ox) /= (moments(0,0) * pow(moments(2,0),(0.5*oy)) * pow(moments(0,2),(0.5*ox)) ) ;
             }
         }
+		
     }
+	
     return moments;
 }
 
