@@ -26,10 +26,8 @@ np_array<double> std_2Dmoments_py(np_array<BinType>& np_histogram, np_array<Absc
 	if ( (binx.get_n_i() != biny.get_n_i()) || (histogram.get_n_i() != histogram.get_n_j()) || (histogram.get_n_i() != binx.get_n_i()) ){
 		throw std::runtime_error("Dimensions incompatibles.");
 	}
-
-	uint n_bins =binx.get_n_i();
 	
-    return std_2Dmoments(histogram, binx, biny, n_bins, order).copy_py();
+    return std_2Dmoments(histogram, binx, biny, order).copy_py();
 }
 
 template <class BinType, class AbscisseType>

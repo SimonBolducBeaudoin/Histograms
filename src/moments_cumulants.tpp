@@ -52,10 +52,11 @@ std::vector<double> std_moments(BinType *histogram, AbscisseType *bins, uint n_b
 }
 
 template <class BinType, class AbscisseType>
-Multi_array<double, 2> std_2Dmoments(Multi_array<BinType, 2>& histogram, Multi_array<AbscisseType, 1>& binx, Multi_array<AbscisseType, 1>& biny, uint n_bins, uint order) {
+Multi_array<double, 2> std_2Dmoments(Multi_array<BinType, 2>& histogram, Multi_array<AbscisseType, 1>& binx, Multi_array<AbscisseType, 1>& biny, uint order) {
     /*Order as to be bigger or equal to 2*/
     /*Always removing clip*/
     uint i_start = 1 ;
+	uint n_bins = binx.get_n_i();
     uint l_stop = n_bins - 1 ;
     uint len = order + 1 ;
 
