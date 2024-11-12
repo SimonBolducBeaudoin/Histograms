@@ -15,7 +15,7 @@
                  Histogram<BinType, FloatType>::std_moments_py,                                              \
              "bins"_a.noconvert(), "order"_a, "no_clip"_a = false)                                           \
         .def("how_much_clip", &Histogram<BinType, FloatType>::how_much_clip)                                 \
-        .def("get_alloc_memory_size", &Histogram<BinType, FloatType>::get_alloc_memory_size);
+        .def("get_heap_size", &Histogram<BinType, FloatType>::get_heap_size);
 
 #define PY_HISTOGRAM_UINT(BinType, IntegerType)                                                              \
     py::class_<Histogram<BinType, IntegerType>>(m, "Histogram_" #BinType "_" #IntegerType)                   \
@@ -31,7 +31,7 @@
                  Histogram<BinType, IntegerType>::std_moments_py,                                            \
              "bins"_a.noconvert(), "order"_a, "no_clip"_a = false)                                           \
         .def("how_much_clip", &Histogram<BinType, IntegerType>::how_much_clip)                               \
-        .def("get_alloc_memory_size", &Histogram<BinType, IntegerType>::get_alloc_memory_size);
+        .def("get_heap_size", &Histogram<BinType, IntegerType>::get_heap_size);
 
 #define PY_HISTOGRAM_INT(BinType, IntegerType)                                                               \
     py::class_<Histogram<BinType, IntegerType>>(m, "Histogram_" #BinType "_" #IntegerType)                   \
@@ -47,7 +47,7 @@
                  Histogram<BinType, IntegerType>::std_moments_py,                                            \
              "bins"_a.noconvert(), "order"_a, "no_clip"_a = false)                                           \
         .def("how_much_clip", &Histogram<BinType, IntegerType>::how_much_clip)                               \
-        .def("get_alloc_memory_size", &Histogram<BinType, IntegerType>::get_alloc_memory_size);
+        .def("get_heap_size", &Histogram<BinType, IntegerType>::get_heap_size);
 
 #define PY_HISTOGRAM2D_FLOAT(BinType, FloatType)                                                             \
     py::class_<Histogram2D<BinType, FloatType>>(m, "Histogram2D_" #BinType "_" #FloatType)                   \
@@ -60,7 +60,7 @@
         .def_static("abscisse", &Histogram2D<BinType, FloatType>::abscisse_py, "max"_a.noconvert(),          \
                     "nofbins"_a.noconvert())                                                                 \
         .def("how_much_clip", &Histogram2D<BinType, FloatType>::how_much_clip)                               \
-        .def("get_alloc_memory_size", &Histogram2D<BinType, FloatType>::get_alloc_memory_size);
+        .def("get_heap_size", &Histogram2D<BinType, FloatType>::get_heap_size);
 
 #define PY_HISTOGRAM2D_UINT(BinType, IntegerType)                                                            \
     py::class_<Histogram2D<BinType, IntegerType>>(m, "Histogram2D_" #BinType "_" #IntegerType)               \
@@ -71,7 +71,7 @@
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                             \
         .def("get", &Histogram2D<BinType, IntegerType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                            \
         .def("how_much_clip", &Histogram2D<BinType, IntegerType>::how_much_clip)                             \
-        .def("get_alloc_memory_size", &Histogram2D<BinType, IntegerType>::get_alloc_memory_size);
+        .def("get_heap_size", &Histogram2D<BinType, IntegerType>::get_heap_size);
 
 #define PY_HISTOGRAM2D_INT(BinType, IntegerType)                                                             \
     py::class_<Histogram2D<BinType, IntegerType>>(m, "Histogram2D_" #BinType "_" #IntegerType)               \
@@ -82,7 +82,7 @@
         .def("reset", &Histogram2D<BinType, IntegerType>::reset)                                             \
         .def("get", &Histogram2D<BinType, IntegerType>::pass_to_py, "memory_transfert"_a.noconvert()="copy" )                                            \
         .def("how_much_clip", &Histogram2D<BinType, IntegerType>::how_much_clip)                             \
-        .def("get_alloc_memory_size", &Histogram2D<BinType, IntegerType>::get_alloc_memory_size);
+        .def("get_heap_size", &Histogram2D<BinType, IntegerType>::get_heap_size);
 
 #define PY_HISTOGRAM2D_PERIODIC_FLOAT(BinType, FloatType)                                                    \
     py::class_<Histogram2D_periodic<BinType, FloatType>>(m, "Histogram2D_periodic_" #BinType "_" #FloatType) \
@@ -95,7 +95,7 @@
         .def_static("abscisse", &Histogram2D_periodic<BinType, FloatType>::abscisse_py, "max"_a.noconvert(), \
                     "nofbins"_a.noconvert())                                                                 \
         .def("how_much_clip", &Histogram2D_periodic<BinType, FloatType>::how_much_clip)                      \
-        .def("get_alloc_memory_size", &Histogram2D_periodic<BinType, FloatType>::get_alloc_memory_size);
+        .def("get_heap_size", &Histogram2D_periodic<BinType, FloatType>::get_heap_size);
 
 #define PY_HISTOGRAM(BinType)                                                                                \
     PY_HISTOGRAM_FLOAT(BinType, double);                                                                     \

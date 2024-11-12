@@ -60,8 +60,8 @@ class Histogram2D_periodic<BinType, DataType, typename std::enable_if<std::is_fl
 
     static py::array_t<double> abscisse_py(double max, uint nofbins);
 
-    uint64_t get_alloc_memory_size() {
-        return histogram.get_alloc_memory_size() + hs.get_alloc_memory_size();
+    uint64_t get_heap_size() {
+        return histogram.get_heap_size() + hs.get_heap_size();
     };
 
     void reduction( uint i_hist=0 );
