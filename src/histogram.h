@@ -72,7 +72,7 @@ template <class BinType, class DataType> class Histogram {
     py::array_t<BinType> pass_to_py(const std::string& memory_transfert ="copy");
     static py::array_t<double> abscisse_py(double max, uint nofbins);
 
-    uint64_t get_alloc_memory_size() { return histogram.get_alloc_memory_size(); };
+    uint64_t get_heap_size() { return histogram.get_heap_size(); };
 
   protected:
     uint nofbins;
