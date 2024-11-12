@@ -17,7 +17,7 @@ std::vector<double> std_moments_py(np_array<BinType> &histogram, np_array<Abscis
                                    bool no_clip);
 
 template <class BinType, class AbscisseType>
-np_array<double> std_2Dmoments_py( np_array<BinType>& histogram, np_array<BinType>& binx, np_array<BinType>& biny, uint order);
+np_array<double> std_2Dmoments_py( np_array<BinType>& histogram, np_array<AbscisseType>& binx, np_array<AbscisseType>& biny, uint order);
 
 template <class BinType, class AbscisseType = double>
 double moment_py(np_array<BinType> &histogram, np_array<AbscisseType> &bins, uint exp, uint64_t n_total,

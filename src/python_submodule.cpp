@@ -136,7 +136,7 @@ void init_Histograms(py::module &m) {
           "histogram"_a.noconvert(), "bins"_a.noconvert(), "order"_a.noconvert(),                            \
           "no_clip"_a.noconvert() = false);                                                                  \
 	m.def("std_2Dmoments",                                                                                     \
-          (np_array<double>(*)(np_array<BinType>& , np_array<BinType>&, np_array<BinType>&, uint))(    \
+          (np_array<double>(*)(np_array<BinType>& , np_array<AbscisseType>&, np_array<AbscisseType>&, uint))(    \
               &std_2Dmoments_py<BinType, AbscisseType>),                                                      \
           "histogram"_a.noconvert(), "binx"_a.noconvert(),"biny"_a.noconvert(), "order"_a.noconvert());                                                                  \
     m.def("moment",                                                                                          \

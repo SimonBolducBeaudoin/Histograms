@@ -17,17 +17,16 @@ std::vector<double> std_moments_py(np_array<BinType> &histogram, np_array<Abscis
 
 
 template <class BinType, class AbscisseType>
-np_array<double> std_2Dmoments_py(np_array<BinType>& np_histogram, np_array<BinType>& np_binx, np_array<BinType>& np_biny,  uint order) {
+np_array<double> std_2Dmoments_py(np_array<BinType>& np_histogram, np_array<AbscisseType>& np_binx, np_array<AbscisseType>& np_biny,  uint order) {
 	
 	Multi_array<BinType, 2> histogram = Multi_array<BinType, 2>::numpy_share(np_histogram);
-	Multi_array<BinType, 1> binx =  Multi_array<BinType, 1>::numpy_share(np_binx);
-	Multi_array<BinType, 1> biny =  Multi_array<BinType, 1>::numpy_share(np_biny);
+	Multi_array<AbscisseType, 1> binx =  Multi_array<AbscisseType, 1>::numpy_share(np_binx);
+	Multi_array<AbscisseType, 1> biny =  Multi_array<AbscisseType, 1>::numpy_share(np_biny);
 	
 	if ( (binx.get_n_i() != biny.get_n_i()) || (histogram.get_n_i() != histogram.get_n_j()) || (histogram.get_n_i() != binx.get_n_i()) ){
 		throw std::runtime_error("Dimensions incompatibles.");
 	}
 
-	
 	uint n_bins =binx.get_n_i();
 	
     return std_2Dmoments(histogram, binx, biny, n_bins, order).copy_py();

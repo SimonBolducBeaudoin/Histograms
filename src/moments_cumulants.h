@@ -5,6 +5,9 @@
 #include <vector>
 #include <Multi_array.h>
 
+#include <iostream>
+
+
 /*
 moment( histogram , bins , n_bins , exp_x , ... , n_total )
         - returns  the moment <X^exp_x Y^exp_y ...>
