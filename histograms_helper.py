@@ -102,8 +102,29 @@ def std_2Dmoments_numba(histogram,x,order,Cx,Cy,res=None):
         for ox in order[3:]:
             moments[oy,ox] = (hist* biny**oy * binx**ox).sum() / (moments[0,0] * moments[2,0]**(oy/2.0) * moments[0,2]**(ox/2.0) )
     
-    res[:] = moments
+    res[:,:] = moments[:,:]
 
+@_nb.guvectorize([(_nb.float64[:,:],_nb.float64[:,:])], '(n,n)->(n,n)', target="parallel")
+def std_2Dmoments_to_moments(mus_norm,mus=None) :
+    mus[0,0] = mus_norm[0,0]
+    mus[0,1] = mus_norm[0,1]
+    mus[1,0] = mus_norm[1,0]
+    mus[1,1] = mus_norm[1,1]
+    mus[0,2] = mus_norm[0,2]
+    mus[2,0] = mus_norm[2,0]
+    mus[2,1] = mus_norm[2,1]
+    mus[1,2] = mus_norm[1,2]
+    mus[2,2] = mus_norm[2,2]
+
+    order = _np.arange(len(mus_norm)) # the matrix is square
+    for oy in order[3:]:
+        for ox in order[:3]:
+            mus[oy,ox] = mus_norm[oy,ox] * mus_norm[2,0]**(oy/2.0) * mus_norm[0,2]**(ox/2.0)
+    
+    for oy in order[:]:
+        for ox in order[3:]:
+            mus[oy,ox] = mus_norm[oy,ox] * mus_norm[2,0]**(oy/2.0) * mus_norm[0,2]**(ox/2.0) 
+    
 
 @_nb.guvectorize([(_nb.uint64[:],_nb.float64[:],_nb.int32[:],_nb.float64,_nb.float64[:])], '(n),(n),(m),()->(m)')
 def std_moments_numba(histogram,x,order,Cx,res=None):
